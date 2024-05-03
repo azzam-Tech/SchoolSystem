@@ -1,8 +1,18 @@
+using Microsoft.EntityFrameworkCore;
+using SchoolSystem.Api.Extentions;
+using SchoolSystem.DAL.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<AppDbContext>(Options => Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddCustomJwtAuth(builder.Configuration);
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
