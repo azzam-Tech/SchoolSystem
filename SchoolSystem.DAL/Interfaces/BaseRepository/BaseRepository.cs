@@ -224,6 +224,7 @@ namespace SchoolSystem.DAL.Interfaces.BaseRepository
             return await query.ToListAsync();
         }
 
+
         public T Add(T entity)
         {
             _context.Set<T>().Add(entity);

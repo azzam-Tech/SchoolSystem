@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SchoolSystem.DAL.UnitOfWork;
 
@@ -15,7 +16,7 @@ namespace SchoolSystem.Api.Controllers
             _unitOfWork = unitOfWork;
         }
 
-
+        [Authorize(Roles ="Admin")]
         [HttpGet]
         public IActionResult GetRoles()
         {

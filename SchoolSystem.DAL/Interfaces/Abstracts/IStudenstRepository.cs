@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SchoolSystem.DAL.Interfaces
+namespace SchoolSystem.DAL.Interfaces.Abstracts
 {
-    public interface IRolesRepository : IBaseRepository<Role>
+    public interface IStudenstRepository : IBaseRepository<Student>
     {
-        void azzam();
+
     }
 }
