@@ -28,7 +28,19 @@ namespace SchoolSystem.Api.Controllers
             try
             {
                 var subjectClasses = _unitOfWork.SubjectClasses.GetAll();
-                var data = _mapper.Map<IEnumerable<SubjectClassDto>>(subjectClasses);
+                //var data = _mapper.Map<IEnumerable<SubjectClassDto>>(subjectClasses);
+
+                var data = new List<SubjectClassDto>();
+                foreach (var subjectClass in subjectClasses)
+                {
+                    var subjectClassDto = new SubjectClassDto
+                    {
+                        SubjectId = subjectClass.SubjectId,
+                        ClassId = subjectClass.ClassId,
+                        SubjectClassName = subjectClass.SubjectClassName
+                    };
+                    data.Add(subjectClassDto);
+                }
 
                 ApiResponse6<IEnumerable<SubjectClassDto>> response = new ApiResponse6<IEnumerable<SubjectClassDto>>(data, null, "Subject classes retrieved successfully", true, "200");
 
@@ -53,8 +65,14 @@ namespace SchoolSystem.Api.Controllers
                     ApiResponse3 responsex = new ApiResponse3(message: "Subject class data is missing");
                     return StatusCode(400, responsex);
                 }
-                var data = _mapper.Map<SubjectClassDto>(subjectClass);
-                ApiResponse6<SubjectClassDto> response = new ApiResponse6<SubjectClassDto>(data, null, "Subject class retrieved successfully", true, "200");
+                //var data = _mapper.Map<SubjectClassDto>(subjectClass);
+                var subjectClassDto = new SubjectClassDto
+                {
+                    SubjectId = subjectClass.SubjectId,
+                    ClassId = subjectClass.ClassId,
+                    SubjectClassName = subjectClass.SubjectClassName
+                };
+                ApiResponse6<SubjectClassDto> response = new ApiResponse6<SubjectClassDto>(subjectClassDto, null, "Subject class retrieved successfully", true, "200");
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -96,18 +114,25 @@ namespace SchoolSystem.Api.Controllers
                     ApiResponse3 responsex = new ApiResponse3(message: "class does not exist");
                     return StatusCode(400, responsex);
                 }
-                var subjectClass = _mapper.Map<SubjectClass>(subjectClassDto);
+                //var subjectClass = _mapper.Map<SubjectClass>(subjectClassDto);
+
+                var subjectClass = new SubjectClass
+                {
+                    SubjectId = subjectClassDto.SubjectId,
+                    ClassId = subjectClassDto.ClassId,
+                    SubjectClassName = subjectClassDto.SubjectClassName
+                };  
 
                 _unitOfWork.SubjectClasses.Add(subjectClass);
                 _unitOfWork.Save();
-                var subjectClassDtoData = _mapper.Map<SubjectClassDto>(subjectClass);
-                ApiResponse6<SubjectClassDto> response = new ApiResponse6<SubjectClassDto>(subjectClassDtoData, null, "Subject class added successfully", true, "200");
+                ApiResponse6<SubjectClassDto> response = new ApiResponse6<SubjectClassDto>(subjectClassDto, null, "Subject class added successfully", true, "200");
                 return Ok(response);
             }
             catch (System.Exception ex)
             {
                 ApiResponse4 response = new ApiResponse4(message: ex.Message);
-                return StatusCode(500, response);
+                //return StatusCode(500, response);
+                return Ok(ex.InnerException);
             }
         }
 
@@ -123,8 +148,8 @@ namespace SchoolSystem.Api.Controllers
                     return StatusCode(400, responsex);
                 }
 
-                var subjectClass = _unitOfWork.SubjectClasses.GetById(id);
-                if (subjectClass == null)
+                var subjectClass1 = _unitOfWork.SubjectClasses.GetById(id);
+                if (subjectClass1 == null)
                 {
                     ApiResponse3 responsex = new ApiResponse3(message: "Subject class does not exist");
                     return StatusCode(400, responsex);
@@ -144,12 +169,17 @@ namespace SchoolSystem.Api.Controllers
                     return StatusCode(400, responsex);
                 }
 
-                var data = _mapper.Map<SubjectClass>(subjectClassDto);
-                data.SubjectClassId = id;
-                _unitOfWork.SubjectClasses.Update(data);
+                //var data = _mapper.Map<SubjectClass>(subjectClassDto);
+                var subjectClass = new SubjectClass
+                {
+                    SubjectId = subjectClassDto.SubjectId,
+                    ClassId = subjectClassDto.ClassId,
+                    SubjectClassName = subjectClassDto.SubjectClassName
+                };
+                //data.SubjectClassId = id;
+                _unitOfWork.SubjectClasses.Update(subjectClass);
                 _unitOfWork.Save();
-                var subjectClassDtoData = _mapper.Map<SubjectClassDto>(data);
-                ApiResponse6<SubjectClassDto> response = new ApiResponse6<SubjectClassDto>(subjectClassDtoData, null, "Subject class updated successfully", true, "200");
+                ApiResponse6<SubjectClassDto> response = new ApiResponse6<SubjectClassDto>(subjectClassDto, null, "Subject class updated successfully", true, "200");
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -173,8 +203,14 @@ namespace SchoolSystem.Api.Controllers
                 }
                 _unitOfWork.SubjectClasses.Delete(subjectClass);
                 _unitOfWork.Save();
-                var subjectClassDtoData = _mapper.Map<SubjectClassDto>(subjectClass);
-                ApiResponse6<SubjectClassDto> response = new ApiResponse6<SubjectClassDto>(subjectClassDtoData, null, "Subject class deleted successfully", true, "200");
+                //var subjectClassDtoData = _mapper.Map<SubjectClassDto>(subjectClass);
+                var subjectClassDto = new SubjectClassDto
+                {
+                    SubjectId = subjectClass.SubjectId,
+                    ClassId = subjectClass.ClassId,
+                    SubjectClassName = subjectClass.SubjectClassName
+                };
+                ApiResponse6<SubjectClassDto> response = new ApiResponse6<SubjectClassDto>(subjectClassDto, null, "Subject class deleted successfully", true, "200");
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -235,8 +271,7 @@ namespace SchoolSystem.Api.Controllers
 
                 var data = _unitOfWork.SubjectClasses.AddRange(subjectClasses);
                 _unitOfWork.Save();
-                var subjectClassDtoData = _mapper.Map<IEnumerable<SubjectClassDto>>(data);
-                ApiResponse6<IEnumerable<SubjectClassDto>> response = new ApiResponse6<IEnumerable<SubjectClassDto>>(subjectClassDtoData, null, "Subject classes added successfully", true, "200");
+                ApiResponse6<IEnumerable<SubjectClassDto>> response = new ApiResponse6<IEnumerable<SubjectClassDto>>(subjectClassesDtos, null, "Subject classes added successfully", true, "200");
                 return Ok(response);
             }
             catch (System.Exception ex)

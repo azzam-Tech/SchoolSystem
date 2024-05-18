@@ -13,11 +13,11 @@ namespace SchoolSystem.Api.Controllers
     public class ClassesController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
-        //private readonly IMapper _mapper;
-        public ClassesController(IUnitOfWork unitOfWork /*IMapper mapper*/)
+        private readonly IMapper _mapper;
+        public ClassesController(IUnitOfWork unitOfWork , IMapper mapper)
         {
             _unitOfWork = unitOfWork;
-            //_mapper = mapper;
+            _mapper = mapper;
         }
 
         // create a method to get all classes from the database using the unit of work and classDto the ApiResponse model from the DAL project and try catch block
@@ -179,8 +179,83 @@ namespace SchoolSystem.Api.Controllers
                 ApiResponse4 response = new ApiResponse4(message: ex.Message);
                 return StatusCode(500, response);
             }
-        }   
+        }
 
+        // create a method to update a class using the unit of work and classDto the ApiResponse model from the DAL project and try catch block without using automapper
+        [HttpPut("{id}")]
+        public IActionResult UpdateClass(int id, [FromBody] ClassDto classDto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    ApiResponse3 responsex = new ApiResponse3(message: "Model state is invalid");
+                    return StatusCode(400, responsex);
+                }
+
+                var classs = _unitOfWork.Classes.GetById(id);
+                if (classs == null)
+                {
+                    ApiResponse3 responsex = new ApiResponse3(message: "Class data is missing");
+                    return StatusCode(400, responsex);
+                }
+
+                var classExists = _unitOfWork.Classes.Find(x => x.ClassName == classDto.ClassName && x.LevelId == classDto.LevelId);
+                if (classExists != null)
+                {
+                    ApiResponse3 responsex = new ApiResponse3(message: "Subject class already exists");
+                    return StatusCode(400, responsex);
+                }
+
+                var level = _unitOfWork.Levels.GetById(classDto.LevelId);
+                if (level == null)
+                {
+                    ApiResponse3 responsex = new ApiResponse3(message: "level does not exist");
+                    return StatusCode(400, responsex);
+                }
+
+                classs.ClassName = classDto.ClassName;
+                classs.ClassSopervisor = classDto.ClassSopervisor;
+                classs.LevelId = classDto.LevelId;
+
+                _unitOfWork.Classes.Update(classs);
+                _unitOfWork.Save();
+
+                ApiResponse6<ClassDto> response = new ApiResponse6<ClassDto>(classDto, null, "Subject class updated successfully", true, "200");
+                return Ok(response);
+            }
+            catch (System.Exception ex)
+            {
+                ApiResponse4 response = new ApiResponse4(message: ex.Message);
+                return StatusCode(500, response);
+            }
+        }
+
+        // create a method to delete a class using the unit of work and classDto the ApiResponse model from the DAL project and try catch block without using automapper
+        [HttpDelete("{id}")]
+        public IActionResult DeleteClass(int id)
+        {
+            try
+            {
+                var classs = _unitOfWork.Classes.GetById(id);
+                if (classs == null)
+                {
+                    ApiResponse3 responsex = new ApiResponse3(message: "Class data is missing");
+                    return StatusCode(400, responsex);
+                }
+
+                _unitOfWork.Classes.Delete(classs);
+                _unitOfWork.Save();
+
+                ApiResponse3 response = new ApiResponse3(message: "Subject class deleted successfully");
+                return Ok(response);
+            }
+            catch (System.Exception ex)
+            {
+                ApiResponse4 response = new ApiResponse4(message: ex.Message);
+                return StatusCode(500, response);
+            }
+        }
 
     }
 }

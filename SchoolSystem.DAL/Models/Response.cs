@@ -23,7 +23,7 @@ namespace SchoolSystem.DAL.Models
         public T? Data { get; set; } = data;
     }
 
-    public class ApiResponse2(string? data = null, string? errors = null, string message = "Validation errors occurred", bool sucesse = true, string codestate = "400")
+    public class ApiResponse2(string? data = null, string? errors = null, string message = "Invalid request or input data with optional error details object", bool sucesse = false, string codestate = "400")
     {
         public bool Success { get; set; } = sucesse;
         public string Codestate { get; set; } = codestate;
@@ -32,7 +32,7 @@ namespace SchoolSystem.DAL.Models
         public string? data { get; set; } = data;
     }
 
-    public class ApiResponse3(string? data = null, string? errors = null, string message = "User data is missing", bool sucesse = true, string codestate = "400")
+    public class ApiResponse3(string? data = null, string? errors = null, string message = "Resource not found", bool sucesse = false, string codestate = "404")
     {
         public bool Success { get; set; } = sucesse;
         public string Codestate { get; set; } = codestate;

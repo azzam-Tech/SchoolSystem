@@ -23,6 +23,13 @@ namespace SchoolSystem.DAL.UnitOfWork
         public ISubjectsRepository Subjects { get; private set;}
         public ISubjectClassesRepository SubjectClasses { get; private set;}
         public IClassesRepository Classes { get; private set;}
+        public IHomeWorksRepositroy HomeWorks { get; private set;}
+        public IStudentQeustionsRepositroy StudentQeustions { get; private set;}
+        public IReinforcementlessonsRepository Reinforcementlessons { get; private set;}
+        public ISolutionsRepositroy Solutions { get; private set;}
+        public IStudentDegreesRepositroy StudentDegrees { get; private set;}
+
+
 
 
 
@@ -36,6 +43,11 @@ namespace SchoolSystem.DAL.UnitOfWork
             Subjects = new SubjectsRepository(_context);
             SubjectClasses = new SubjectClassesRepository(_context);
             Classes = new ClassesRepository(_context);
+            HomeWorks = new HomeWorksRepositroy(_context);
+            StudentQeustions = new StudentQeustionsRepositroy(_context);
+            Reinforcementlessons = new ReinforcementlessonsRepository(_context);
+            Solutions = new SolutionsRepositroy(_context);
+            StudentDegrees = new StudentDegreesRepositroy(_context);
 
         }
 

@@ -19,6 +19,11 @@ namespace SchoolSystem.DAL.UnitOfWork
         ISubjectsRepository Subjects { get; }
         ISubjectClassesRepository SubjectClasses { get; }
         IClassesRepository Classes { get; }
+        IHomeWorksRepositroy HomeWorks { get; }
+        IStudentQeustionsRepositroy StudentQeustions { get; }
+        IReinforcementlessonsRepository Reinforcementlessons { get; }
+        ISolutionsRepositroy Solutions { get; }
+        IStudentDegreesRepositroy StudentDegrees { get; }
 
 
 
