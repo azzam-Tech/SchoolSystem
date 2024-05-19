@@ -5,6 +5,8 @@ using SchoolSystem.BLL.DTOs;
 using SchoolSystem.DAL.Entites;
 using SchoolSystem.DAL.Models;
 using AutoMapper;
+using SchoolSystem.BLL.DTOs.GetDto;
+using SchoolSystem.BLL.DTOs.PostDto;
 
 namespace SchoolSystem.Api.Controllers
 {
@@ -22,14 +24,14 @@ namespace SchoolSystem.Api.Controllers
 
         // create a method to get all levels from the database using the unit of work and levelDto the ApiResponse model from the DAL project and try catch block
         [HttpGet]
-        public IActionResult GetLevels()
+        public async Task<IActionResult> GetLevels()
         {
             try
             {
-                var levels = _unitOfWork.Levels.GetAll();
-                var data = _mapper.Map<IEnumerable<LevelDto>>(levels);
+                var levels = await _unitOfWork.Levels.GetAllAsync();
+                var levelsDto = _mapper.Map<IEnumerable<GetLevelDto>>(levels);
 
-                ApiResponse6<IEnumerable<LevelDto>> response = new ApiResponse6<IEnumerable<LevelDto>>(data, null, "Levels retrieved successfully", true, "200");
+                ApiResponse6<IEnumerable<GetLevelDto>> response = new (levelsDto);
 
                 return Ok(response);
             }
@@ -40,20 +42,21 @@ namespace SchoolSystem.Api.Controllers
             }
         }
 
+
         // create a method to get a level by id from the database using the unit of work and levelDto the ApiResponse model from the DAL project and try catch block    
-        [HttpGet("{id}")]
-        public IActionResult GetLevel(int id)
+        [HttpGet("GetLevelById/{id}")]
+        public async Task<IActionResult> GetLevelById(int id)
         {
             try
             {
-                var level = _unitOfWork.Levels.GetById(id);
+                var level = await _unitOfWork.Levels.GetByIdAsync(id);
                 if (level == null)
                 {
-                    ApiResponse3 responsex = new ApiResponse3(message: "Level data is missing");
-                    return StatusCode(400, responsex);
+                    ApiResponse3 responsex = new ();
+                    return NotFound(responsex);
                 }
-                var data = _mapper.Map<LevelDto>(level);
-                ApiResponse6<LevelDto> response = new ApiResponse6<LevelDto>(data, null, "Level retrieved successfully", true, "200");
+                var levelDto = _mapper.Map<GetLevelDto>(level);
+                ApiResponse6<GetLevelDto> response = new (levelDto);
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -63,30 +66,36 @@ namespace SchoolSystem.Api.Controllers
             }
         }
 
+
         // create a method to create a level in the database using the unit of work and levelDto the ApiResponse model from the DAL project and try catch block
         [HttpPost]
-        public IActionResult CreateLevel([FromBody] LevelDto levelDto)
+        public async Task<IActionResult> CreateLevel([FromBody] PostLevelDto levelDto)
         {
             try
             {
                 if (!ModelState.IsValid)
                 {
-                    ApiResponse3 modelStateresponse = new ApiResponse3(message: "Invalid model state");
-                    return StatusCode(400, modelStateresponse);
+                    ApiResponse3 modelStateresponse = new ();
+                    return BadRequest(modelStateresponse);
                 }
-                var levelExists = _unitOfWork.Levels.Find(x => x.LevelName == levelDto.LevelName);
+                if (levelDto == null)
+                {
+                    ApiResponse2 response1 = new();
+                    return BadRequest(response1);
+                }
+                var levelExists = await _unitOfWork.Levels.FindAsync(x => x.LevelName == levelDto.LevelName);
                 if (levelExists != null)
                 {
                     ApiResponse3 levelExistsresponse = new ApiResponse3(message: "Level already exists");
-                    return StatusCode(400, levelExistsresponse);
+                    return BadRequest(levelExistsresponse);
                 }
 
                 var level = _mapper.Map<Level>(levelDto);
 
                 _unitOfWork.Levels.Add(level);
-                _unitOfWork.Complete();
-                ApiResponse5<LevelDto> response = new ApiResponse5<LevelDto>(levelDto, null, "Level created successfully", true, "201");
-                return StatusCode(201, response);
+                await _unitOfWork.SaveAsync();
+                ApiResponse5<PostLevelDto> response = new ApiResponse5<PostLevelDto>(levelDto);
+                return Ok(response);
             }
             catch (System.Exception ex)
             {
@@ -96,32 +105,37 @@ namespace SchoolSystem.Api.Controllers
         }
 
 
-
         // create a method to update a level in the database using the unit of work and levelDto the ApiResponse model from the DAL project and try catch block
         [HttpPut("{id}")]
-        public IActionResult UpdateLevel(int id, [FromBody] LevelDto levelDto)
+        public async Task<IActionResult> UpdateLevel(int id, [FromBody] PostLevelDto levelDto)
         {
             try
             {
                 if (!ModelState.IsValid)
                 {
-                    ApiResponse3 modelStateresponse = new ApiResponse3(message: "Invalid model state");
-                    return StatusCode(400, modelStateresponse);
+                    ApiResponse2 modelStateresponse = new ();
+                    return  BadRequest( modelStateresponse);
                 }
 
-                var level = _unitOfWork.Levels.GetById(id);
+                if (levelDto == null)
+                {
+                    ApiResponse2 response1 = new();
+                    return BadRequest(response1);
+                }
+
+                var level = await _unitOfWork.Levels.GetByIdAsync(id);
                 if (level == null)
                 {
-                    ApiResponse3 responsex = new ApiResponse3(message: "Level data is missing");
-                    return StatusCode(400, responsex);
+                    ApiResponse3 response3 = new();
+                    return NotFound(response3);
                 }
 
                 //_mapper.Map<Level>(levelDto);   
                 level.LevelName = levelDto.LevelName;
 
-                _unitOfWork.Complete();
-                ApiResponse5<LevelDto> response = new ApiResponse5<LevelDto>(levelDto, null, "Level updated successfully", true, "201");
-                return StatusCode(201, response);
+                await _unitOfWork.SaveAsync();
+                ApiResponse5<PostLevelDto> response = new(levelDto);
+                return Ok(response);
             }
             catch (System.Exception ex)
             {
@@ -131,20 +145,20 @@ namespace SchoolSystem.Api.Controllers
         }
         // create a method to delete a level in the database using the unit of work and levelDto the ApiResponse model from the DAL project and try catch block
         [HttpDelete("{id}")]
-        public IActionResult DeleteLevel(int id)
+        public async Task<IActionResult> DeleteLevel(int id)
         {
             try
             {
-                var level = _unitOfWork.Levels.GetById(id);
+                var level = await _unitOfWork.Levels.GetByIdAsync(id);
                 if (level == null)
                 {
-                    ApiResponse3 responsex = new ApiResponse3(message: "Level data is missing");
-                    return StatusCode(400, responsex);
+                    ApiResponse3 response3 = new();
+                    return NotFound(response3);
                 }
-                var levelDto = _mapper.Map<LevelDto>(level);
+                var levelDto = _mapper.Map<GetLevelDto>(level);
                 _unitOfWork.Levels.Delete(level);
-                _unitOfWork.Complete();
-                ApiResponse<LevelDto> response = new ApiResponse<LevelDto>(data: levelDto, message: "Level deleted successfully");
+                await _unitOfWork.SaveAsync();
+                ApiResponse<GetLevelDto> response = new (levelDto);
                 return Ok(response);
             }
             catch (System.Exception ex)

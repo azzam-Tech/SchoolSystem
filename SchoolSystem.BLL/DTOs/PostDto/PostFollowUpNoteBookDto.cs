@@ -2,8 +2,6 @@
 {
     public class PostFollowUpNoteBookDto
     {
-        public int FollowUpNoteBookId { get; set; }
-
         public int SubjectClassId { get; set; }
 
         public int ClassId { get; set; }

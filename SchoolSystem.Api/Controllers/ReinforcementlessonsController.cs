@@ -5,6 +5,8 @@ using SchoolSystem.DAL.Entites;
 using SchoolSystem.DAL.Models;
 using AutoMapper;
 using SchoolSystem.DAL.UnitOfWork;
+using SchoolSystem.BLL.DTOs.GetDto;
+using SchoolSystem.BLL.DTOs.PostDto;
 
 namespace SchoolSystem.Api.Controllers
 {
@@ -26,9 +28,9 @@ namespace SchoolSystem.Api.Controllers
             try
             {
                 var Reinforcementlessons = await _unitOfWork.Reinforcementlessons.GetAllAsync();
-                var ReinforcementlessonsDTO = _mapper.Map<IEnumerable<ReinforcementlessonDto>>(Reinforcementlessons);
-                ApiResponse6<IEnumerable<ReinforcementlessonDto>> response = new(ReinforcementlessonsDTO);
-                return Ok(ReinforcementlessonsDTO);
+                var ReinforcementlessonsDTO = _mapper.Map<IEnumerable<GetReinforcementlessonDto>>(Reinforcementlessons);
+                ApiResponse6<IEnumerable<GetReinforcementlessonDto>> response = new(ReinforcementlessonsDTO);
+                return Ok(response);
             }
             catch (System.Exception ex)
             {
@@ -50,9 +52,9 @@ namespace SchoolSystem.Api.Controllers
                     ApiResponse3 reaponse = new();
                     return NotFound(reaponse);
                 }
-                var ReinforcementlessonDto = _mapper.Map<ReinforcementlessonDto>(reinforcementlesson);
-                ApiResponse6<ReinforcementlessonDto> response = new(ReinforcementlessonDto);
-                return Ok(ReinforcementlessonDto);
+                var ReinforcementlessonDto = _mapper.Map<GetReinforcementlessonDto>(reinforcementlesson);
+                ApiResponse6<GetReinforcementlessonDto> response = new(ReinforcementlessonDto);
+                return Ok(response);
             }
             catch (System.Exception ex)
             {
@@ -63,7 +65,7 @@ namespace SchoolSystem.Api.Controllers
 
         // creat a method to create reinforcementlessonusing ReinforcementlessonDto , automapper , Try Catch block , Responses classes check if the object is null and if the model is valid and other nessesary checks
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] ReinforcementlessonDto ReinforcementlessonDto)
+        public async Task<IActionResult> Post([FromBody] PostReinforcementlessonDto ReinforcementlessonDto)
         {
             try
             {
@@ -86,7 +88,7 @@ namespace SchoolSystem.Api.Controllers
                 var reinforcementlesson= _mapper.Map<Reinforcementlesson>(ReinforcementlessonDto);
                 await _unitOfWork.Reinforcementlessons.AddAsync(reinforcementlesson);
                 await _unitOfWork.SaveAsync();
-                ApiResponse5<ReinforcementlessonDto> response = new(ReinforcementlessonDto);
+                ApiResponse5<PostReinforcementlessonDto> response = new(ReinforcementlessonDto);
                 return Ok(response);
                 //return CreatedAtRoute("GetHomeWork", new { id = homeWork.Id }, homeWork);
             }
@@ -99,7 +101,7 @@ namespace SchoolSystem.Api.Controllers
 
         // creat a method to update reinforcementlessonusing ReinforcementlessonDto , automapper , Try Catch block , Responses classes check if the object is null and if the model is valid and other nessesary checks
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] ReinforcementlessonDto ReinforcementlessonDto)
+        public async Task<IActionResult> Put(int id, [FromBody] PostReinforcementlessonDto ReinforcementlessonDto)
         {
             try
             {
@@ -120,10 +122,8 @@ namespace SchoolSystem.Api.Controllers
                     return NotFound(response3);
                 }
                 _mapper.Map(ReinforcementlessonDto, reinforcementlesson);
-                var homeWorkupdated = _mapper.Map<HomeWork>(ReinforcementlessonDto);
-                //_unitOfWork.Reinforcementlessons.Update(homeWorkupdated);
                 await _unitOfWork.SaveAsync();
-                ApiResponse5<ReinforcementlessonDto> response = new(ReinforcementlessonDto);
+                ApiResponse5<PostReinforcementlessonDto> response = new(ReinforcementlessonDto);
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -147,8 +147,8 @@ namespace SchoolSystem.Api.Controllers
                 }
                 _unitOfWork.Reinforcementlessons.Delete(reinforcementlesson);
                 await _unitOfWork.SaveAsync();
-                var ReinforcementlessonDto = _mapper.Map<ReinforcementlessonDto>(reinforcementlesson);
-                ApiResponse6<ReinforcementlessonDto> response = new(ReinforcementlessonDto);
+                var ReinforcementlessonDto = _mapper.Map<GetReinforcementlessonDto>(reinforcementlesson);
+                ApiResponse6<GetReinforcementlessonDto> response = new(ReinforcementlessonDto);
                 return Ok(response);
             }
             catch (System.Exception ex)

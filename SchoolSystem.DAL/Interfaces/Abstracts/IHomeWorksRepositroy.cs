@@ -10,5 +10,6 @@ namespace SchoolSystem.DAL.Interfaces.Abstracts
 {
     public interface IHomeWorksRepositroy : IBaseRepository<HomeWork>
     {
+        Task<IEnumerable<HomeWork>> GetBySubjectClassId(int id);
     }
 }

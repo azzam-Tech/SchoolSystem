@@ -4,7 +4,6 @@ namespace SchoolSystem.BLL.DTOs.PostDto
 {
     public class PostSolutionDto
     {
-        public int SolutionId { get; set; }
         public int HomeWorkId { get; set; }
 
         public int StudentId { get; set; }

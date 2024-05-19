@@ -26,8 +26,8 @@ namespace SchoolSystem.Api.Controllers
             try
             {
                 var studentDegrees = await _unitOfWork.StudentDegrees.GetAllAsync();
-                var studentDegreesDTO = _mapper.Map<IEnumerable<StudentDegreeDto>>(studentDegrees);
-                ApiResponse6<IEnumerable<StudentDegreeDto>> response = new(studentDegreesDTO);
+                var studentDegreesDTO = _mapper.Map<IEnumerable<GetStudentDegreeDto>>(studentDegrees);
+                ApiResponse6<IEnumerable<GetStudentDegreeDto>> response = new(studentDegreesDTO);
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -48,8 +48,8 @@ namespace SchoolSystem.Api.Controllers
                     ApiResponse3 reaponse = new();
                     return NotFound(reaponse);
                 }
-                var studentDegreeDto = _mapper.Map<StudentDegreeDto>(studentDegree);
-                ApiResponse6<StudentDegreeDto> response = new(studentDegreeDto);
+                var studentDegreeDto = _mapper.Map<GetStudentDegreeDto>(studentDegree);
+                ApiResponse6<GetStudentDegreeDto> response = new(studentDegreeDto);
                 return Ok(response);
             }
             catch (System.Exception ex)

@@ -5,6 +5,8 @@ using SchoolSystem.BLL.DTOs;
 using SchoolSystem.DAL.Entites;
 using SchoolSystem.DAL.Models;
 using AutoMapper;
+using SchoolSystem.BLL.DTOs.GetDto;
+using SchoolSystem.BLL.DTOs.PostDto;
 
 namespace SchoolSystem.Api.Controllers
 {
@@ -26,8 +28,8 @@ namespace SchoolSystem.Api.Controllers
             try
             {
                 var classTimeTables = await _unitOfWork.ClassTimeTables.GetAllAsync();
-                var classTimeTablesDTO = _mapper.Map<IEnumerable<ClassTimeTableDto>>(classTimeTables);
-                ApiResponse6<IEnumerable<ClassTimeTableDto>> response = new(classTimeTablesDTO);
+                var classTimeTablesDTO = _mapper.Map<IEnumerable<GetClassTimeTableDto>>(classTimeTables);
+                ApiResponse6<IEnumerable<GetClassTimeTableDto>> response = new(classTimeTablesDTO);
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -48,8 +50,8 @@ namespace SchoolSystem.Api.Controllers
                     ApiResponse3 reaponse = new();
                     return NotFound(reaponse);
                 }
-                var classTimeTableDto = _mapper.Map<ClassTimeTableDto>(classTimeTable);
-                ApiResponse6<ClassTimeTableDto> response = new(classTimeTableDto);
+                var classTimeTableDto = _mapper.Map<GetClassTimeTableDto>(classTimeTable);
+                ApiResponse6<GetClassTimeTableDto> response = new(classTimeTableDto);
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -70,8 +72,8 @@ namespace SchoolSystem.Api.Controllers
                     ApiResponse3 reaponse = new();
                     return NotFound(reaponse);
                 }
-                var classTimeTableDto = _mapper.Map<ClassTimeTableDto>(classTimeTable);
-                ApiResponse6<ClassTimeTableDto> response = new(classTimeTableDto);
+                var classTimeTableDto = _mapper.Map<GetClassTimeTableDto>(classTimeTable);
+                ApiResponse6<GetClassTimeTableDto> response = new(classTimeTableDto);
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -82,7 +84,7 @@ namespace SchoolSystem.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] ClassTimeTableDto classTimeTableDto)
+        public async Task<IActionResult> Post([FromBody] PostClassTimeTableDto classTimeTableDto)
         {
             try
             {
@@ -107,7 +109,7 @@ namespace SchoolSystem.Api.Controllers
                 var classTimeTable = _mapper.Map<ClassTimeTable>(classTimeTableDto);
                 await _unitOfWork.ClassTimeTables.AddAsync(classTimeTable);
                 await _unitOfWork.SaveAsync();
-                ApiResponse6<ClassTimeTableDto> response = new(_mapper.Map<ClassTimeTableDto>(classTimeTable));
+                ApiResponse6<PostClassTimeTableDto> response = new(_mapper.Map<PostClassTimeTableDto>(classTimeTableDto));
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -118,7 +120,7 @@ namespace SchoolSystem.Api.Controllers
         }
 
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] ClassTimeTableDto classTimeTableDto)
+        public async Task<IActionResult> Put(int id, [FromBody] PostClassTimeTableDto classTimeTableDto)
         {
             try
             {
@@ -141,7 +143,7 @@ namespace SchoolSystem.Api.Controllers
                 _mapper.Map(classTimeTableDto, classTimeTable);
                 //_unitOfWork.Solutions.Update(solution);
                 await _unitOfWork.SaveAsync();
-                ApiResponse5<ClassTimeTableDto> response = new(classTimeTableDto);
+                ApiResponse5<PostClassTimeTableDto> response = new(classTimeTableDto);
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -164,8 +166,8 @@ namespace SchoolSystem.Api.Controllers
                 }
                 _unitOfWork.ClassTimeTables.Delete(classTimeTable);
                 await _unitOfWork.SaveAsync();
-                var classTimeTableDto = _mapper.Map<ClassTimeTableDto>(classTimeTable);
-                ApiResponse6<ClassTimeTableDto> response = new(classTimeTableDto);
+                var classTimeTableDto = _mapper.Map<GetClassTimeTableDto>(classTimeTable);
+                ApiResponse6<GetClassTimeTableDto> response = new(classTimeTableDto);
                 return Ok(response);
             }
             catch (System.Exception ex)

@@ -6,6 +6,8 @@ using SchoolSystem.DAL.Entites;
 using SchoolSystem.DAL.Models;
 using AutoMapper;
 using System;
+using SchoolSystem.BLL.DTOs.GetDto;
+using SchoolSystem.BLL.DTOs.PostDto;
 
 namespace SchoolSystem.Api.Controllers
 {
@@ -28,8 +30,8 @@ namespace SchoolSystem.Api.Controllers
             try
             {
                 var followUpNoteBooks = await _unitOfWork.FollowUpNoteBooks.GetAllAsync();
-                //var followUpNoteBooksDTO = _mapper.Map<FollowUpNoteBookDto>(followUpNoteBooks);
-                //ApiResponse6<FollowUpNoteBookDto> response = new(followUpNoteBooksDTO);
+                //var getfollowUpNoteBooksDTO = _mapper.Map<FollowUpNoteBookDto>(followUpNoteBooks);
+                //ApiResponse6<FollowUpNoteBookDto> response = new(getfollowUpNoteBooksDTO);
                 return Ok(followUpNoteBooks);
             }
             catch (System.Exception ex)
@@ -51,8 +53,8 @@ namespace SchoolSystem.Api.Controllers
                     ApiResponse3 reaponse = new();
                     return NotFound(reaponse);
                 }
-                var followUpNoteBooksDTO = _mapper.Map<IEnumerable< FollowUpNoteBookDto>>(followUpNoteBooks);
-                ApiResponse6<IEnumerable<FollowUpNoteBookDto>> response = new(followUpNoteBooksDTO);
+                var getfollowUpNoteBooksDTO = _mapper.Map<IEnumerable< GetFollowUpNoteBookDto>>(followUpNoteBooks);
+                ApiResponse6<IEnumerable<GetFollowUpNoteBookDto>> response = new(getfollowUpNoteBooksDTO);
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -63,7 +65,7 @@ namespace SchoolSystem.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] FollowUpNoteBookDto followUpNoteBookDto)
+        public async Task<IActionResult> Post([FromBody] PostFollowUpNoteBookDto postFollowUpNoteBookDto)
         {
             try
             {
@@ -72,23 +74,48 @@ namespace SchoolSystem.Api.Controllers
                     ApiResponse2 response2 = new();
                     return BadRequest(response2);
                 }
-                if (followUpNoteBookDto == null)
+                if (postFollowUpNoteBookDto == null)
                 {
                     ApiResponse2 response1 = new();
                     return BadRequest(response1);
                 }
-                var classsubject = await _unitOfWork.SubjectClasses.GetByIdAsync(followUpNoteBookDto.SubjectClassId);
+                var classsubject = await _unitOfWork.SubjectClasses.GetByIdAsync(postFollowUpNoteBookDto.SubjectClassId);
                 if (classsubject == null)
                 {
                     ApiResponse2 response3 = new();
                     return BadRequest(response3);
                 }
-                var followUpNoteBook = _mapper.Map<FollowUpNoteBook>(followUpNoteBookDto);
+                var followUpNoteBook = _mapper.Map<FollowUpNoteBook>(postFollowUpNoteBookDto);
                 await _unitOfWork.FollowUpNoteBooks.AddAsync(followUpNoteBook);
                 await _unitOfWork.SaveAsync();
-                ApiResponse5<FollowUpNoteBookDto> response = new(followUpNoteBookDto);
+                ApiResponse5<PostFollowUpNoteBookDto> response = new(postFollowUpNoteBookDto);
                 return Ok(response);
                 //return CreatedAtRoute("GetHomeWork", new { id = followUpNoteBook.Id }, followUpNoteBook);
+            }
+            catch (System.Exception ex)
+            {
+                ApiResponse4 response = new(message: ex.Message);
+                return StatusCode(500, response);
+            }
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var followUpNoteBook = await _unitOfWork.FollowUpNoteBooks.GetByIdAsync(id);
+                if (followUpNoteBook == null)
+                {
+                    ApiResponse3 response1 = new();
+                    return NotFound(response1);
+                }
+                _unitOfWork.FollowUpNoteBooks.Delete(followUpNoteBook);
+                await _unitOfWork.SaveAsync();
+                var getfollowUpNoteBookDto = _mapper.Map<GetFollowUpNoteBookDto>(followUpNoteBook);
+                ApiResponse6<GetFollowUpNoteBookDto> response = new(getfollowUpNoteBookDto);
+                return Ok(response);
             }
             catch (System.Exception ex)
             {

@@ -1,4 +1,5 @@
-﻿using SchoolSystem.DAL.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SchoolSystem.DAL.Data;
 using SchoolSystem.DAL.Entites;
 using SchoolSystem.DAL.Interfaces.Abstracts;
 using SchoolSystem.DAL.Interfaces.BaseRepository;
@@ -14,6 +15,11 @@ namespace SchoolSystem.DAL.Interfaces.Implementations
     {
         public StudentQeustionsRepositroy(AppDbContext context) : base(context)
         {
+        }
+
+        public async Task<IEnumerable<StudentQeustion>> GetBySubjectClassIdAsync(int subjectClassId)
+        {
+            return await _context.StudentQeustions.Where(s => s.SubjectClassId == subjectClassId).ToListAsync();
         }
     }
 }

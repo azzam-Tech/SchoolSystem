@@ -2,6 +2,7 @@
 {
     public class GetHomeWorkDto
     {
+        public int HomeWorkId { get; set; }
         public int SubjectClassId { get; set; }
 
         public int TermId { get; set; }

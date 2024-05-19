@@ -5,6 +5,9 @@ using SchoolSystem.BLL.DTOs;
 using SchoolSystem.DAL.Entites;
 using SchoolSystem.DAL.Models;
 using AutoMapper;
+using SchoolSystem.BLL.DTOs.GetDto;
+using SchoolSystem.BLL.DTOs.PostDto;
+using SchoolSystem.BLL.DTOs.EditDto;
 
 
 namespace SchoolSystem.Api.Controllers
@@ -26,8 +29,8 @@ namespace SchoolSystem.Api.Controllers
             try
             {
                 var solutions = await _unitOfWork.Solutions.GetAllAsync();
-                var solutionsDTO = _mapper.Map<IEnumerable<SolutionDto>>(solutions);
-                ApiResponse6<IEnumerable<SolutionDto>> response = new(solutionsDTO);
+                var solutionsDTO = _mapper.Map<IEnumerable<GetSolutionDto>>(solutions);
+                ApiResponse6<IEnumerable<GetSolutionDto>> response = new(solutionsDTO);
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -49,8 +52,31 @@ namespace SchoolSystem.Api.Controllers
                     ApiResponse3 reaponse = new();
                     return NotFound(reaponse);
                 }
-                var SolutionDto = _mapper.Map<SolutionDto>(Solution);
-                ApiResponse6<SolutionDto> response = new(SolutionDto);
+                var SolutionDto = _mapper.Map<GetSolutionDto>(Solution);
+                ApiResponse6<GetSolutionDto> response = new(SolutionDto);
+                return Ok(response);
+            }
+            catch (System.Exception ex)
+            {
+                ApiResponse4 response = new ApiResponse4(message: ex.Message);
+                return StatusCode(500, response);
+            }
+        }
+
+        [HttpGet("GetByHomeworkIdAsync/{id}")]
+
+        public async Task<IActionResult> GetByHomeworkIdAsync(int id)
+        {
+            try
+            {
+                var Solution = await _unitOfWork.Solutions.GetByHomeworkIdAsync(id);
+                if (Solution == null)
+                {
+                    ApiResponse3 reaponse = new();
+                    return NotFound(reaponse);
+                }
+                var SolutionDto = _mapper.Map<IEnumerable<GetSolutionDto>>(Solution);
+                ApiResponse6<IEnumerable<GetSolutionDto>> response = new(SolutionDto);
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -61,7 +87,7 @@ namespace SchoolSystem.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] SolutionDto solutionDto)
+        public async Task<IActionResult> Post([FromBody] PostSolutionDto solutionDto)
         {
             try
             {
@@ -84,7 +110,7 @@ namespace SchoolSystem.Api.Controllers
                 var solution = _mapper.Map<Solution>(solutionDto);
                 await _unitOfWork.Solutions.AddAsync(solution);
                 await _unitOfWork.SaveAsync();
-                ApiResponse5<SolutionDto> response = new(solutionDto);
+                ApiResponse5<PostSolutionDto> response = new(solutionDto);
                 return Ok(response);
                 //return CreatedAtRoute("GetHomeWork", new { id = homeWork.Id }, homeWork);
             }
@@ -96,7 +122,7 @@ namespace SchoolSystem.Api.Controllers
         }
 
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] SolutionDto solutionDto)
+        public async Task<IActionResult> Put(int id, [FromBody] EditSolutionDto solutionDto)
         {
             try
             {
@@ -119,7 +145,7 @@ namespace SchoolSystem.Api.Controllers
                 _mapper.Map(solutionDto, solution);
                 //_unitOfWork.Solutions.Update(solution);
                 await _unitOfWork.SaveAsync();
-                ApiResponse5<SolutionDto> response = new(solutionDto);
+                ApiResponse5<EditSolutionDto> response = new(solutionDto);
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -142,8 +168,8 @@ namespace SchoolSystem.Api.Controllers
                 }
                 _unitOfWork.Solutions.Delete(solution);
                 await _unitOfWork.SaveAsync();
-                var solutionDto = _mapper.Map<SolutionDto>(solution);
-                ApiResponse6<SolutionDto> response = new(solutionDto);
+                var solutionDto = _mapper.Map<GetSolutionDto>(solution);
+                ApiResponse6<GetSolutionDto> response = new(solutionDto);
                 return Ok(response);
             }
             catch (System.Exception ex)

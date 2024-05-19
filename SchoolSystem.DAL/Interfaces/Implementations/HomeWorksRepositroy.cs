@@ -1,4 +1,5 @@
-﻿using SchoolSystem.DAL.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SchoolSystem.DAL.Data;
 using SchoolSystem.DAL.Entites;
 using SchoolSystem.DAL.Interfaces.Abstracts;
 using SchoolSystem.DAL.Interfaces.BaseRepository;
@@ -14,6 +15,12 @@ namespace SchoolSystem.DAL.Interfaces.Implementations
     {
         public HomeWorksRepositroy(AppDbContext context) : base(context)
         {
+        }
+
+        public async Task<IEnumerable<HomeWork>> GetBySubjectClassId(int id)
+        {
+            return await _context.HomeWorks.Where(h => h.SubjectClassId == id).ToListAsync();
+            throw new NotImplementedException();
         }
     }
 }

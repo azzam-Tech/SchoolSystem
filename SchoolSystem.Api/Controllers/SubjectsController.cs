@@ -5,6 +5,9 @@ using SchoolSystem.DAL.UnitOfWork;
 using SchoolSystem.BLL.DTOs;
 using SchoolSystem.DAL.Entites;
 using SchoolSystem.DAL.Models;
+using SchoolSystem.BLL.DTOs.GetDto;
+using SchoolSystem.BLL.DTOs.PostDto;
+
 
 namespace SchoolSystem.Api.Controllers
 {
@@ -20,122 +23,139 @@ namespace SchoolSystem.Api.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public IActionResult GetSubjects()
+        public async Task<IActionResult> GetSubjects()
         {
             try
             {
-                var subjects = _unitOfWork.Subjects.GetAll();
-                var data = _mapper.Map<IEnumerable<SubjectDto>>(subjects);
+                var subjects = await _unitOfWork.Subjects.GetAllAsync();
+                var subjectDto = _mapper.Map<IEnumerable<GetSubjectDto>>(subjects);
 
-                ApiResponse6<IEnumerable<SubjectDto>> response = new ApiResponse6<IEnumerable<SubjectDto>>(data, null, "Subjects retrieved successfully", true, "200");
+                ApiResponse6<IEnumerable<GetSubjectDto>> response = new (subjectDto);
 
                 return Ok(response);
             }
             catch (System.Exception ex)
             {
-                ApiResponse4 response = new ApiResponse4(message: ex.Message);
-                return StatusCode(500, response);
+                ApiResponse4 reaponse = new(message: ex.Message);
+                return Ok(reaponse);
             }
         }
-        [HttpGet("{id}")]
-        public IActionResult GetSubjectById(int id)
+
+
+        [HttpGet("GetSubjectById/{id}")]
+        public async Task<IActionResult> GetSubjectById(int id)
         {
             try
             {
-                var subject = _unitOfWork.Subjects.GetById(id);
+                var subject = await _unitOfWork.Subjects.GetByIdAsync(id);
                 if (subject == null)
                 {
-                    ApiResponse3 responsex = new ApiResponse3(message: "Subject data is missing");
-                    return StatusCode(400, responsex);
+                    ApiResponse3 reaponse = new();
+                    return NotFound(reaponse);
                 }
-                var data = _mapper.Map<SubjectDto>(subject);
-                ApiResponse6<SubjectDto> response = new ApiResponse6<SubjectDto>(data, null, "Subject retrieved successfully", true, "200");
+                var Dtodata = _mapper.Map<GetSubjectDto>(subject);
+                ApiResponse6<GetSubjectDto> response = new (Dtodata);
                 return Ok(response);
             }
             catch (System.Exception ex)
             {
-                ApiResponse4 response = new ApiResponse4(message: ex.Message);
-                return StatusCode(500, response);
+                ApiResponse4 reaponse = new(message: ex.Message);
+                return Ok(reaponse);
             }
         }
         [HttpPost]
-        public IActionResult AddSubject(SubjectDto subjectDto)
+        public async Task<IActionResult> AddSubject([FromBody] PostSubjectDto subjectDto)
         {
             try
             {
                 if (!ModelState.IsValid)
                 {
-                    ApiResponse3 modelStateresponse = new ApiResponse3(message: "Subject data is missing");
-                    return StatusCode(400, modelStateresponse);
-                }
-                var subject = _mapper.Map<Subject>(subjectDto);
-                
-                var subjectExist = _unitOfWork.Subjects.Find(x => x.SubjectName == subject.SubjectName && x.LevelId == subject.LevelId);
-                if (subjectExist != null)
-                {
-                    ApiResponse3 subjectExistresponse = new ApiResponse3(message: "Subject already exists");
-                    return StatusCode(400, subjectExistresponse);
+                    ApiResponse2 response2 = new();
+                    return BadRequest(response2);
                 }
 
-                _unitOfWork.Subjects.Add(subject);
-                _unitOfWork.Complete();
-                ApiResponse6<SubjectDto> response = new ApiResponse6<SubjectDto>(subjectDto, null, "Subject added successfully", true, "200");
+                if (subjectDto == null)
+                {
+                    ApiResponse2 response1 = new();
+                    return BadRequest(response1);
+                }     
+                var subjectExist = await _unitOfWork.Subjects.FindAsync(x => x.SubjectName == subjectDto.SubjectName && x.LevelId == subjectDto.LevelId);
+                if (subjectExist != null)
+                {
+                    ApiResponse2 response1 = new(message: "Subject already exists");
+                    return BadRequest(response1);
+                }
+
+                var subject = _mapper.Map<Subject>(subjectDto);
+                await _unitOfWork.Subjects.AddAsync(subject);
+                await _unitOfWork.SaveAsync();
+                ApiResponse6<PostSubjectDto> response = new (subjectDto);
                 return Ok(response);
             }
             catch (System.Exception ex)
             {
-                ApiResponse4 response = new ApiResponse4(message: ex.Message);
-                return StatusCode(500, response);
+                ApiResponse4 reaponse = new(message: ex.Message);
+                return Ok(reaponse);
             }
         }
         [HttpPut("{id}")]
-        public IActionResult UpdateSubject(int id, SubjectDto subjectDto)
+        public async Task<IActionResult> UpdateSubject(int id, PostSubjectDto subjectDto)
         {
             try
             {
                 if (!ModelState.IsValid)
                 {
-                    ApiResponse3 modelStateresponse = new ApiResponse3(message: "Invalid model state");
-                    return StatusCode(400, modelStateresponse);
+                    ApiResponse2 response2 = new();
+                    return BadRequest(response2);
                 }
 
-                var subject = _unitOfWork.Subjects.GetById(id);
+                if (subjectDto == null)
+                {
+                    ApiResponse2 response1 = new();
+                    return BadRequest(response1);
+                }
+                var subject = _unitOfWork.Subjects.GetByIdAsync(id);
                 if (subject == null)
                 {
-                    ApiResponse3 responsex = new ApiResponse3(message: "Subject data is missing");
-                    return StatusCode(400, responsex);
+                    ApiResponse3 response1 = new();
+                    return NotFound(response1);
                 }
-                _mapper.Map(subjectDto, subject);
-                _unitOfWork.Complete();
-                ApiResponse6<SubjectDto> response = new ApiResponse6<SubjectDto>(subjectDto, null, "Subject updated successfully", true, "200");
+
+
+                 _mapper.Map(subjectDto, subject);
+                
+
+                await _unitOfWork.SaveAsync();
+                ApiResponse5<PostSubjectDto> response = new (subjectDto);
                 return Ok(response);
             }
             catch (System.Exception ex)
             {
-                ApiResponse4 response = new ApiResponse4(message: ex.Message);
-                return StatusCode(500, response);
+                ApiResponse4 reaponse = new(message: ex.Message);
+                return Ok(reaponse);
             }
         }
         [HttpDelete("{id}")]
-        public IActionResult DeleteSubject(int id)
+        public async Task<IActionResult> DeleteSubject(int id)
         {
             try
             {
-                var subject = _unitOfWork.Subjects.GetById(id);
+                var subject = await _unitOfWork.Subjects.GetByIdAsync(id);
                 if (subject == null)
                 {
-                    ApiResponse3 responsex = new ApiResponse3(message: "Subject data is missing");
-                    return StatusCode(400, responsex);
+                    ApiResponse3 response3 = new();
+                    return NotFound(response3);
                 }
+                var subjectDto = _mapper.Map<GetSubjectDto>(subject);
                 _unitOfWork.Subjects.Delete(subject);
-                _unitOfWork.Complete();
-                ApiResponse6<SubjectDto> response = new ApiResponse6<SubjectDto>(null, null, "Subject deleted successfully", true, "200");
+                await _unitOfWork.SaveAsync();
+                ApiResponse6<GetSubjectDto> response = new (subjectDto);
                 return Ok(response);
             }
             catch (System.Exception ex)
             {
-                ApiResponse4 response = new ApiResponse4(message: ex.Message);
-                return StatusCode(500, response);
+                ApiResponse4 reaponse = new(message: ex.Message);
+                return Ok(reaponse);
             }
         }
 

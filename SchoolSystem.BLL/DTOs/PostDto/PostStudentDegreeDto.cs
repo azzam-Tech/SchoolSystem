@@ -2,8 +2,6 @@
 {
     public class PostStudentDegreeDto
     {
-        public int StudentDegreeId { get; set; }
-
         public int SubjectClassId { get; set; }
 
         public int StudentId { get; set; }

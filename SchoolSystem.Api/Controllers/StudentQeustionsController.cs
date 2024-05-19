@@ -5,6 +5,8 @@ using SchoolSystem.BLL.DTOs;
 using SchoolSystem.DAL.Entites;
 using SchoolSystem.DAL.Models;
 using AutoMapper;
+using SchoolSystem.BLL.DTOs.GetDto;
+using SchoolSystem.BLL.DTOs.PostDto;
 
 namespace SchoolSystem.Api.Controllers
 {
@@ -25,8 +27,8 @@ namespace SchoolSystem.Api.Controllers
             try
             {
                 var studentQeustions = await _unitOfWork.StudentQeustions.GetAllAsync();
-                var studentQeustionsDTO = _mapper.Map<IEnumerable<StudentQeustionDto>>(studentQeustions);
-                ApiResponse6<IEnumerable<StudentQeustionDto>> response = new(studentQeustionsDTO);
+                var studentQeustionsDTO = _mapper.Map<IEnumerable<GetStudentQeustionDto>>(studentQeustions);
+                ApiResponse6<IEnumerable<GetStudentQeustionDto>> response = new(studentQeustionsDTO);
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -49,8 +51,31 @@ namespace SchoolSystem.Api.Controllers
                     ApiResponse3 reaponse = new();
                     return NotFound(reaponse);
                 }
-                var studentQeustionDto = _mapper.Map<StudentQeustionDto>(rtudentQeustion);
-                ApiResponse6<StudentQeustionDto> response = new(studentQeustionDto);
+                var studentQeustionDto = _mapper.Map<GetStudentQeustionDto>(rtudentQeustion);
+                ApiResponse6<GetStudentQeustionDto> response = new(studentQeustionDto);
+                return Ok(response);
+            }
+            catch (System.Exception ex)
+            {
+                ApiResponse4 response = new ApiResponse4(message: ex.Message);
+                return StatusCode(500, response);
+            }
+        }
+
+        [HttpGet("GetBySubjectClassIdAsync/{id}")]
+
+        public async Task<IActionResult> GetBySubjectClassIdAsync(int id)
+        {
+            try
+            {
+                var studentQeustion = await _unitOfWork.StudentQeustions.GetBySubjectClassIdAsync(id);
+                if (studentQeustion == null)
+                {
+                    ApiResponse3 reaponse = new();
+                    return NotFound(reaponse);
+                }
+                var studentQeustionDto = _mapper.Map<IEnumerable<GetStudentQeustionDto>>(studentQeustion);
+                ApiResponse6<IEnumerable<GetStudentQeustionDto>> response = new(studentQeustionDto);
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -62,7 +87,7 @@ namespace SchoolSystem.Api.Controllers
 
         // creat a method to create StudentQeustion using StudentQeustionDto , automapper , Try Catch block , Responses classes check if the object is null and if the model is valid and other nessesary checks
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] StudentQeustionDto studentQeustionDto)
+        public async Task<IActionResult> Post([FromBody] PostStudentQeustionDto studentQeustionDto)
         {
             try
             {
@@ -85,7 +110,7 @@ namespace SchoolSystem.Api.Controllers
                 var studentQeustion = _mapper.Map<StudentQeustion>(studentQeustionDto);
                 await _unitOfWork.StudentQeustions.AddAsync(studentQeustion);
                 await _unitOfWork.SaveAsync();
-                ApiResponse5<StudentQeustionDto> response = new(studentQeustionDto);
+                ApiResponse5<PostStudentQeustionDto> response = new(studentQeustionDto);
                 return Ok(response);
                 //return CreatedAtRoute("GetStudentQeustion", new { id = StudentQeustion.Id }, StudentQeustion);
             }
@@ -98,7 +123,7 @@ namespace SchoolSystem.Api.Controllers
 
         // creat a method to update StudentQeustion using StudentQeustionDto , automapper , Try Catch block , Responses classes check if the object is null and if the model is valid and other nessesary checks
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] StudentQeustionDto studentQeustionDto)
+        public async Task<IActionResult> Put(int id, [FromBody] PostStudentQeustionDto studentQeustionDto)
         {
             try
             {
@@ -119,10 +144,8 @@ namespace SchoolSystem.Api.Controllers
                     return NotFound(response3);
                 }
                 _mapper.Map(studentQeustionDto, studentQeustion);
-                //var StudentQeustionupdated = _mapper.Map<StudentQeustion>(studentQeustionDto);
-                //_unitOfWork.StudentQeustions.Update(StudentQeustionupdated);
                 await _unitOfWork.SaveAsync();
-                ApiResponse5<StudentQeustionDto> response = new(studentQeustionDto);
+                ApiResponse5<PostStudentQeustionDto> response = new(studentQeustionDto);
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -146,8 +169,8 @@ namespace SchoolSystem.Api.Controllers
                 }
                 _unitOfWork.StudentQeustions.Delete(studentQeustion);
                 await _unitOfWork.SaveAsync();
-                var studentQeustionDto = _mapper.Map<StudentQeustionDto>(studentQeustion);
-                ApiResponse6<StudentQeustionDto> response = new(studentQeustionDto);
+                var studentQeustionDto = _mapper.Map<GetStudentQeustionDto>(studentQeustion);
+                ApiResponse6<GetStudentQeustionDto> response = new(studentQeustionDto);
                 return Ok(response);
             }
             catch (System.Exception ex)

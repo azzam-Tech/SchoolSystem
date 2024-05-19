@@ -19,10 +19,8 @@ namespace SchoolSystem.BLL.DTOs.GetDto
 
         public string? SolutionFile { get; set; }
 
-        [Column(TypeName = "datetime")]
         public DateTime? SolutionDate { get; set; }
 
-        [Column(TypeName = "decimal(10, 2)")]
         public decimal? SolutionDegree { get; set; }
 
         public string? Solutionnote { get; set; }

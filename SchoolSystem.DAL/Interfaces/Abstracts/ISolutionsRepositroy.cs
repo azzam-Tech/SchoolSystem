@@ -10,5 +10,6 @@ namespace SchoolSystem.DAL.Interfaces.Abstracts
 {
     public interface ISolutionsRepositroy : IBaseRepository<Solution>
     {
+        Task <IEnumerable<Solution>> GetByHomeworkIdAsync(int id);
     }
 }
