@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SchoolSystem.BLL.PostDto
+namespace SchoolSystem.BLL.DTOs.PostDto
 {
     public class PostSolutionDto
     {
-
+        public int SolutionId { get; set; }
         public int HomeWorkId { get; set; }
 
         public int StudentId { get; set; }
@@ -26,4 +21,5 @@ namespace SchoolSystem.BLL.PostDto
 
         public string? Solutionnote { get; set; }
     }
+
 }

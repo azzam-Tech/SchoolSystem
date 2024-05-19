@@ -28,6 +28,8 @@ namespace SchoolSystem.DAL.UnitOfWork
         public IReinforcementlessonsRepository Reinforcementlessons { get; private set;}
         public ISolutionsRepositroy Solutions { get; private set;}
         public IStudentDegreesRepositroy StudentDegrees { get; private set;}
+        public IClassTimeTablesRepository ClassTimeTables { get; private set;}
+        public IFollowUpNoteBookRepository FollowUpNoteBooks { get; private set;}
 
 
 
@@ -48,6 +50,8 @@ namespace SchoolSystem.DAL.UnitOfWork
             Reinforcementlessons = new ReinforcementlessonsRepository(_context);
             Solutions = new SolutionsRepositroy(_context);
             StudentDegrees = new StudentDegreesRepositroy(_context);
+            ClassTimeTables = new ClassTimeTablesRepository(_context);
+            FollowUpNoteBooks = new FollowUpNoteBookRepository(_context);
 
         }
 

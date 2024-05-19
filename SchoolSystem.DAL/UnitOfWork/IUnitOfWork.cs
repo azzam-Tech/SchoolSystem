@@ -24,6 +24,9 @@ namespace SchoolSystem.DAL.UnitOfWork
         IReinforcementlessonsRepository Reinforcementlessons { get; }
         ISolutionsRepositroy Solutions { get; }
         IStudentDegreesRepositroy StudentDegrees { get; }
+        IClassTimeTablesRepository ClassTimeTables { get; }
+        IFollowUpNoteBookRepository FollowUpNoteBooks { get; }
+
 
 
 

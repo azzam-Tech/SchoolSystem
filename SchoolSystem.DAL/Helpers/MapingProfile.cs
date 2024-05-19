@@ -33,6 +33,11 @@ namespace SchoolSystem.DAL.Helpers
             CreateMap<SolutionDto, Solution>().ForMember(src => src.SolutionId , opt => opt.Ignore()).ReverseMap();
             CreateMap<StudentDegree, StudentDegreeDto>().ReverseMap();
             CreateMap<StudentDegreeDto, StudentDegree>().ForMember(src => src.StudentDegreeId, opt => opt.Ignore()).ReverseMap();
+            CreateMap<ClassTimeTable, ClassTimeTableDto>().ReverseMap();
+            CreateMap<ClassTimeTableDto, ClassTimeTable>().ForMember(src => src.ClassTimeTableId, opt => opt.Ignore()).ReverseMap();
+            CreateMap<FollowUpNoteBook, FollowUpNoteBookDto>().ReverseMap();
+            CreateMap<FollowUpNoteBookDto, FollowUpNoteBook>().ForMember(src => src.FollowUpNoteBookId, opt => opt.Ignore()).ReverseMap();
+
 
         }
     }
