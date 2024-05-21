@@ -70,5 +70,14 @@ namespace SchoolSystem.DAL.Models
         public T? Data { get; set; } = data;
     }
 
+    public class ApiResponse7(string data = "done", string? errors = null, string message = "retrieved successfully", bool sucesse = true, string codestate = "200")
+    {
+        public bool Success { get; set; } = sucesse;
+        public string Codestate { get; set; } = codestate;
+        public string Message { get; set; } = message;
+        public string? Errors { get; set; } = errors;
+        public string? Data { get; set; } = data;
+    }
+
 
 }

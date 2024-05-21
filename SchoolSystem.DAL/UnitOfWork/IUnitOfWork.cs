@@ -26,6 +26,13 @@ namespace SchoolSystem.DAL.UnitOfWork
         IStudentDegreesRepositroy StudentDegrees { get; }
         IClassTimeTablesRepository ClassTimeTables { get; }
         IFollowUpNoteBookRepository FollowUpNoteBooks { get; }
+        ITeacherTableRepository TeacherTables { get; }
+        ITeacherEvaluationsRepository TeacherEvaluations { get; } //x
+        ITeacherAttendancesRepository TeacherAttendances { get; } // x
+        ITeacherAnswersRepository TeacherAnswers { get; }         
+        IStudentSuggestionsRepository StudentSuggestions { get; } 
+        IStudentAttendancesRepository StudentAttendances { get; } // x
+
 
 
 

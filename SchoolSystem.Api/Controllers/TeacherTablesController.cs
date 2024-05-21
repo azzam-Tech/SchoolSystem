@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SchoolSystem.DAL.UnitOfWork;
-using SchoolSystem.BLL.DTOs;
 using SchoolSystem.DAL.Entites;
 using SchoolSystem.DAL.Models;
 using AutoMapper;
@@ -12,24 +12,26 @@ namespace SchoolSystem.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ClassTimeTablesController : ControllerBase
+    public class TeacherTablesController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public ClassTimeTablesController(IUnitOfWork unitOfWork, IMapper mapper)
+        public TeacherTablesController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+
+
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             try
             {
-                var classTimeTables = await _unitOfWork.ClassTimeTables.GetAllAsync();
-                var classTimeTablesDTO = _mapper.Map<IEnumerable<GetClassTimeTableDto>>(classTimeTables);
-                ApiResponse6<IEnumerable<GetClassTimeTableDto>> response = new(classTimeTablesDTO);
+                var teacherTablesFDB = await _unitOfWork.TeacherTables.GetAllAsync();
+                var teacherTablesDTO = _mapper.Map<IEnumerable<GetTeacherTableDto>>(teacherTablesFDB);
+                ApiResponse6<IEnumerable<GetTeacherTableDto>> response = new(teacherTablesDTO);
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -44,14 +46,14 @@ namespace SchoolSystem.Api.Controllers
         {
             try
             {
-                var classTimeTable = await _unitOfWork.ClassTimeTables.GetByIdAsync(id);
-                if (classTimeTable == null)
+                var teacherTablesFDB = await _unitOfWork.TeacherTables.GetByIdAsync(id);
+                if (teacherTablesFDB == null)
                 {
                     ApiResponse3 reaponse = new();
                     return NotFound(reaponse);
                 }
-                var classTimeTableDto = _mapper.Map<GetClassTimeTableDto>(classTimeTable);
-                ApiResponse6<GetClassTimeTableDto> response = new(classTimeTableDto);
+                var teacherTableDto = _mapper.Map<GetTeacherTableDto>(teacherTablesFDB);
+                ApiResponse6<GetTeacherTableDto> response = new(teacherTableDto);
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -61,19 +63,19 @@ namespace SchoolSystem.Api.Controllers
             }
         }
 
-        [HttpGet("GetByClassId/{id}")]
-        public async Task<IActionResult> GetByClassId(int id)
+        [HttpGet("GetByTeacherId/{id}")]
+        public async Task<IActionResult> GetByTeacherId(int id)
         {
             try
             {
-                var classTimeTable = await _unitOfWork.ClassTimeTables.GetClassTimeTablesByClassId(id);
-                if (classTimeTable == null)
+                var teacherTableFDB = await _unitOfWork.TeacherTables.GetByTeacherIdAsync(id);
+                if (teacherTableFDB == null)
                 {
                     ApiResponse3 reaponse = new();
                     return NotFound(reaponse);
                 }
-                var classTimeTableDto = _mapper.Map<IEnumerable<GetClassTimeTableDto>>(classTimeTable);
-                ApiResponse6<IEnumerable<GetClassTimeTableDto>> response = new(classTimeTableDto);
+                var teacherTableDto = _mapper.Map<IEnumerable< GetTeacherTableDto>>(teacherTableFDB);
+                ApiResponse6<IEnumerable<GetTeacherTableDto>> response = new(teacherTableDto);
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -84,7 +86,7 @@ namespace SchoolSystem.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] PostClassTimeTableDto classTimeTableDto)
+        public async Task<IActionResult> Post([FromBody] PostTeacherTableDto teacherTableDto)
         {
             try
             {
@@ -93,23 +95,23 @@ namespace SchoolSystem.Api.Controllers
                     ApiResponse2 response2 = new();
                     return BadRequest(response2);
                 }
-                if (classTimeTableDto == null)
+                if (teacherTableDto == null)
                 {
                     ApiResponse2 response1 = new();
                     return BadRequest(response1);
                 }
 
-                var Class = await _unitOfWork.Classes.GetByIdAsync(classTimeTableDto.ClassId);
-                if (Class == null)
+                var user = await _unitOfWork.Users.GetByIdAsync(teacherTableDto.UserId);
+                if (user == null)
                 {
                     ApiResponse2 response3 = new();
                     return BadRequest(response3);
                 }
 
-                var classTimeTable = _mapper.Map<ClassTimeTable>(classTimeTableDto);
-                await _unitOfWork.ClassTimeTables.AddAsync(classTimeTable);
+                var teacherTable = _mapper.Map<TeacherTable>(teacherTableDto);
+                await _unitOfWork.TeacherTables.AddAsync(teacherTable);
                 await _unitOfWork.SaveAsync();
-                ApiResponse6<PostClassTimeTableDto> response = new(_mapper.Map<PostClassTimeTableDto>(classTimeTableDto));
+                ApiResponse6<PostTeacherTableDto> response = new(_mapper.Map<PostTeacherTableDto>(teacherTableDto));
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -120,7 +122,7 @@ namespace SchoolSystem.Api.Controllers
         }
 
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] PostClassTimeTableDto classTimeTableDto)
+        public async Task<IActionResult> Put(int id, [FromBody] PostTeacherTableDto teacherTableDto)
         {
             try
             {
@@ -129,21 +131,21 @@ namespace SchoolSystem.Api.Controllers
                     ApiResponse2 response2 = new();
                     return BadRequest(response2);
                 }
-                if (classTimeTableDto == null)
+                if (teacherTableDto == null)
                 {
                     ApiResponse2 response1 = new();
                     return BadRequest(response1);
                 }
-                var classTimeTable = await _unitOfWork.ClassTimeTables.GetByIdAsync(id);
-                if (classTimeTable == null)
+                var teacherTableFDB = await _unitOfWork.TeacherTables.GetByIdAsync(id);
+                if (teacherTableFDB == null)
                 {
                     ApiResponse3 response3 = new();
                     return NotFound(response3);
                 }
-                _mapper.Map(classTimeTableDto, classTimeTable);
+                _mapper.Map(teacherTableDto, teacherTableFDB);
                 //_unitOfWork.Solutions.Update(solution);
                 await _unitOfWork.SaveAsync();
-                ApiResponse5<PostClassTimeTableDto> response = new(classTimeTableDto);
+                ApiResponse5<PostTeacherTableDto> response = new(teacherTableDto);
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -158,16 +160,16 @@ namespace SchoolSystem.Api.Controllers
         {
             try
             {
-                var classTimeTable = await _unitOfWork.ClassTimeTables.GetByIdAsync(id);
-                if (classTimeTable == null)
+                var teacherTableFDB = await _unitOfWork.TeacherTables.GetByIdAsync(id);
+                if (teacherTableFDB == null)
                 {
                     ApiResponse3 response3 = new();
                     return NotFound(response3);
                 }
-                _unitOfWork.ClassTimeTables.Delete(classTimeTable);
+                _unitOfWork.TeacherTables.Delete(teacherTableFDB);
                 await _unitOfWork.SaveAsync();
-                var classTimeTableDto = _mapper.Map<GetClassTimeTableDto>(classTimeTable);
-                ApiResponse6<GetClassTimeTableDto> response = new(classTimeTableDto);
+                var TeacherTableDto = _mapper.Map<GetTeacherTableDto>(teacherTableFDB);
+                ApiResponse6<GetTeacherTableDto> response = new(TeacherTableDto);
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -178,3 +180,4 @@ namespace SchoolSystem.Api.Controllers
         }
     }
 }
+

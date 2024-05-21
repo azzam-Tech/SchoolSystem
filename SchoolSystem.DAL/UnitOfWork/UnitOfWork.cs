@@ -30,6 +30,12 @@ namespace SchoolSystem.DAL.UnitOfWork
         public IStudentDegreesRepositroy StudentDegrees { get; private set;}
         public IClassTimeTablesRepository ClassTimeTables { get; private set;}
         public IFollowUpNoteBookRepository FollowUpNoteBooks { get; private set;}
+        public ITeacherTableRepository TeacherTables { get; private set;}
+        public ITeacherEvaluationsRepository TeacherEvaluations { get; private set;}
+        public ITeacherAttendancesRepository TeacherAttendances { get; private set;}
+        public ITeacherAnswersRepository TeacherAnswers { get; private set;}
+        public IStudentSuggestionsRepository StudentSuggestions { get; private set;}
+        public IStudentAttendancesRepository StudentAttendances { get; private set;}
 
 
 
@@ -52,6 +58,13 @@ namespace SchoolSystem.DAL.UnitOfWork
             StudentDegrees = new StudentDegreesRepositroy(_context);
             ClassTimeTables = new ClassTimeTablesRepository(_context);
             FollowUpNoteBooks = new FollowUpNoteBookRepository(_context);
+            TeacherTables = new TeacherTableRepository(_context);
+            TeacherEvaluations = new TeacherEvaluationsRepository(_context);
+            TeacherAttendances = new TeacherAttendancesRepository(_context);
+            TeacherAnswers = new TeacherAnswersRepository(_context); 
+            StudentSuggestions = new StudentSuggestionsRepository(_context);
+            StudentAttendances = new StudentAttendancesRepository(_context);
+
 
         }
 

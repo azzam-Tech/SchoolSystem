@@ -2,11 +2,13 @@
 {
     public class GetStudentQeustionDto
     {
-        public int SubjectClassId { get; set; }
+        public int StudentQeustionId { get; set; }
 
-        public int StudentId { get; set; }
+        //public int SubjectClassId { get; set; }
 
-        public int TermId { get; set; }
+        //public int StudentId { get; set; }
+
+        //public int TermId { get; set; }
 
         public string? StudentQeustionText { get; set; }
 

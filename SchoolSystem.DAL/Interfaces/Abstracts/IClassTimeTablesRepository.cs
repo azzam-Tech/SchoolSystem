@@ -10,6 +10,7 @@ namespace SchoolSystem.DAL.Interfaces.Abstracts
 {
     public interface IClassTimeTablesRepository : IBaseRepository<ClassTimeTable>
     {
+        
         Task<IEnumerable<ClassTimeTable>> GetClassTimeTablesByClassId(int classId);
     }
 }

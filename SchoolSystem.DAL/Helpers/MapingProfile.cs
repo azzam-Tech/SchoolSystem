@@ -66,6 +66,39 @@ namespace SchoolSystem.DAL.Helpers
             CreateMap<PostFollowUpNoteBookDto, FollowUpNoteBook>().ReverseMap();
 
 
+
+            //TeacherTable
+            CreateMap<TeacherTable, GetTeacherTableDto>().ReverseMap();
+            CreateMap<PostTeacherTableDto, TeacherTable>().ReverseMap();
+
+
+            //TeacherEvaluation
+            CreateMap<TeacherEvaluation, GetTeacherEvaluationDto>().ReverseMap();
+            CreateMap<PostTeacherEvaluationDto, TeacherEvaluation>().ReverseMap();
+            CreateMap<EditTeacherEvaluationDto, TeacherEvaluation>().ReverseMap();
+
+
+            //TeacherAttendance
+            CreateMap<TeacherAttendance, GetTeacherAttendanceDto>().ReverseMap();
+            CreateMap<PostTeacherAttendanceDto, TeacherAttendance>().ReverseMap();
+            CreateMap<EditTeacherAttendanceDto, TeacherAttendance>().ReverseMap();
+
+            //TeacherAnswer
+            CreateMap<TeacherAnswer, GetTeacherAnswerDto>().ReverseMap();
+            CreateMap<PostTeacherAnswerDto, TeacherAnswer>().ReverseMap();
+            CreateMap<EditTeacherAnswerDto, TeacherAnswer>().ReverseMap();
+
+
+            //StudentSuggestion
+            CreateMap<StudentSuggestion, GetStudentSuggestionDto>().ReverseMap();
+            CreateMap<PostStudentSuggestionDto, StudentSuggestion>().ReverseMap();
+            CreateMap<EditStudentSuggestionDto, StudentSuggestion>().ReverseMap();
+
+
+
+
+
+
             //Level
             //CreateMap<Level, LevelDto>().ReverseMap();
             //CreateMap<LevelDto, Level>().ReverseMap();
