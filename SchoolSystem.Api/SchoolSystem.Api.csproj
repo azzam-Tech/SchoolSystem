@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -7,14 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.5.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SchoolSystem.BLL\SchoolSystem.BLL.csproj" />
     <ProjectReference Include="..\SchoolSystem.DAC\SchoolSystem.DAC.csproj" />
     <ProjectReference Include="..\SchoolSystem.DAL\SchoolSystem.DAL.csproj" />
   </ItemGroup>
