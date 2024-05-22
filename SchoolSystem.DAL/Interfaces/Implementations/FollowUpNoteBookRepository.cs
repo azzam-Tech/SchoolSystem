@@ -18,7 +18,13 @@ namespace SchoolSystem.DAL.Interfaces.Implementations
            
         }
 
-        public async Task<IEnumerable<FollowUpNoteBook>> GetByDateClassAsync(int id , DateTime datetime)
+        public async Task<IEnumerable<FollowUpNoteBook>> GetByClassSubjectId(int id)
+        {
+            return await _context.FollowUpNoteBooks.Where(x => x.SubjectClassId == id ).ToListAsync();
+
+        }
+
+        public async Task<IEnumerable<FollowUpNoteBook>> GetByDateClassAsync(int id , DateOnly datetime)
         {
              return await _context.FollowUpNoteBooks.Where(x => x.ClassId == id && x.FollowUpNoteBookDate == datetime).ToListAsync();
             

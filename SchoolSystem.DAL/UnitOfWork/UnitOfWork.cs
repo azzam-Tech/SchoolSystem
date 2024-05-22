@@ -15,8 +15,9 @@ namespace SchoolSystem.DAL.UnitOfWork
     {
         protected AppDbContext _context;
 
-        public IBaseRepository<User> Users { get; private set; }
+        //public IBaseRepository<User> Users { get; private set; }
 
+        public IUserRepository Users { get; private set; }
         public IRolesRepository Roles { get; private set;}
         public IStudenstRepository Students { get; private set;}
         public ILevelsRepository Levels { get; private set;}
@@ -44,7 +45,8 @@ namespace SchoolSystem.DAL.UnitOfWork
         public UnitOfWork(AppDbContext context)
         {
             _context = context;
-            Users = new BaseRepository<User>(_context);
+            //Users = new BaseRepository<User>(_context);
+            Users = new UserRepository(_context);   
             Roles = new RolesRepository(_context);
             Students = new StudentsRepository (_context);
             Levels = new LevelsRepository(_context);

@@ -10,5 +10,6 @@ namespace SchoolSystem.DAL.Interfaces.Abstracts
 {
     public interface ILevelsRepository : IBaseRepository<Level>
     {
+        Task<IEnumerable<Level>> GetByDepartmentId(int id);
     }
 }

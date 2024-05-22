@@ -1,8 +1,7 @@
-﻿namespace SchoolSystem.BLL.DTOs.GetDto
+﻿namespace SchoolSystem.BLL.DTOs.EditDto
 {
-    public class GetHomeWorkDto
+    public class EdittHomeWorkDto
     {
-        public int HomeWorkId { get; set; }
 
         public decimal HomeWorkDegree { get; set; }
 
@@ -16,8 +15,5 @@
 
         public string? HomeWorkDeadline { get; set; }
 
-        public DateTime? HomeWorkDate { get; set; }
     }
-
-
 }

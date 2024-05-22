@@ -201,7 +201,7 @@ public partial class AppDbContext : DbContext
         {
             entity.HasKey(e => e.FollowUpNoteBookId).HasName("PK__FollowUp__6482850911BFD65D");
 
-            entity.Property(e => e.FollowUpNoteBookDate).HasColumnType("datetime");
+            entity.Property(e => e.FollowUpNoteBookDate).HasColumnType("date");
 
             entity.HasOne(d => d.Class).WithMany(p => p.FollowUpNoteBooks)
                 .HasForeignKey(d => d.ClassId)

@@ -1,6 +1,6 @@
-﻿namespace SchoolSystem.BLL.DTOs.PostDto
+﻿namespace SchoolSystem.BLL.DTOs.EditDto
 {
-    public class PostClassTimeTableDto
+    public class EditClassTimeTableDto
     {
         public int ClassId { get; set; }
 
@@ -22,5 +22,4 @@
 
         public string? PeriodEight { get; set; }
     }
-
 }

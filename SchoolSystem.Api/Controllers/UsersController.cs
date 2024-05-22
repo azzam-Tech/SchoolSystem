@@ -6,6 +6,9 @@ using SchoolSystem.DAL.Entites;
 using SchoolSystem.DAL.Models;
 using AutoMapper;
 using SchoolSystem.BLL.DTOs.Students;
+using SchoolSystem.BLL.DTOs.PostDto;
+using SchoolSystem.BLL.DTOs.GetDto;
+using SchoolSystem.BLL.DTOs.EditDto;
 
 namespace SchoolSystem.Api.Controllers
 {
@@ -24,294 +27,222 @@ namespace SchoolSystem.Api.Controllers
             _mapper = mapper;
         }
 
-        //create a new User in the database using the UserlDto , try catch block  and check the model state of the UserlDto whit usng the Response class
-        [HttpPost]
-        public IActionResult Post([FromBody] UserDto userDto)
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            try
+            {
+                var usersFDB = await _unitOfWork.Users.GetAllAsync();
+                var usersDTO = _mapper.Map<IEnumerable<GetUserDto>>(usersFDB);
+                ApiResponse6<IEnumerable<GetUserDto>> response = new(usersDTO);
+                return Ok(response);
+            }
+            catch (System.Exception ex)
+            {
+                ApiResponse4 reaponse = new(message: ex.Message);
+                return Ok(reaponse);
+            }
+        }
+
+
+        [HttpPost("CreateUser")]
+        public async Task<IActionResult> CreateUser([FromBody] PostUserDto postUserDto )
         {
             try
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest(new ApiResponse<object>(null)
-                    {
-                        Codestate = "400", // Use appropriate HTTP status code for bad request
-                        message = "Validation errors occurred",
-                        errors = string.Join(", ", ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage)))
-                    }) ;
+                    ApiResponse2 response2 = new();
+                    return BadRequest(response2);
                 }
-                if (userDto == null)
+                if (postUserDto == null)
                 {
-                    return BadRequest(new ApiResponse<object>(null)
-                    {
-                        Codestate = "400", // Use appropriate HTTP status code for bad request
-                        message = "User data is missing"
-                    });
+                    ApiResponse2 response1 = new();
+                    return BadRequest(response1);
                 }
 
-                //var user = _mapper.Map<User>(userDto);
+                var userTDB = _mapper.Map<User>(postUserDto);
+                userTDB.Userpassword = "123456789";
+                await _unitOfWork.Users.AddAsync(userTDB);
+                await _unitOfWork.SaveAsync();
+                ApiResponse5<PostUserDto> response = new(postUserDto);
+                return Ok(response);
 
-                var user = new User
-                {
-                    RoleId = userDto.RoleId,
-                    UserName = userDto.UserName,
-                    Userpassword = userDto.Userpassword,
-                    Usernumber = userDto.Usernumber,
-                    UserImage = userDto.UserImage,
-                    IsSupervisor = userDto.IsSupervisor
-                };
 
-                _unitOfWork.Users.Add(user);
-                _unitOfWork.Complete();
-                return Ok(new ApiResponse<UserDto>(userDto)
-                {
-                    Codestate = "201", // Use appropriate HTTP status code for creation
-                    message = "User created successfully",
-                    Data = userDto // Assuming UserDto reflects the created user's data
-                });
             }
             catch (System.Exception ex)
             {
-                return StatusCode(500, new ApiResponse<object>(null)
-                {
-                    Codestate = "500",
-                    message = "Internal server error occurred",
-                    errors = ex.Message // Consider providing more specific error details if possible
-                });
+                ApiResponse4 response = new(message: ex.Message);
+                return StatusCode(500, response);
             }
         }
 
-        [HttpPost("addRange")]
-        public IActionResult Post([FromBody] IEnumerable<UserDto> usersDto)
+
+        [HttpPost("CreateRangeUser")]
+        public async Task<IActionResult> CreateRangeUser([FromBody] IEnumerable<PostUserDto> postUserDto)
         {
             try
             {
-                //IEnumerable<Student> studentsfDB = _unitOfWork.Students.Add();
-
-                List<User> users = new List<User>();
-                //IEnumerable<StudentDto> studentDtos = [];
-
-                foreach (UserDto userDto in usersDto)
+                if (!ModelState.IsValid)
                 {
-                    var user = new User
-                    {
-                        RoleId = userDto.RoleId,
-                        UserName = userDto.UserName,
-                        Userpassword = userDto.Userpassword,
-                        Usernumber = userDto.Usernumber,
-                        UserImage = userDto.UserImage,
-                        IsSupervisor = userDto.IsSupervisor
-                    };
-                    users.Add(user);
-                    
-                    
+                    ApiResponse2 response2 = new();
+                    return BadRequest(response2);
                 }
-                _unitOfWork.Users.AddRange(users);
-                _unitOfWork.Complete();
+                if (postUserDto == null)
+                {
+                    ApiResponse2 response1 = new();
+                    return BadRequest(response1);
+                }
 
-                Response<IEnumerable<User>> response = new(users);
-
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                string error = ex.Message;
-                string message = ex.Message;
-                Response<IEnumerable<User>> response = new(null, message, error);
-
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpGet]
-        public IActionResult Get()
-        {
-            try
-            {
-                var users = _unitOfWork.Users.GetAll();
-                // var userDtos = _mapper.Map<IEnumerable<UserDto>>(users);
-
-                var userDtos = new List<UserDto>();
+                var users = _mapper.Map<IEnumerable<User>>(postUserDto);  
                 foreach (var user in users)
                 {
-                    var userDto = new UserDto
-                    {
-                        RoleId = user.RoleId,
-                        UserName = user.UserName,
-                        Userpassword = user.Userpassword,
-                        Usernumber = user.Usernumber,
-                        UserImage = user.UserImage,
-                        IsSupervisor = user.IsSupervisor
-                    };
-                    userDtos.Add(userDto);
+                    user.Userpassword = "123456789";
                 }
-
-                Response<IEnumerable<UserDto>> response = new(userDtos);
+                await _unitOfWork.Users.AddRangeAsync(users);
+                await _unitOfWork.SaveAsync();
+                ApiResponse5<IEnumerable<PostUserDto>> response = new(postUserDto);
                 return Ok(response);
+
+
             }
             catch (System.Exception ex)
             {
-                string? statusCode = ex.ToString();
-                string? erorr = ex.Message;
-                Response<User> response = new(null, statusCode, erorr, false);
-                return Ok(response);
+                ApiResponse4 response = new(message: ex.Message);
+                return StatusCode(500, response);
             }
         }
 
 
-        [HttpGet("{id}")]
-        public IActionResult GetById(int id)
-        {
-            try
-            {
-                var user = _unitOfWork.Users.GetById(id);
-                //var userDto = _mapper.Map<UserDto>(user);
 
-                var userDto = new UserDto
-                {
-                    RoleId = user.RoleId,
-                    UserName = user.UserName,
-                    Userpassword = user.Userpassword,
-                    Usernumber = user.Usernumber,
-                    UserImage = user.UserImage,
-                    IsSupervisor = user.IsSupervisor
-                };
+       
 
-                Response<UserDto> response = new(userDto);
-                return Ok(response);
-            }
-            catch (System.Exception ex)
-            {
-                string? statusCode = ex.ToString();
-                string? erorr = ex.Message;
-                Response<User> response = new(null, statusCode, erorr, false);
-                return Ok(response);
-            }
-        }
+
+        //[HttpGet("GetByRoleId/{id}")]
+        //public IActionResult GetByRoleId(int id)
+        //{
+        //    try
+        //    {
+        //        var users = _unitOfWork.Users.GetByRoleId(id);
+        //        if (users == null)
+        //        {
+        //            ApiResponse3 reaponse = new();
+        //            return NotFound(reaponse);
+        //        }
+        //        //var userDto = _mapper.Map<IEnumerable<GetUserDto>>(users);
+        //        var userDto = new List<GetUserDto>();   
+        //        foreach (var user in users)
+        //        {
+        //            var d = new GetUserDto
+        //            {
+        //                RoleId = user.RoleId,
+        //                UserName = user.UserName, 
+        //                Userpassword = user.Userpassword 
+        //            };
+        //            userDto.Add(d);
+        //        }
+
+        //        ApiResponse6<IEnumerable< GetUserDto>> response = new(userDto);
+        //        return Ok(response);
+
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        ApiResponse4 response = new(message: ex.Message);
+        //        return StatusCode(500, response);
+        //    }
+        //}
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] UserDto userDto)
+        public async Task<IActionResult> Put(int id, [FromBody] EditUserDto userDto)
         {
+
             try
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest(ModelState);
+                    ApiResponse2 response2 = new();
+                    return BadRequest(response2);
                 }
                 if (userDto == null)
                 {
-                    return BadRequest();
+                    ApiResponse2 response1 = new();
+                    return BadRequest(response1);
                 }
-
-                //var user = _mapper.Map<User>(userDto);
-
-                var user = new User
+                var userFDB = await _unitOfWork.Users.GetByIdAsync(id);
+                if (userFDB == null)
                 {
-                    RoleId = userDto.RoleId,
-                    UserName = userDto.UserName,
-                    Userpassword = userDto.Userpassword,
-                    Usernumber = userDto.Usernumber,
-                    UserImage = userDto.UserImage,
-                    IsSupervisor = userDto.IsSupervisor
-                };
-
-                _unitOfWork.Users.Update(user);
-                _unitOfWork.Complete();
-                Response<UserDto> response = new(userDto);
+                    ApiResponse3 response3 = new();
+                    return NotFound(response3);
+                }
+                _mapper.Map(userDto, userFDB);
+                await _unitOfWork.SaveAsync();
+                ApiResponse5<EditUserDto> response = new(userDto);
                 return Ok(response);
             }
             catch (System.Exception ex)
             {
-                string? statusCode = ex.ToString();
-                string? erorr = ex.Message;
-                Response<User> response = new(null, statusCode, erorr, false);
-                return Ok(response);
+                ApiResponse4 response = new(message: ex.Message);
+                return StatusCode(500, response);
             }
+
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                var user = _unitOfWork.Users.GetById(id);
-                if (user == null)
+                var userFDB = await _unitOfWork.Users.GetByIdAsync(id);
+                if (userFDB == null)
                 {
-                    return NotFound();
+                    ApiResponse3 response3 = new();
+                    return NotFound(response3);
                 }
-
-                _unitOfWork.Users.Delete(user);
-                _unitOfWork.Complete();
-                Response<UserDto> response = new(null);
+                _unitOfWork.Users.Delete(userFDB);
+                await _unitOfWork.SaveAsync();
+                var userDto = _mapper.Map<GetUserDto>(userFDB);
+                ApiResponse6<GetUserDto> response = new(userDto);
                 return Ok(response);
             }
             catch (System.Exception ex)
             {
-                string? statusCode = ex.ToString();
-                string? erorr = ex.Message;
-                Response<User> response = new(null, statusCode, erorr, false);
-                return Ok(response);
+                ApiResponse4 response = new(message: ex.Message);
+                return StatusCode(500, response);
             }
         }
 
         //a method to delete a range of users from the database using the UserDto and the Response class and the try catch block
+
+
+
         [HttpDelete("deleteRange")]
-        public IActionResult Delete([FromBody] IEnumerable<UserDto> usersDto)
+        public async Task<IActionResult> DeleteRange([FromBody] List<int> ids)
         {
             try
             {
-                List<User> users = new List<User>();
-                foreach (UserDto userDto in usersDto)
+                var usersFDB = new List<User>();   
+                foreach (int id in ids)
                 {
-                    var user = new User
-                    {
-                        RoleId = userDto.RoleId,
-                        UserName = userDto.UserName,
-                        Userpassword = userDto.Userpassword,
-                        Usernumber = userDto.Usernumber,
-                        UserImage = userDto.UserImage,
-                        IsSupervisor = userDto.IsSupervisor
-                    };
-                    users.Add(user);
+                    var userFDB = await _unitOfWork.Users.GetByIdAsync(id);
+                    usersFDB.Add(userFDB);
                 }
-                _unitOfWork.Users.DeleteRange(users);
-                _unitOfWork.Complete();
-                Response<IEnumerable<UserDto>> response = new(usersDto);
+
+                _unitOfWork.Users.DeleteRange(usersFDB);
+                await _unitOfWork.SaveAsync();
+                var userDto = _mapper.Map<IEnumerable< GetUserDto>>(usersFDB);
+                ApiResponse6<IEnumerable<GetUserDto>> response = new(userDto);
                 return Ok(response);
             }
             catch (System.Exception ex)
             {
-                string? statusCode = ex.ToString();
-                string? erorr = ex.Message;
-                Response<User> response = new(null, statusCode, erorr, false);
-                return Ok(response);
+                ApiResponse4 response = new(message: ex.Message);
+                return StatusCode(500, response);
             }
         }
 
-        //a method to delete a range of users from the database using user ids and the Response class and the try catch block
-        [HttpDelete("deleteRangeByIds")]
-        public IActionResult Delete([FromBody] IEnumerable<int> ids)
-        {
-            try
-            {
-                List<User> users = new List<User>();
-                foreach (int id in ids)
-                {
-                    var user = _unitOfWork.Users.GetById(id);
-                    users.Add(user);
-                }
-                _unitOfWork.Users.DeleteRange(users);
-                _unitOfWork.Complete();
-                Response<IEnumerable<User>> response = new(users);
-                return Ok(response);
-            }
-            catch (System.Exception ex)
-            {
-                string? statusCode = ex.ToString();
-                string? erorr = ex.Message;
-                Response<User> response = new(null, statusCode, erorr, false);
-                return Ok(response);
-            }
-        }
 
 
 

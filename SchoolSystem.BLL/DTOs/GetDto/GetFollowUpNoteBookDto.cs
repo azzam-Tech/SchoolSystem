@@ -6,7 +6,7 @@
 
         public string FollowUpNoteBookText { get; set; } = null!;
 
-        public DateTime FollowUpNoteBookDate { get; set; }
+        public DateOnly FollowUpNoteBookDate { get; set; }
     }
 
 }

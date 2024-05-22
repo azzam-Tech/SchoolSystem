@@ -20,7 +20,6 @@ namespace SchoolSystem.DAL.Interfaces.Implementations
         public async Task<IEnumerable<HomeWork>> GetBySubjectClassId(int id)
         {
             return await _context.HomeWorks.Where(h => h.SubjectClassId == id).ToListAsync();
-            throw new NotImplementedException();
         }
     }
 }

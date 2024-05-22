@@ -15,7 +15,7 @@ public partial class FollowUpNoteBook
 
     public string FollowUpNoteBookText { get; set; } = null!;
 
-    public DateTime FollowUpNoteBookDate { get; set; }
+    public DateOnly FollowUpNoteBookDate { get; set; }
 
     public virtual Class Class { get; set; } = null!;
 

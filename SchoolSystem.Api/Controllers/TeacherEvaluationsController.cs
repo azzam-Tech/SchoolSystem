@@ -221,11 +221,11 @@ namespace SchoolSystem.Api.Controllers
                 }
                 var teacherEvaluationFDB = await _unitOfWork.TeacherEvaluations.GetByIdAsync(id);
 
-                 
-                teacherEvaluationFDB.TeacherEvaluationValueOne= teacherEvaluationFDB.TeacherEvaluationValueOne + teacherEvaluationDto.TeacherEvaluationValueOne;
-                teacherEvaluationFDB.TeacherEvaluationValueTow = teacherEvaluationFDB.TeacherEvaluationValueTow + teacherEvaluationDto.TeacherEvaluationValueTow;
+                 int counte = 5;
+                teacherEvaluationFDB.TeacherEvaluationValueOne= teacherEvaluationFDB.TeacherEvaluationValueOne + teacherEvaluationDto.TeacherEvaluationValueOne / counte;
+                teacherEvaluationFDB.TeacherEvaluationValueTow = teacherEvaluationFDB.TeacherEvaluationValueTow + teacherEvaluationDto.TeacherEvaluationValueTow / counte;
 
-                _mapper.Map(teacherEvaluationDto, teacherEvaluationFDB);
+                //_mapper.Map(teacherEvaluationDto, teacherEvaluationFDB);
                 //_unitOfWork.Solutions.Update(solution);
                 await _unitOfWork.SaveAsync();
                 ApiResponse5<EditTeacherEvaluationDto> response = new(teacherEvaluationDto);

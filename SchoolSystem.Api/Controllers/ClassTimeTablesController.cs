@@ -7,6 +7,7 @@ using SchoolSystem.DAL.Models;
 using AutoMapper;
 using SchoolSystem.BLL.DTOs.GetDto;
 using SchoolSystem.BLL.DTOs.PostDto;
+using SchoolSystem.BLL.DTOs.EditDto;
 
 namespace SchoolSystem.Api.Controllers
 {
@@ -22,7 +23,7 @@ namespace SchoolSystem.Api.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> Get()
         {
             try
@@ -39,27 +40,27 @@ namespace SchoolSystem.Api.Controllers
             }
         }
 
-        [HttpGet("GetById/{id}")]
-        public async Task<IActionResult> GetById(int id)
-        {
-            try
-            {
-                var classTimeTable = await _unitOfWork.ClassTimeTables.GetByIdAsync(id);
-                if (classTimeTable == null)
-                {
-                    ApiResponse3 reaponse = new();
-                    return NotFound(reaponse);
-                }
-                var classTimeTableDto = _mapper.Map<GetClassTimeTableDto>(classTimeTable);
-                ApiResponse6<GetClassTimeTableDto> response = new(classTimeTableDto);
-                return Ok(response);
-            }
-            catch (System.Exception ex)
-            {
-                ApiResponse4 response = new ApiResponse4(message: ex.Message);
-                return StatusCode(500, response);
-            }
-        }
+        //[HttpGet("GetById/{id}")]
+        //public async Task<IActionResult> GetById(int id)
+        //{
+        //    try
+        //    {
+        //        var classTimeTable = await _unitOfWork.ClassTimeTables.GetByIdAsync(id);
+        //        if (classTimeTable == null)
+        //        {
+        //            ApiResponse3 reaponse = new();
+        //            return NotFound(reaponse);
+        //        }
+        //        var classTimeTableDto = _mapper.Map<GetClassTimeTableDto>(classTimeTable);
+        //        ApiResponse6<GetClassTimeTableDto> response = new(classTimeTableDto);
+        //        return Ok(response);
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        ApiResponse4 response = new ApiResponse4(message: ex.Message);
+        //        return StatusCode(500, response);
+        //    }
+        //}
 
         [HttpGet("GetByClassId/{id}")]
         public async Task<IActionResult> GetByClassId(int id)
@@ -67,7 +68,7 @@ namespace SchoolSystem.Api.Controllers
             try
             {
                 var classTimeTable = await _unitOfWork.ClassTimeTables.GetClassTimeTablesByClassId(id);
-                if (classTimeTable == null)
+                if (classTimeTable == null || classTimeTable.Count() == 0)
                 {
                     ApiResponse3 reaponse = new();
                     return NotFound(reaponse);
@@ -83,7 +84,7 @@ namespace SchoolSystem.Api.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<IActionResult> Post([FromBody] PostClassTimeTableDto classTimeTableDto)
         {
             try
@@ -120,7 +121,7 @@ namespace SchoolSystem.Api.Controllers
         }
 
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] PostClassTimeTableDto classTimeTableDto)
+        public async Task<IActionResult> Put(int id, [FromBody] EditClassTimeTableDto classTimeTableDto)
         {
             try
             {
@@ -143,7 +144,7 @@ namespace SchoolSystem.Api.Controllers
                 _mapper.Map(classTimeTableDto, classTimeTable);
                 //_unitOfWork.Solutions.Update(solution);
                 await _unitOfWork.SaveAsync();
-                ApiResponse5<PostClassTimeTableDto> response = new(classTimeTableDto);
+                ApiResponse5<EditClassTimeTableDto> response = new(classTimeTableDto);
                 return Ok(response);
             }
             catch (System.Exception ex)

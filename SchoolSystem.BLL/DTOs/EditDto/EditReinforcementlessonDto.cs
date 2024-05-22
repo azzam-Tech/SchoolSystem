@@ -1,8 +1,8 @@
-﻿namespace SchoolSystem.BLL.DTOs.GetDto
+﻿namespace SchoolSystem.BLL.DTOs.EditDto
 {
-    public class GetReinforcementlessonDto
+    public class EditReinforcementlessonDto
     {
-        public int ReinforcementlessonId { get; set; }
+
 
         public string ReinforcementlessonTitle { get; set; } = null!;
 
@@ -12,8 +12,5 @@
 
         public string? Reinforcementlessonlink { get; set; }
 
-        public DateTime? ReinforcementlessonDate { get; set; }
     }
-
-
 }

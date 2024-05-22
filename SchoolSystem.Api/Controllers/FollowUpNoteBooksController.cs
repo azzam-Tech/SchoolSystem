@@ -23,31 +23,31 @@ namespace SchoolSystem.Api.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        //[HttpGet]
 
-        public async Task<IActionResult> GeLLAsync()
+        //public async Task<IActionResult> GeLLAsync()
+        //{
+        //    try
+        //    {
+        //        var followUpNoteBooks = await _unitOfWork.FollowUpNoteBooks.GetAllAsync();
+        //        //var getfollowUpNoteBooksDTO = _mapper.Map<FollowUpNoteBookDto>(followUpNoteBooks);
+        //        //ApiResponse6<FollowUpNoteBookDto> response = new(getfollowUpNoteBooksDTO);
+        //        return Ok(followUpNoteBooks);
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        ApiResponse4 response = new ApiResponse4(message: ex.Message);
+        //        return StatusCode(500, response);
+        //    }
+        //}
+
+        [HttpGet("GetByDateClassAsync/{id}/{date}")]
+
+        public async Task<IActionResult> GetByDateClassAsync(int id, DateOnly date)
         {
             try
             {
-                var followUpNoteBooks = await _unitOfWork.FollowUpNoteBooks.GetAllAsync();
-                //var getfollowUpNoteBooksDTO = _mapper.Map<FollowUpNoteBookDto>(followUpNoteBooks);
-                //ApiResponse6<FollowUpNoteBookDto> response = new(getfollowUpNoteBooksDTO);
-                return Ok(followUpNoteBooks);
-            }
-            catch (System.Exception ex)
-            {
-                ApiResponse4 response = new ApiResponse4(message: ex.Message);
-                return StatusCode(500, response);
-            }
-        }
-
-        [HttpGet("GetByDateClassAsync/{id}/{datetime}")]
-
-        public async Task<IActionResult> GetByDateClassAsync(int id, DateTime datetime)
-        {
-            try
-            {
-                var followUpNoteBooks = await _unitOfWork.FollowUpNoteBooks.GetByDateClassAsync(id, datetime);
+                var followUpNoteBooks = await _unitOfWork.FollowUpNoteBooks.GetByDateClassAsync(id, date);
                 if (followUpNoteBooks == null || followUpNoteBooks.Count() == 0)
                 {
                     ApiResponse3 reaponse = new();
@@ -64,7 +64,30 @@ namespace SchoolSystem.Api.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet("GetByClassSubjectId/{id}")]
+
+        public async Task<IActionResult> GetByClassSubjectId(int id)
+        {
+            try
+            {
+                var followUpNoteBooks = await _unitOfWork.FollowUpNoteBooks.GetByClassSubjectId(id);
+                if (followUpNoteBooks == null || followUpNoteBooks.Count() == 0)
+                {
+                    ApiResponse3 reaponse = new();
+                    return NotFound(reaponse);
+                }
+                var getfollowUpNoteBooksDTO = _mapper.Map<IEnumerable<GetFollowUpNoteBookDto>>(followUpNoteBooks);
+                ApiResponse6<IEnumerable<GetFollowUpNoteBookDto>> response = new(getfollowUpNoteBooksDTO);
+                return Ok(response);
+            }
+            catch (System.Exception ex)
+            {
+                ApiResponse4 response = new ApiResponse4(message: ex.Message);
+                return StatusCode(500, response);
+            }
+        }
+
+        [HttpPost("Create")]
         public async Task<IActionResult> Post([FromBody] PostFollowUpNoteBookDto postFollowUpNoteBookDto)
         {
             try
@@ -100,7 +123,7 @@ namespace SchoolSystem.Api.Controllers
         }
 
 
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             try

@@ -7,6 +7,7 @@ using SchoolSystem.DAL.Models;
 using AutoMapper;
 using SchoolSystem.BLL.DTOs.GetDto;
 using SchoolSystem.BLL.DTOs.PostDto;
+using SchoolSystem.BLL.DTOs.EditDto;
 
 namespace SchoolSystem.Api.Controllers
 {
@@ -23,7 +24,7 @@ namespace SchoolSystem.Api.Controllers
         }
 
         // create a method to get all levels from the database using the unit of work and levelDto the ApiResponse model from the DAL project and try catch block
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetLevels()
         {
             try
@@ -44,19 +45,19 @@ namespace SchoolSystem.Api.Controllers
 
 
         // create a method to get a level by id from the database using the unit of work and levelDto the ApiResponse model from the DAL project and try catch block    
-        [HttpGet("GetLevelById/{id}")]
-        public async Task<IActionResult> GetLevelById(int id)
+        [HttpGet("GetAllByDepartmentId/{id}")]
+        public async Task<IActionResult> GetByDepartmentId(int id)
         {
             try
             {
-                var level = await _unitOfWork.Levels.GetByIdAsync(id);
-                if (level == null)
+                var levels = await _unitOfWork.Levels.GetByDepartmentId(id);
+                if (levels == null || levels.Count() == 0)
                 {
-                    ApiResponse3 responsex = new ();
+                    ApiResponse3 responsex = new();
                     return NotFound(responsex);
                 }
-                var levelDto = _mapper.Map<GetLevelDto>(level);
-                ApiResponse6<GetLevelDto> response = new (levelDto);
+                var levelDto = _mapper.Map<IEnumerable< GetLevelDto>>(levels);
+                ApiResponse6<IEnumerable<GetLevelDto>> response = new(levelDto);
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -68,7 +69,7 @@ namespace SchoolSystem.Api.Controllers
 
 
         // create a method to create a level in the database using the unit of work and levelDto the ApiResponse model from the DAL project and try catch block
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateLevel([FromBody] PostLevelDto levelDto)
         {
             try
@@ -106,8 +107,8 @@ namespace SchoolSystem.Api.Controllers
 
 
         // create a method to update a level in the database using the unit of work and levelDto the ApiResponse model from the DAL project and try catch block
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateLevel(int id, [FromBody] PostLevelDto levelDto)
+        [HttpPut("Edit/{id}")]
+        public async Task<IActionResult> UpdateLevel(int id, [FromBody] EditLevelDto levelDto)
         {
             try
             {
@@ -134,7 +135,7 @@ namespace SchoolSystem.Api.Controllers
                 level.LevelName = levelDto.LevelName;
 
                 await _unitOfWork.SaveAsync();
-                ApiResponse5<PostLevelDto> response = new(levelDto);
+                ApiResponse5<EditLevelDto> response = new(levelDto);
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -144,7 +145,7 @@ namespace SchoolSystem.Api.Controllers
             }
         }
         // create a method to delete a level in the database using the unit of work and levelDto the ApiResponse model from the DAL project and try catch block
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteLevel(int id)
         {
             try

@@ -12,7 +12,8 @@ namespace SchoolSystem.DAL.UnitOfWork
 {
     public interface IUnitOfWork : IDisposable
     {
-        IBaseRepository<User> Users { get; } 
+        //IBaseRepository<User> Users { get; }
+        IUserRepository Users { get; }
         IRolesRepository Roles { get; }
         IStudenstRepository Students { get; }
         ILevelsRepository Levels { get; }

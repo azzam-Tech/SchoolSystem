@@ -1,21 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace SchoolSystem.BLL.DTOs.PostDto
+﻿namespace SchoolSystem.BLL.DTOs.EditDto
 {
-    public class PostUserDto
+    public class EditUserDto
     {
-
-
-        public int RoleId { get; set; }
 
         public string UserName { get; set; } = null!;
 
         public string? Usernumber { get; set; }
 
-
         public string? UserImage { get; set; }
 
         public bool IsSupervisor { get; set; }
     }
-
 }
