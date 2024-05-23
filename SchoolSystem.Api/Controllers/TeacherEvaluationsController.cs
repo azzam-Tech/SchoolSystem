@@ -27,22 +27,22 @@ namespace SchoolSystem.Api.Controllers
         }
 
 
-        [HttpGet]
-        public async Task<IActionResult> Get()
-        {
-            try
-            {
-                var teacherEvaluationsFDB = await _unitOfWork.TeacherEvaluations.GetAllAsync();
-                var teacherEvaluationsDTO = _mapper.Map<IEnumerable<GetTeacherEvaluationDto>>(teacherEvaluationsFDB);
-                ApiResponse6<IEnumerable<GetTeacherEvaluationDto>> response = new(teacherEvaluationsDTO);
-                return Ok(response);
-            }
-            catch (System.Exception ex)
-            {
-                ApiResponse4 reaponse = new(message: ex.Message);
-                return Ok(reaponse);
-            }
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> Get()
+        //{
+        //    try
+        //    {
+        //        var teacherEvaluationsFDB = await _unitOfWork.TeacherEvaluations.GetAllAsync();
+        //        var teacherEvaluationsDTO = _mapper.Map<IEnumerable<GetTeacherEvaluationDto>>(teacherEvaluationsFDB);
+        //        ApiResponse6<IEnumerable<GetTeacherEvaluationDto>> response = new(teacherEvaluationsDTO);
+        //        return Ok(response);
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        ApiResponse4 reaponse = new(message: ex.Message);
+        //        return Ok(reaponse);
+        //    }
+        //}
 
         [HttpGet("GetAllwithnameAsync")]
         public async Task<IActionResult> GeGetAllwithnameAsynct()
@@ -54,13 +54,17 @@ namespace SchoolSystem.Api.Controllers
                 var getTeacherEvaluationDto = new List<GetTeacherEvaluationDto>();
                 foreach(var teacherEvaluationFDB in teacherEvaluationsFDB)
                 {
+                    if (teacherEvaluationFDB.TeacherEvaluationCounter == 0)
+                    {
+                        teacherEvaluationFDB.TeacherEvaluationCounter = 1;
+                    }
                     var getDto = new GetTeacherEvaluationDto()
                     {
                         TeacherEvaluationId = teacherEvaluationFDB.TeacherEvaluationId,
                         UserId = teacherEvaluationFDB.UserId,   
                         UserName = teacherEvaluationFDB.User.UserName,
-                        TeacherEvaluationValueOne = teacherEvaluationFDB.TeacherEvaluationValueOne,
-                        TeacherEvaluationValueTow = teacherEvaluationFDB.TeacherEvaluationValueTow,
+                        TeacherEvaluationValueOne = teacherEvaluationFDB.TeacherEvaluationValueOne / teacherEvaluationFDB.TeacherEvaluationCounter,
+                        TeacherEvaluationValueTow = teacherEvaluationFDB.TeacherEvaluationValueTow / teacherEvaluationFDB.TeacherEvaluationCounter,
 
                     };
                     getTeacherEvaluationDto.Add(getDto);
@@ -114,14 +118,17 @@ namespace SchoolSystem.Api.Controllers
                     ApiResponse3 reaponse = new();
                     return NotFound(reaponse);
                 }
-
+                if (teacherEvaluationsFDB.TeacherEvaluationCounter == 0)
+                {
+                    teacherEvaluationsFDB.TeacherEvaluationCounter = 1;
+                }
                 var getDto = new GetTeacherEvaluationDto()
                 {
                     TeacherEvaluationId = teacherEvaluationsFDB.TeacherEvaluationId,
                     UserId = teacherEvaluationsFDB.UserId,
                     UserName = teacherEvaluationsFDB.User.UserName,
-                    TeacherEvaluationValueOne = teacherEvaluationsFDB.TeacherEvaluationValueOne,
-                    TeacherEvaluationValueTow = teacherEvaluationsFDB.TeacherEvaluationValueTow,
+                    TeacherEvaluationValueOne = teacherEvaluationsFDB.TeacherEvaluationValueOne / teacherEvaluationsFDB.TeacherEvaluationCounter,
+                    TeacherEvaluationValueTow = teacherEvaluationsFDB.TeacherEvaluationValueTow / teacherEvaluationsFDB.TeacherEvaluationCounter
                 };
 
                 //var teacherEvaluationsDTO = _mapper.Map<GetTeacherEvaluationDto>(teacherEvaluationsFDB);
@@ -221,9 +228,12 @@ namespace SchoolSystem.Api.Controllers
                 }
                 var teacherEvaluationFDB = await _unitOfWork.TeacherEvaluations.GetByIdAsync(id);
 
-                 int counte = 5;
-                teacherEvaluationFDB.TeacherEvaluationValueOne= teacherEvaluationFDB.TeacherEvaluationValueOne + teacherEvaluationDto.TeacherEvaluationValueOne / counte;
-                teacherEvaluationFDB.TeacherEvaluationValueTow = teacherEvaluationFDB.TeacherEvaluationValueTow + teacherEvaluationDto.TeacherEvaluationValueTow / counte;
+                teacherEvaluationFDB.TeacherEvaluationCounter = teacherEvaluationFDB.TeacherEvaluationCounter + 1; 
+                //int avarig = teacherEvaluationFDB.TeacherEvaluationCounter;
+                teacherEvaluationFDB.TeacherEvaluationValueTow = teacherEvaluationFDB.TeacherEvaluationValueTow + teacherEvaluationDto.TeacherEvaluationValueTow;
+                teacherEvaluationFDB.TeacherEvaluationValueOne = teacherEvaluationFDB.TeacherEvaluationValueOne + teacherEvaluationDto.TeacherEvaluationValueOne;
+                //teacherEvaluationFDB.TeacherEvaluationValueOne= totalone/ avarig;
+                //teacherEvaluationFDB.TeacherEvaluationValueTow = totaltow / avarig;
 
                 //_mapper.Map(teacherEvaluationDto, teacherEvaluationFDB);
                 //_unitOfWork.Solutions.Update(solution);

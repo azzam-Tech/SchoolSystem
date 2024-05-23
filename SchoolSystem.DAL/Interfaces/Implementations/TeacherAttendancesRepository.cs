@@ -17,5 +17,10 @@ namespace SchoolSystem.DAL.Interfaces.Implementations
             return await _context.TeacherAttendances.Where(t => t.UserId == teachrId && t.TeacherAttendanceValue == false ).ToListAsync(); 
 
         }
+
+        public async Task<IEnumerable<User>> GetAllTeachersAsync()
+        {
+            return await _context.Users.Where(u => u.RoleId == 4).ToListAsync();  
+        }
     }
 }

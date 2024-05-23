@@ -12,6 +12,7 @@ public partial class TeacherEvaluation
     public decimal TeacherEvaluationValueOne { get; set; }
 
     public decimal TeacherEvaluationValueTow { get; set; }
+    public int TeacherEvaluationCounter { get; set; }
 
     public virtual User User { get; set; } = null!;
 }

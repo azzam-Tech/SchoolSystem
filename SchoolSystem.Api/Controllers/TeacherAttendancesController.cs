@@ -22,6 +22,35 @@ namespace SchoolSystem.Api.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet("prepareTeacherforattendance")]
+        public async Task<IActionResult> GetAllTeachersAsync()
+        {
+            try
+            {
+                var teacherAttendancesFDB = await _unitOfWork.TeacherAttendances.GetAllTeachersAsync();
+
+                var postTeacherAttendanceDtoinfo = new List<PostTeacherAttendanceDtoinfo>();
+                foreach (var item in teacherAttendancesFDB)
+                {
+                    var y = new PostTeacherAttendanceDtoinfo
+                    {
+                        UserId = item.UserId,
+                        UserName = item.UserName
+                    };
+                    postTeacherAttendanceDtoinfo.Add(y);
+                }
+
+               // var teacherEvaluationsDTO = _mapper.Map<IEnumerable<GetTeacherAttendanceDto>>(teacherAttendancesFDB);
+                ApiResponse6<IEnumerable<PostTeacherAttendanceDtoinfo>> response = new(postTeacherAttendanceDtoinfo);
+                return Ok(response);
+            }
+            catch (System.Exception ex)
+            {
+                ApiResponse4 reaponse = new(message: ex.Message);
+                return Ok(reaponse);
+            }
+        }
+
         [HttpGet("GetAllByTeacherIdAsync/{teacherid}")]
         public async Task<IActionResult> GetAllByTeacherIdAsync(int teacherid)
         {
