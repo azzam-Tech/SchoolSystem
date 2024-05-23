@@ -71,7 +71,7 @@ namespace SchoolSystem.Api.Controllers
             try
             {
                 var homeWorks = await _unitOfWork.HomeWorks.GetBySubjectClassId(id);
-                if (homeWorks == null)
+                if (homeWorks == null || homeWorks.Count() ==0 )
                 {
                     ApiResponse3 reaponse = new();
                     return NotFound(reaponse);

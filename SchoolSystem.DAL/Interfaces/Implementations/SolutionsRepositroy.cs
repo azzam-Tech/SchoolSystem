@@ -23,6 +23,12 @@ namespace SchoolSystem.DAL.Interfaces.Implementations
         {
             return await _context.Solutions.Where(s => s.HomeWorkId == id).ToListAsync();
         }
+
+        public async Task<Solution> GetByStudentId(int studentId, int homeworkId)
+        {
+            return await _context.Solutions.FirstOrDefaultAsync(s => s.HomeWorkId == homeworkId && s.StudentId == studentId);
+
+        }
     }
 
 }

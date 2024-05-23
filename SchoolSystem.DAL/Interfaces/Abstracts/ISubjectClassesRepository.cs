@@ -10,6 +10,7 @@ namespace SchoolSystem.DAL.Interfaces.Abstracts
 {
     public interface ISubjectClassesRepository : IBaseRepository<SubjectClass>
     {
-        Task<SubjectClass> findincludeone(SubjectClass subjectClass);
+        Task<IEnumerable<SubjectClass>> GetByTeacherId(int id);
+        Task<IEnumerable <SubjectClass>> GetByClassId(int id);
     }
 }

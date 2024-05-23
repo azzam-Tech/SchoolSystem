@@ -17,6 +17,26 @@ namespace SchoolSystem.DAL.Interfaces.Implementations
         {
         }
 
+        public async Task<IEnumerable<Student>> GetAllStudent()
+        {
+            return await _context.Students.ToListAsync();   
+        }
+
+        public async Task<IEnumerable<DegreeType>> GetAllDegreeType()
+        {
+            return await _context.DegreeTypes.ToListAsync();
+        }
+
+        public async Task<IEnumerable<SubjectClass>> GetAllSubjectClass()
+        {
+            return await _context.SubjectClasses.ToListAsync();
+        }
+
+        public async Task<IEnumerable<StudentDegree>> GetBySbjectClassIdandDegreeTypeId(int sbjectClassId, int degreeTypeId)
+        {
+            return await _context.StudentDegrees.Include(u => u.Student).ThenInclude( uu => uu.User ).Where(x => x.SubjectClassId == sbjectClassId && x.DegreeTypeId == degreeTypeId).ToListAsync(); 
+        }
+
         public async Task<IEnumerable<StudentDegree>> GetStudentDegreesByStudentId(int studentId)
         {
             //    _context.StudentDegrees

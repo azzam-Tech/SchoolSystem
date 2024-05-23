@@ -1,9 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace SchoolSystem.BLL.DTOs.PostDto
+﻿namespace SchoolSystem.BLL.DTOs.EditDto
 {
-    public class PostSubjectClassDto
+    public class EditSubjectClassDto
     {
+        public int SubjectClassId { get; set; }
 
         public int ClassId { get; set; }
 
@@ -13,5 +12,4 @@ namespace SchoolSystem.BLL.DTOs.PostDto
 
         public string SubjectClassName { get; set; } = null!;
     }
-
 }

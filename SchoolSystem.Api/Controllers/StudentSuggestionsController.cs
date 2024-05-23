@@ -30,7 +30,7 @@ namespace SchoolSystem.Api.Controllers
             try
             {
                 var studentSuggestionsFDB = await _unitOfWork.StudentSuggestions.GetByClassIdAsync(id);
-                if (studentSuggestionsFDB == null)
+                if (studentSuggestionsFDB == null || studentSuggestionsFDB.Count() == 0)
                 {
                     ApiResponse3 reaponse = new();
                     return NotFound(reaponse);

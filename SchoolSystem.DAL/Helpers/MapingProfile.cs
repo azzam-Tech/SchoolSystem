@@ -38,6 +38,13 @@ namespace SchoolSystem.DAL.Helpers
             //CreateMap<SubjectClass, SubjectClassDto>().ReverseMap();
             //CreateMap<SubjectClassDto, SubjectClass>().ReverseMap();
 
+
+
+            //SubjectClass
+            //CreateMap<SubjectClass, GetSubjectClassDto>().ReverseMap();
+            //CreateMap<PostSubjectClassDto, SubjectClass>().ReverseMap();
+            //CreateMap<EditSubjectClassDto, SubjectClass>().ReverseMap();
+
             //HomeWorke
             CreateMap<HomeWork, GetHomeWorkDto>().ReverseMap();
             CreateMap<PostHomeWorkDto, HomeWork>().ReverseMap();
@@ -47,6 +54,7 @@ namespace SchoolSystem.DAL.Helpers
             //StudentQeustion
             CreateMap<StudentQeustion, GetStudentQeustionDto>().ReverseMap();
             CreateMap<PostStudentQeustionDto, StudentQeustion>().ReverseMap();
+            CreateMap<EditStudentQeustionDto, StudentQeustion>().ReverseMap();
 
             //Reinforcementlesson
             CreateMap<Reinforcementlesson, GetReinforcementlessonDto>().ReverseMap();
@@ -63,6 +71,7 @@ namespace SchoolSystem.DAL.Helpers
             //StudentDegree
             CreateMap<StudentDegree, GetStudentDegreeDto>().ReverseMap();
             CreateMap<PostStudentDegreeDto, StudentDegree>().ReverseMap();
+            CreateMap<EditStudentDegreeDto, StudentDegree>().ReverseMap();
 
             //ClassTimeTable
             CreateMap<ClassTimeTable, GetClassTimeTableDto>().ReverseMap();
@@ -101,6 +110,11 @@ namespace SchoolSystem.DAL.Helpers
             CreateMap<StudentSuggestion, GetStudentSuggestionDto>().ReverseMap();
             CreateMap<PostStudentSuggestionDto, StudentSuggestion>().ReverseMap();
             CreateMap<EditStudentSuggestionDto, StudentSuggestion>().ReverseMap();
+
+            ////Student
+            //CreateMap<Student , GetStudentDto>().ReverseMap();
+            //CreateMap<PostStudentDto, Student>().ReverseMap();
+            //CreateMap<EditStudentDto, Student>().ReverseMap();
 
 
 

@@ -10,6 +10,10 @@ namespace SchoolSystem.DAL.Interfaces.Abstracts
 {
     public interface IStudentDegreesRepositroy : IBaseRepository<StudentDegree>
     {
-         Task<IEnumerable<StudentDegree>> GetStudentDegreesByStudentId(int studentId);
+        Task<IEnumerable<Student>> GetAllStudent();
+        Task<IEnumerable<DegreeType>> GetAllDegreeType();
+        Task<IEnumerable<SubjectClass>> GetAllSubjectClass();
+        Task<IEnumerable<StudentDegree>> GetBySbjectClassIdandDegreeTypeId(int sbjectClassId, int degreeTypeId);
+        Task<IEnumerable<StudentDegree>> GetStudentDegreesByStudentId(int studentId);
     }
 }

@@ -7,6 +7,7 @@ using SchoolSystem.DAL.Models;
 using AutoMapper;
 using SchoolSystem.BLL.DTOs.GetDto;
 using SchoolSystem.BLL.DTOs.PostDto;
+using SchoolSystem.BLL.DTOs.EditDto;
 
 namespace SchoolSystem.Api.Controllers
 {
@@ -21,46 +22,46 @@ namespace SchoolSystem.Api.Controllers
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        [HttpGet]
-        public async Task<IActionResult> Get()
-        {
-            try
-            {
-                var studentQeustions = await _unitOfWork.StudentQeustions.GetAllAsync();
-                var studentQeustionsDTO = _mapper.Map<IEnumerable<GetStudentQeustionDto>>(studentQeustions);
-                ApiResponse6<IEnumerable<GetStudentQeustionDto>> response = new(studentQeustionsDTO);
-                return Ok(response);
-            }
-            catch (System.Exception ex)
-            {
-                ApiResponse4 reaponse = new(message: ex.Message);
-                return Ok(reaponse);
-            }
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> Get()
+        //{
+        //    try
+        //    {
+        //        var studentQeustions = await _unitOfWork.StudentQeustions.GetAllAsync();
+        //        var studentQeustionsDTO = _mapper.Map<IEnumerable<GetStudentQeustionDto>>(studentQeustions);
+        //        ApiResponse6<IEnumerable<GetStudentQeustionDto>> response = new(studentQeustionsDTO);
+        //        return Ok(response);
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        ApiResponse4 reaponse = new(message: ex.Message);
+        //        return Ok(reaponse);
+        //    }
+        //}
 
         // creat a method to get StudentQeustion by id using StudentQeustionDto , automapper , Try Catch block and Responses classes
-        [HttpGet("{id}", Name = "GetStudentQeustion")]
+        //[HttpGet("{id}", Name = "GetStudentQeustion")]
 
-        public async Task<IActionResult> Get(int id)
-        {
-            try
-            {
-                var rtudentQeustion = await _unitOfWork.StudentQeustions.GetByIdAsync(id);
-                if (rtudentQeustion == null)
-                {
-                    ApiResponse3 reaponse = new();
-                    return NotFound(reaponse);
-                }
-                var studentQeustionDto = _mapper.Map<GetStudentQeustionDto>(rtudentQeustion);
-                ApiResponse6<GetStudentQeustionDto> response = new(studentQeustionDto);
-                return Ok(response);
-            }
-            catch (System.Exception ex)
-            {
-                ApiResponse4 response = new ApiResponse4(message: ex.Message);
-                return StatusCode(500, response);
-            }
-        }
+        //public async Task<IActionResult> Get(int id)
+        //{
+        //    try
+        //    {
+        //        var rtudentQeustion = await _unitOfWork.StudentQeustions.GetByIdAsync(id);
+        //        if (rtudentQeustion == null)
+        //        {
+        //            ApiResponse3 reaponse = new();
+        //            return NotFound(reaponse);
+        //        }
+        //        var studentQeustionDto = _mapper.Map<GetStudentQeustionDto>(rtudentQeustion);
+        //        ApiResponse6<GetStudentQeustionDto> response = new(studentQeustionDto);
+        //        return Ok(response);
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        ApiResponse4 response = new ApiResponse4(message: ex.Message);
+        //        return StatusCode(500, response);
+        //    }
+        //}
 
         [HttpGet("GetBySubjectClassIdAsync/{id}")]
 
@@ -68,13 +69,28 @@ namespace SchoolSystem.Api.Controllers
         {
             try
             {
+                var teacherAnswerFDB = await _unitOfWork.StudentQeustions.GetteacherAnswerAsync(id);
                 var studentQeustion = await _unitOfWork.StudentQeustions.GetBySubjectClassIdAsync(id);
-                if (studentQeustion == null)
+                if (studentQeustion == null || studentQeustion.Count()==0)
                 {
                     ApiResponse3 reaponse = new();
                     return NotFound(reaponse);
                 }
                 var studentQeustionDto = _mapper.Map<IEnumerable<GetStudentQeustionDto>>(studentQeustion);
+
+            
+                foreach (var T in teacherAnswerFDB)
+                {
+                    foreach (var S in studentQeustionDto)
+                    {
+                        if (T.StudentQeustionId == S.StudentQeustionId)
+                        {
+                            S.TeacherAnswerText = T.TeacherAnswerText;
+                        }
+                        
+                    }
+                        
+                }
                 ApiResponse6<IEnumerable<GetStudentQeustionDto>> response = new(studentQeustionDto);
                 return Ok(response);
             }
@@ -86,7 +102,7 @@ namespace SchoolSystem.Api.Controllers
         }
 
         // creat a method to create StudentQeustion using StudentQeustionDto , automapper , Try Catch block , Responses classes check if the object is null and if the model is valid and other nessesary checks
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<IActionResult> Post([FromBody] PostStudentQeustionDto studentQeustionDto)
         {
             try
@@ -102,7 +118,7 @@ namespace SchoolSystem.Api.Controllers
                     return BadRequest(response1);
                 }
                 var classsubject = await _unitOfWork.SubjectClasses.GetByIdAsync(studentQeustionDto.SubjectClassId);
-                if (classsubject == null)
+                if (classsubject == null  )
                 {
                     ApiResponse2 response3 = new();
                     return BadRequest(response3);
@@ -112,7 +128,6 @@ namespace SchoolSystem.Api.Controllers
                 await _unitOfWork.SaveAsync();
                 ApiResponse5<PostStudentQeustionDto> response = new(studentQeustionDto);
                 return Ok(response);
-                //return CreatedAtRoute("GetStudentQeustion", new { id = StudentQeustion.Id }, StudentQeustion);
             }
             catch (System.Exception ex)
             {
@@ -122,8 +137,8 @@ namespace SchoolSystem.Api.Controllers
         }
 
         // creat a method to update StudentQeustion using StudentQeustionDto , automapper , Try Catch block , Responses classes check if the object is null and if the model is valid and other nessesary checks
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] PostStudentQeustionDto studentQeustionDto)
+        [HttpPut("Edit/{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] EditStudentQeustionDto studentQeustionDto)
         {
             try
             {
@@ -145,7 +160,7 @@ namespace SchoolSystem.Api.Controllers
                 }
                 _mapper.Map(studentQeustionDto, studentQeustion);
                 await _unitOfWork.SaveAsync();
-                ApiResponse5<PostStudentQeustionDto> response = new(studentQeustionDto);
+                ApiResponse5<EditStudentQeustionDto> response = new(studentQeustionDto);
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -156,7 +171,7 @@ namespace SchoolSystem.Api.Controllers
         }
 
         // creat a method to delete StudentQeustion using StudentQeustionDto , automapper , Try Catch block , Responses classes check if the object is null and if the model is valid and other nessesary checks
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             try

@@ -11,10 +11,6 @@ namespace SchoolSystem.BLL.DTOs.GetDto
     {
         public int SolutionId { get; set; }
 
-        public int HomeWorkId { get; set; }
-
-        public int StudentId { get; set; }
-
         public string? SolutionImage { get; set; }
 
         public string? SolutionFile { get; set; }

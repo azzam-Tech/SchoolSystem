@@ -10,7 +10,7 @@
 
         public string? StudentSuggestionText { get; set; }
 
-        public string? StudentSuggestionImage { get; set; }
+        //public string? StudentSuggestionImage { get; set; }
 
         //public DateTime? StudentSuggestionDate { get; set; }
 

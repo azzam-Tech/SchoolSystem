@@ -23,22 +23,22 @@ namespace SchoolSystem.Api.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("GetAllByQuestionIdAsync/{questionid}")]
-        public async Task<IActionResult> GetAllByQuestionIdAsync(int questionid)
-        {
-            try
-            {
-                var teacherAnswersFDB = await _unitOfWork.TeacherAnswers.GetByTeacherIdAsync(questionid);
-                var teacherAnswerDTO = _mapper.Map<GetTeacherAnswerDto>(teacherAnswersFDB);
-                ApiResponse6<GetTeacherAnswerDto> response = new(teacherAnswerDTO);
-                return Ok(response);
-            }
-            catch (System.Exception ex)
-            {
-                ApiResponse4 reaponse = new(message: ex.Message);
-                return Ok(reaponse);
-            }
-        }
+        //[HttpGet("GetAllByQuestionIdAsync/{questionid}")]
+        //public async Task<IActionResult> GetAllByQuestionIdAsync(int questionid)
+        //{
+        //    try
+        //    {
+        //        var teacherAnswersFDB = await _unitOfWork.TeacherAnswers.GetByTeacherIdAsync(questionid);
+        //        var teacherAnswerDTO = _mapper.Map<GetTeacherAnswerDto>(teacherAnswersFDB);
+        //        ApiResponse6<GetTeacherAnswerDto> response = new(teacherAnswerDTO);
+        //        return Ok(response);
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        ApiResponse4 reaponse = new(message: ex.Message);
+        //        return Ok(reaponse);
+        //    }
+        //}
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] PostTeacherAnswerDto postTeacherAnswerDto)

@@ -23,36 +23,36 @@ namespace SchoolSystem.Api.Controllers
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        //[HttpGet]
+        //public async Task<IActionResult> Get()
+        //{
+        //    try
+        //    {
+        //        var solutions = await _unitOfWork.Solutions.GetAllAsync();
+        //        var solutionsDTO = _mapper.Map<IEnumerable<GetSolutionDto>>(solutions);
+        //        ApiResponse6<IEnumerable<GetSolutionDto>> response = new(solutionsDTO);
+        //        return Ok(response);
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        ApiResponse4 reaponse = new(message: ex.Message);
+        //        return Ok(reaponse);
+        //    }
+        //}
+
+        [HttpGet("GetByStudentId/{studeintId}/{homeworkId}")]
+
+        public async Task<IActionResult> GetByStudentId(int studeintId, int homeworkId)
         {
             try
             {
-                var solutions = await _unitOfWork.Solutions.GetAllAsync();
-                var solutionsDTO = _mapper.Map<IEnumerable<GetSolutionDto>>(solutions);
-                ApiResponse6<IEnumerable<GetSolutionDto>> response = new(solutionsDTO);
-                return Ok(response);
-            }
-            catch (System.Exception ex)
-            {
-                ApiResponse4 reaponse = new(message: ex.Message);
-                return Ok(reaponse);
-            }
-        }
-
-        [HttpGet("GetById/{id}")]
-
-        public async Task<IActionResult> GetById(int id)
-        {
-            try
-            {
-                var Solution = await _unitOfWork.Solutions.GetByIdAsync(id);
-                if (Solution == null)
+                var solution = await _unitOfWork.Solutions.GetByStudentId(studeintId , homeworkId);
+                if (solution == null )
                 {
                     ApiResponse3 reaponse = new();
                     return NotFound(reaponse);
                 }
-                var SolutionDto = _mapper.Map<GetSolutionDto>(Solution);
+                var SolutionDto = _mapper.Map<GetSolutionDto>(solution);
                 ApiResponse6<GetSolutionDto> response = new(SolutionDto);
                 return Ok(response);
             }
@@ -69,13 +69,13 @@ namespace SchoolSystem.Api.Controllers
         {
             try
             {
-                var Solution = await _unitOfWork.Solutions.GetByHomeworkIdAsync(id);
-                if (Solution == null)
+                var solution = await _unitOfWork.Solutions.GetByHomeworkIdAsync(id);
+                if (solution == null || solution.Count() == 0)
                 {
                     ApiResponse3 reaponse = new();
                     return NotFound(reaponse);
                 }
-                var SolutionDto = _mapper.Map<IEnumerable<GetSolutionDto>>(Solution);
+                var SolutionDto = _mapper.Map<IEnumerable<GetSolutionDto>>(solution);
                 ApiResponse6<IEnumerable<GetSolutionDto>> response = new(SolutionDto);
                 return Ok(response);
             }
@@ -86,7 +86,7 @@ namespace SchoolSystem.Api.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<IActionResult> Post([FromBody] PostSolutionDto solutionDto)
         {
             try
@@ -102,7 +102,7 @@ namespace SchoolSystem.Api.Controllers
                     return BadRequest(response1);
                 }
                 var homework = await _unitOfWork.HomeWorks.GetByIdAsync(solutionDto.HomeWorkId);
-                if (homework == null)
+                if (homework == null )
                 {
                     ApiResponse2 response3 = new();
                     return BadRequest(response3);
@@ -155,7 +155,7 @@ namespace SchoolSystem.Api.Controllers
             }
         }
 
-        [HttpDelete("delete/{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             try

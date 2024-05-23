@@ -17,5 +17,4 @@ namespace SchoolSystem.BLL.DTOs.PostDto
 
         public bool IsSupervisor { get; set; }
     }
-
 }
