@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using SchoolSystem.Api.FileServices;
 using SchoolSystem.DAL.Data;
 using SchoolSystem.DAL.Helpers;
 using SchoolSystem.DAL.Services;
@@ -17,6 +18,7 @@ builder.Services.AddControllers();
 //JWT
 builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IManageFiles, ManageFileService>();
 
 
 builder.Configuration.GetConnectionString("DefaultConnection");
@@ -79,6 +81,8 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
 
 app.UseAuthorization();
 

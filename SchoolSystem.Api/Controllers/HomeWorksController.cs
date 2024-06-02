@@ -8,6 +8,7 @@ using AutoMapper;
 using SchoolSystem.BLL.DTOs.GetDto;
 using SchoolSystem.BLL.DTOs.PostDto;
 using SchoolSystem.BLL.DTOs.EditDto;
+using SchoolSystem.Api.FileServices;
 
 namespace SchoolSystem.Api.Controllers
 {
@@ -17,10 +18,13 @@ namespace SchoolSystem.Api.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public HomeWorksController(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly IManageFiles manageFiles;
+
+        public HomeWorksController(IUnitOfWork unitOfWork, IMapper mapper , IManageFiles manageFiles)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            this.manageFiles = manageFiles;
         }
         // creat a method to get all HomeWorks using HomeWorkDTO , automapper , Try Catch block and Responses classes
         //[HttpGet]
@@ -88,7 +92,7 @@ namespace SchoolSystem.Api.Controllers
         }
 
          [HttpPost("Create")]
-        public async Task<IActionResult> Post([FromBody] PostHomeWorkDto homeWorkDto)
+        public async Task<IActionResult> Post([FromForm] IFormFile imageFile , [FromForm] PostHomeWorkDto homeWorkDto)
         {
             try
             {
@@ -108,7 +112,19 @@ namespace SchoolSystem.Api.Controllers
                     ApiResponse2 response3 = new();
                     return BadRequest(response3);
                 }
+
+                var shema = $"{Request.Scheme}://";
+                var host = $"{Request.Host}/";
+
+                var imagePath = shema + host + await manageFiles.SaveImage(imageFile, "HomeWork");
+
+
+                
+
                 var homeWork = _mapper.Map<HomeWork>(homeWorkDto);
+
+                homeWork.HomeWorkImagePath = imagePath;
+
                 await _unitOfWork.HomeWorks.AddAsync(homeWork);
                 await _unitOfWork.SaveAsync();
                 ApiResponse5<PostHomeWorkDto> response = new(homeWorkDto);

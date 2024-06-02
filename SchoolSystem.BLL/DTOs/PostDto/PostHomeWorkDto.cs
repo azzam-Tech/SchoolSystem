@@ -14,7 +14,7 @@
 
         public string? HomeWorkText { get; set; }
 
-        public string? HomeWorkImagePath { get; set; }
+        //public string? HomeWorkImagePath { get; set; }
 
         public string? HomeWorkDeadline { get; set; }
 
