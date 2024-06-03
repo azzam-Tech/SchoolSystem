@@ -109,6 +109,8 @@ namespace SchoolSystem.DAL.Services
             authModel.Username = user.UserName;
             authModel.ExpiresOn = jwtSecurityToken.ValidTo;
             authModel.Role = role;
+            authModel.IsSuperVaisor = user.IsSupervisor;
+            authModel.UserId = user.UserId;
 
             return authModel;
         }

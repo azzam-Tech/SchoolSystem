@@ -40,6 +40,8 @@ namespace SchoolSystem.Api.Controllers
             }
         }
 
+
+
         [HttpGet("GetBySbjectClassIdandDegreeTypeId/{sbjectClassId}/{degreeTypeId}")]
         public async Task<IActionResult> GetBySbjectClassIdandDegreeTypeId(int sbjectClassId , int degreeTypeId)
         {

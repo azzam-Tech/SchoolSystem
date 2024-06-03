@@ -42,12 +42,12 @@ namespace SchoolSystem.Api.Controllers
         }
 
 
-        [HttpGet("GetSubjectById/{id}")]
-        public async Task<IActionResult> GetSubjectById(int id)
+        [HttpGet("GetSubjectBylevelId/{levelId}")]
+        public async Task<IActionResult> GetSubjectBylevelId(int levelId)
         {
             try
             {
-                var subject = await _unitOfWork.Subjects.GetByIdAsync(id);
+                var subject = await _unitOfWork.Subjects.GetSubjectBylevelId(levelId);
                 if (subject == null)
                 {
                     ApiResponse3 reaponse = new();
@@ -63,6 +63,8 @@ namespace SchoolSystem.Api.Controllers
                 return Ok(reaponse);
             }
         }
+
+
         [HttpPost]
         public async Task<IActionResult> AddSubject([FromBody] PostSubjectDto subjectDto)
         {

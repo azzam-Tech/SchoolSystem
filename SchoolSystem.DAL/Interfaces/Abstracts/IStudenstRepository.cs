@@ -10,6 +10,6 @@ namespace SchoolSystem.DAL.Interfaces.Abstracts
 {
     public interface IStudenstRepository : IBaseRepository<Student>
     {
-
+        Task<IEnumerable< Student>> GetStudentByClassId(int id);
     }
 }

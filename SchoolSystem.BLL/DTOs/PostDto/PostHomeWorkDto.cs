@@ -1,4 +1,6 @@
-﻿namespace SchoolSystem.BLL.DTOs.PostDto
+﻿using Microsoft.AspNetCore.Http;
+
+namespace SchoolSystem.BLL.DTOs.PostDto
 {
     public class PostHomeWorkDto
     {
@@ -14,7 +16,7 @@
 
         public string? HomeWorkText { get; set; }
 
-        //public string? HomeWorkImagePath { get; set; }
+        public IFormFile? HomeWorkImagePath { get; set; }
 
         public string? HomeWorkDeadline { get; set; }
 

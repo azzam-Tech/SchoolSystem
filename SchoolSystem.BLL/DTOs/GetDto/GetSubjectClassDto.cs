@@ -6,6 +6,7 @@ namespace SchoolSystem.BLL.DTOs.GetDto
     {
         public int SubjectClassId { get; set; }
 
+        public int LevelId { get; set; }
         public int ClassId { get; set; }
 
         public int SubjectId { get; set; }

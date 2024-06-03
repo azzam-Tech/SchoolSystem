@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SchoolSystem.BLL.DTOs.GetDto;
 using SchoolSystem.BLL.DTOs.Students;
 using SchoolSystem.DAL.Entites;
 using SchoolSystem.DAL.Models;
@@ -48,9 +49,41 @@ namespace SchoolSystem.Api.Controllers
             {
                 string error = ex.Message;
                 string message = ex.Message;
-                Response<IEnumerable<StudentDto>> response = new(null,message ,error);
-                
+                Response<IEnumerable<StudentDto>> response = new(null, message, error);
+
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("GetStudentByClassId/{id}")]
+        public async Task<IActionResult> GetStudentByClassId(int id)
+        {
+            try
+            {
+                var StudentFDB = await _unitOfWork.Students.GetStudentByClassId(id);
+                if (StudentFDB == null || StudentFDB.Count() == 0)
+                {
+                    ApiResponse3 reaponse = new();
+                    return NotFound(reaponse);
+                }
+                var studebtsDTO = new List<GeStudentForDgDto>();
+                foreach (var student in StudentFDB)
+                {
+                    var studebtsdto = new GeStudentForDgDto
+                    {
+                        StudentId = student.StudentId,
+                        StudentName = student.User.UserName
+                    };
+                    studebtsDTO.Add(studebtsdto);
+                }
+                ApiResponse6<IEnumerable<GeStudentForDgDto>> response = new(studebtsDTO);
+                return Ok(response);
+            }
+
+            catch (System.Exception ex)
+            {
+                ApiResponse4 response = new ApiResponse4(message: ex.Message);
+                return StatusCode(500, response);
             }
         }
 

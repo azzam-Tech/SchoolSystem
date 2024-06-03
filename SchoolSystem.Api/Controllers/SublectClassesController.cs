@@ -110,13 +110,15 @@ namespace SchoolSystem.Api.Controllers
                 var subjectClassDto = new List<GetSubjectClassDto>();
                 foreach (var subjectClass1 in data)
                 {
+
                     var subjectClassDto1 = new GetSubjectClassDto
                     {
                         SubjectClassId = subjectClass1.SubjectClassId,
                         SubjectTeacher = subjectClass1.SubjectTeacher,
                         SubjectId = subjectClass1.SubjectId,
                         ClassId = subjectClass1.ClassId,
-                        SubjectClassName = subjectClass1.SubjectClassName
+                        SubjectClassName = subjectClass1.SubjectClassName,
+                        LevelId = subjectClass1.Class.LevelId
                     };
                     subjectClassDto.Add(subjectClassDto1);
                 }

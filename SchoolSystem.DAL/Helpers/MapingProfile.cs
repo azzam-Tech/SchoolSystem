@@ -47,7 +47,7 @@ namespace SchoolSystem.DAL.Helpers
 
             //HomeWorke
             CreateMap<HomeWork, GetHomeWorkDto>().ReverseMap();
-            CreateMap<PostHomeWorkDto, HomeWork>().ReverseMap();
+            CreateMap<PostHomeWorkDto, HomeWork>().ForMember(src => src.HomeWorkImagePath, opt => opt.Ignore()).ReverseMap();
             CreateMap<EditHomeWorkDto, HomeWork>().ReverseMap();
 
 
@@ -58,7 +58,7 @@ namespace SchoolSystem.DAL.Helpers
 
             //Reinforcementlesson
             CreateMap<Reinforcementlesson, GetReinforcementlessonDto>().ReverseMap();
-            CreateMap<PostReinforcementlessonDto, Reinforcementlesson>().ReverseMap();
+            CreateMap<PostReinforcementlessonDto, Reinforcementlesson>().ForMember(src => src.ReinforcementlessonFile, opt => opt.Ignore()).ReverseMap();
             CreateMap<EditReinforcementlessonDto, Reinforcementlesson>().ReverseMap();
 
 

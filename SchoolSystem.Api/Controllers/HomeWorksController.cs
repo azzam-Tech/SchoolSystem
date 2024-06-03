@@ -92,7 +92,7 @@ namespace SchoolSystem.Api.Controllers
         }
 
          [HttpPost("Create")]
-        public async Task<IActionResult> Post([FromForm] IFormFile imageFile , [FromForm] PostHomeWorkDto homeWorkDto)
+        public async Task<IActionResult> Post( [FromForm] PostHomeWorkDto homeWorkDto)
         {
             try
             {
@@ -116,10 +116,12 @@ namespace SchoolSystem.Api.Controllers
                 var shema = $"{Request.Scheme}://";
                 var host = $"{Request.Host}/";
 
-                var imagePath = shema + host + await manageFiles.SaveImage(imageFile, "HomeWork");
-
-
+                var imagePath1 = shema + host + await manageFiles.SaveImage(homeWorkDto.HomeWorkImagePath, "HomeWork");
                 
+                var imagePath = imagePath1.Replace("/wwwroot", "");
+
+
+
 
                 var homeWork = _mapper.Map<HomeWork>(homeWorkDto);
 

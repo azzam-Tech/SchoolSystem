@@ -1,4 +1,6 @@
-﻿namespace SchoolSystem.BLL.DTOs.PostDto
+﻿using Microsoft.AspNetCore.Http;
+
+namespace SchoolSystem.BLL.DTOs.PostDto
 {
     public class PostReinforcementlessonDto
     {
@@ -10,7 +12,7 @@
 
         public string? Reinforcementlessondescription { get; set; }
 
-        public string? ReinforcementlessonFile { get; set; }
+        public IFormFile? ReinforcementlessonFile { get; set; }
 
         public string? Reinforcementlessonlink { get; set; }
 

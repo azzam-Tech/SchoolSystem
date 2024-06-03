@@ -60,7 +60,7 @@ namespace SchoolSystem.Api.Controllers
             {
                 ApiResponse4 response = new ApiResponse4(message: ex.Message);
                 return StatusCode(500, response);
-            }
+            }       
         }
 
         [HttpGet("GetByHomeworkIdAsync/{id}")]

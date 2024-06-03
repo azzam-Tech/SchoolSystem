@@ -79,5 +79,14 @@ namespace SchoolSystem.DAL.Models
         public string? Data { get; set; } = data;
     }
 
+    public class ApiResponse8(string? data = null, string? errors = null, string message = "UnAuthoraiz", bool sucesse = false, string codestate = "401")
+    {
+        public bool Success { get; set; } = sucesse;
+        public string Codestate { get; set; } = codestate;
+        public string message { get; set; } = message;
+        public string? errors { get; set; } = errors;
+        public string? data { get; set; } = data;
+    }
+
 
 }

@@ -1,4 +1,5 @@
-﻿using SchoolSystem.DAL.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SchoolSystem.DAL.Data;
 using SchoolSystem.DAL.Entites;
 using SchoolSystem.DAL.Interfaces.Abstracts;
 using SchoolSystem.DAL.Interfaces.BaseRepository;
@@ -17,5 +18,9 @@ namespace SchoolSystem.DAL.Interfaces.Implementations
 
         }
 
+        public async Task<IEnumerable<Student>> GetStudentByClassId(int id)
+        {
+            return await _context.Students.Include(u => u.User).Where(c => c.ClassId == id).ToListAsync();    
+        }
     }
 }

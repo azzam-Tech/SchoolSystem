@@ -10,7 +10,7 @@
 
         public string? StudentQeustionText { get; set; }
 
-        public string? StudentQeustionImage { get; set; }
+        //public string? StudentQeustionImage { get; set; }
 
         public DateTime? StudentQeustionDate { get; set; }
     }

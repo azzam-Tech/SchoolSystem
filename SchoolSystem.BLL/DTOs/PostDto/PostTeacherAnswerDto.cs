@@ -6,7 +6,7 @@
 
         public string? TeacherAnswerText { get; set; }
 
-        public string? TeacherAnswerImage { get; set; }
+       // public string? TeacherAnswerImage { get; set; }
 
         public DateTime? TeacherAnswerDate { get; set; }
 

@@ -10,5 +10,7 @@ namespace SchoolSystem.DAL.Interfaces.Abstracts
 {
     public interface ISubjectsRepository : IBaseRepository<Subject>
     {
+
+        Task<Subject> GetSubjectBylevelId(int levelId);
     }
 }

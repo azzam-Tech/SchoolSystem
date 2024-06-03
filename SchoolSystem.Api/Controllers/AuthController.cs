@@ -43,9 +43,11 @@ namespace SchoolSystem.Api.Controllers
                 var result = await _authService.GetTokenAsync(model);
                 if (!result.IsAuthenticated)
                 {
-                    return BadRequest(result.Message);
+                    ApiResponse8 response2 = new(message: result.Message);
+                    return BadRequest(response2);
                 }
-                return Ok(result);
+                ApiResponse6<AuthModel> response = new(result);
+                return Ok(response);
             }
             catch (Exception ex)
             {

@@ -8,6 +8,7 @@ using SchoolSystem.DAL.UnitOfWork;
 using SchoolSystem.BLL.DTOs.GetDto;
 using SchoolSystem.BLL.DTOs.PostDto;
 using SchoolSystem.BLL.DTOs.EditDto;
+using SchoolSystem.Api.FileServices;
 
 namespace SchoolSystem.Api.Controllers
 {
@@ -17,10 +18,12 @@ namespace SchoolSystem.Api.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public ReinforcementlessonsController(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly IManageFiles manageFiles;
+        public ReinforcementlessonsController(IUnitOfWork unitOfWork, IMapper mapper, IManageFiles manageFiles)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            this.manageFiles = manageFiles;
         }
 
         //[HttpGet]
@@ -66,7 +69,7 @@ namespace SchoolSystem.Api.Controllers
 
         // creat a method to create reinforcementlessonusing ReinforcementlessonDto , automapper , Try Catch block , Responses classes check if the object is null and if the model is valid and other nessesary checks
         [HttpPost("Create")]
-        public async Task<IActionResult> Post([FromBody] PostReinforcementlessonDto ReinforcementlessonDto)
+        public async Task<IActionResult> Post([FromForm] PostReinforcementlessonDto ReinforcementlessonDto)
         {
             try
             {
@@ -86,7 +89,16 @@ namespace SchoolSystem.Api.Controllers
                     ApiResponse2 response3 = new();
                     return BadRequest(response3);
                 }
-                var reinforcementlesson= _mapper.Map<Reinforcementlesson>(ReinforcementlessonDto);
+
+                var shema = $"{Request.Scheme}://";
+                var host = $"{Request.Host}/";
+
+                var filepath1 = shema + host + await manageFiles.SaveImage(ReinforcementlessonDto.ReinforcementlessonFile, "Reinforcementlesson");
+                var filepath = filepath1.Replace("/wwwroot", "");
+
+
+                var reinforcementlesson = _mapper.Map<Reinforcementlesson>(ReinforcementlessonDto);
+                reinforcementlesson.ReinforcementlessonFile = filepath;
                 await _unitOfWork.Reinforcementlessons.AddAsync(reinforcementlesson);
                 await _unitOfWork.SaveAsync();
                 ApiResponse5<PostReinforcementlessonDto> response = new(ReinforcementlessonDto);
