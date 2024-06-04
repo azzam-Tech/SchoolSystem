@@ -3,7 +3,6 @@
     public class PostStudentAttendanceDto
     {
 
-        public int StudentAttendanceId { get; set; }
 
         public int StudentId { get; set; }
 

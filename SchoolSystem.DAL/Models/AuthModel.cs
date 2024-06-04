@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SchoolSystem.BLL.DTOs.GetDto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,11 @@ namespace SchoolSystem.DAL.Models
         public bool IsSuperVaisor { get; set; }
         public string Token { get; set; }
         public DateTime ExpiresOn { get; set; } /*= DateTime.UtcNow;*/
-        public List<string> InitialInfo { get; set; }   
+        //public GetStudentLoginDto? StudentInfo { get; set; }   
+        public int StudentId { get; set; }
+
+        public int StedentParent { get; set; }
+
+        public int StudentClassId { get; set; }
     }
 }

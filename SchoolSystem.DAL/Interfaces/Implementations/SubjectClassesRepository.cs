@@ -20,7 +20,7 @@ namespace SchoolSystem.DAL.Interfaces.Implementations
 
         public async Task<IEnumerable<SubjectClass>> GetByClassId(int id)
         {
-            return await _context.SubjectClasses.Where(i => i.ClassId == id).ToListAsync();
+            return await _context.SubjectClasses.Include(c => c.Class).Where(i => i.ClassId == id).ToListAsync();
         }
 
         public async Task<IEnumerable<SubjectClass>> GetByTeacherId(int id)

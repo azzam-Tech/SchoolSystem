@@ -21,7 +21,7 @@ namespace SchoolSystem.DAL.Interfaces.Implementations
 
         public async Task<IEnumerable<Solution>> GetByHomeworkIdAsync(int id)
         {
-            return await _context.Solutions.Where(s => s.HomeWorkId == id).ToListAsync();
+            return await _context.Solutions.Include(s => s.Student).ThenInclude( u => u.User).Where(s => s.HomeWorkId == id).ToListAsync();
         }
 
         public async Task<Solution> GetByStudentId(int studentId, int homeworkId)

@@ -79,7 +79,8 @@ namespace SchoolSystem.Api.Controllers
                         SubjectTeacher  = subjectClass1.SubjectTeacher,
                         SubjectId = subjectClass1.SubjectId,
                         ClassId = subjectClass1.ClassId,
-                        SubjectClassName = subjectClass1.SubjectClassName
+                        SubjectClassName = subjectClass1.SubjectClassName,
+                        LevelId = subjectClass1.Class.LevelId
                     };
                     subjectClassDto.Add(subjectClassDto1);
                 }

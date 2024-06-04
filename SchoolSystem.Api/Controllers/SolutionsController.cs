@@ -8,6 +8,7 @@ using AutoMapper;
 using SchoolSystem.BLL.DTOs.GetDto;
 using SchoolSystem.BLL.DTOs.PostDto;
 using SchoolSystem.BLL.DTOs.EditDto;
+using SchoolSystem.Api.FileServices;
 
 
 namespace SchoolSystem.Api.Controllers
@@ -18,10 +19,12 @@ namespace SchoolSystem.Api.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public SolutionsController(IUnitOfWork unitOfWork, IMapper mapper)
+        private readonly IManageFiles manageFiles;
+        public SolutionsController(IUnitOfWork unitOfWork, IMapper mapper, IManageFiles manageFiles)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            this.manageFiles = manageFiles;
         }
         //[HttpGet]
         //public async Task<IActionResult> Get()
@@ -75,8 +78,18 @@ namespace SchoolSystem.Api.Controllers
                     ApiResponse3 reaponse = new();
                     return NotFound(reaponse);
                 }
-                var SolutionDto = _mapper.Map<IEnumerable<GetSolutionDto>>(solution);
-                ApiResponse6<IEnumerable<GetSolutionDto>> response = new(SolutionDto);
+                var solutionDto = _mapper.Map<IEnumerable<GetSolutionDto>>(solution);
+                foreach( var s  in solution)
+                {
+                    foreach(var solutiondto in solutionDto)
+                    {
+                        if(s.SolutionId == solutiondto.SolutionId)
+                        {
+                            solutiondto.StudentName = s.Student.User.UserName;
+                        }
+                    }
+                }
+                ApiResponse6<IEnumerable<GetSolutionDto>> response = new(solutionDto);
                 return Ok(response);
             }
             catch (System.Exception ex)
@@ -87,7 +100,7 @@ namespace SchoolSystem.Api.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> Post([FromBody] PostSolutionDto solutionDto)
+        public async Task<IActionResult> Post([FromForm] PostSolutionDto solutionDto)
         {
             try
             {
@@ -107,7 +120,15 @@ namespace SchoolSystem.Api.Controllers
                     ApiResponse2 response3 = new();
                     return BadRequest(response3);
                 }
+
+                var shema = $"{Request.Scheme}://";
+                var host = $"{Request.Host}/";
+
+                var filepath1 = shema + host + await manageFiles.SaveFile(solutionDto.SolutionFile, "Reinforcementlesson");
+                var filepath = filepath1.Replace("/wwwroot", "");
+
                 var solution = _mapper.Map<Solution>(solutionDto);
+                solution.SolutionFile = filepath;
                 await _unitOfWork.Solutions.AddAsync(solution);
                 await _unitOfWork.SaveAsync();
                 ApiResponse5<PostSolutionDto> response = new(solutionDto);

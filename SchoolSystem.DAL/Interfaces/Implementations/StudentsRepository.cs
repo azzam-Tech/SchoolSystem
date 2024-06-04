@@ -18,6 +18,11 @@ namespace SchoolSystem.DAL.Interfaces.Implementations
 
         }
 
+        public async Task<Student?> GetByUserId(int userId)
+        {
+            return await _context.Students.FirstOrDefaultAsync(x => x.UserId == userId);
+        }
+
         public async Task<IEnumerable<Student>> GetStudentByClassId(int id)
         {
             return await _context.Students.Include(u => u.User).Where(c => c.ClassId == id).ToListAsync();    

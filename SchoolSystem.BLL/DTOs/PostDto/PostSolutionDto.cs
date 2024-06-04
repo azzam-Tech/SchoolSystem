@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SchoolSystem.BLL.DTOs.PostDto
 {
@@ -10,7 +11,7 @@ namespace SchoolSystem.BLL.DTOs.PostDto
 
         //public string? SolutionImage { get; set; }
 
-        public string? SolutionFile { get; set; }
+        public IFormFile? SolutionFile { get; set; }
 
         public DateTime? SolutionDate { get; set; }
 

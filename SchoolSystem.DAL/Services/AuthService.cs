@@ -66,35 +66,30 @@ namespace SchoolSystem.DAL.Services
 
             if (user.Role.RoleName == "Teaher" && user.IsSupervisor == false)
             {
-                List<SubjectClass> subjectClassesFromDB = _context.SubjectClasses.Where(s => s.SubjectTeacher == user.UserId ).ToList();
-                foreach (var subjectClass in subjectClassesFromDB)
-                {
-                    authModel.InitialInfo.Add(subjectClass.SubjectClassName);
-                }
+
             }
 
             if (user.Role.RoleName == "Student")
             {
-                Student? Student = _context.Students.Find(user.UserId);
+                Student? Student = await _unitOfWork.Students.GetByUserId(user.UserId);
                 //Student? Student = NewMethod(user);
                 if (Student != null)
                 {
-                    List<SubjectClass> subjectClassesFromDB = _context.SubjectClasses.Where(s => s.ClassId == Student.ClassId).ToList();
-                    foreach ( var subjectClass in subjectClassesFromDB )
-                    {
-                        authModel.InitialInfo.Add(subjectClass.SubjectClassName);
-                    }  
+                    authModel.StudentId = Student.StudentId;
+                    authModel.StedentParent = Student.StedentParent;
+                    authModel.StudentClassId = Student.ClassId;
+  
                 }
             }
 
             if (user.Role.RoleName == "Parent")
             {
                // var children = _context.Students.Where(s => s.Equals(user.UserId)).ToList();
-                var childrensFromDB = _context.Students.Include(s => s.User).Where(s => s.StedentParent == user.UserId).ToList();
-                foreach (var child in childrensFromDB)
-                {
-                    authModel.InitialInfo.Add(child.User.UserName);
-                }
+                //var childrensFromDB = _context.Students.Include(s => s.User).Where(s => s.StedentParent == user.UserId).ToList();
+                //foreach (var child in childrensFromDB)
+                //{
+                //    authModel.InitialInfo.Add(child.User.UserName);
+                //}
             }
 
 

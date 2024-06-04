@@ -64,7 +64,7 @@ namespace SchoolSystem.DAL.Helpers
 
             //Solution
             CreateMap<Solution, GetSolutionDto>().ReverseMap();
-            CreateMap<PostSolutionDto, Solution>().ReverseMap();
+            CreateMap<PostSolutionDto, Solution>().ForMember(src => src.SolutionFile, opt => opt.Ignore()).ReverseMap();
             CreateMap<EditSolutionDto, Solution>().ReverseMap();
 
 

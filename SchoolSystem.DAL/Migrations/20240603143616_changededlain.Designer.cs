@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolSystem.DAL.Data;
 
@@ -11,9 +12,11 @@ using SchoolSystem.DAL.Data;
 namespace SchoolSystem.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240603143616_changededlain")]
+    partial class changededlain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -627,8 +630,8 @@ namespace SchoolSystem.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentAttendanceId"));
 
-                    b.Property<DateOnly>("StudentAttendanceDate")
-                        .HasColumnType("dateonly");
+                    b.Property<DateTime>("StudentAttendanceDate")
+                        .HasColumnType("datetime");
 
                     b.Property<bool>("StudentAttendanceValue")
                         .ValueGeneratedOnAdd()

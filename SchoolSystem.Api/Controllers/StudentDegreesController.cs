@@ -77,6 +77,40 @@ namespace SchoolSystem.Api.Controllers
             }
         }
 
+        [HttpGet("GetByStudentIdandDegreeTypeId/{studentId}/{degreeTypeId}")]
+        public async Task<IActionResult> GetByStudentIdandDegreeTypeId(int studentId, int degreeTypeId)
+        {
+            try
+            {
+                var studentDegree = await _unitOfWork.StudentDegrees.GetByStudentIdandDegreeTypeId(studentId, degreeTypeId);
+                if (studentDegree == null)
+                {
+                    ApiResponse3 reaponse = new();
+                    return NotFound(reaponse);
+                }
+                //var studentDegreeDto = _mapper.Map<GetStudentDegreeDto>(studentDegree);
+
+                List<GetforStudetDegreeDto> studentDegreeDto = new List<GetforStudetDegreeDto>();
+                foreach (var item in studentDegree)
+                {
+                    studentDegreeDto.Add(new GetforStudetDegreeDto
+                    {
+                        SubjectName = item.SubjectClass.Subject.SubjectName,
+                        StudentDegreeValue = item.StudentDegreeValue,
+
+                    });
+                }
+
+                ApiResponse6<IEnumerable<GetforStudetDegreeDto>> response = new(studentDegreeDto);
+                return Ok(response);
+            }
+            catch (System.Exception ex)
+            {
+                ApiResponse4 response = new ApiResponse4(message: ex.Message);
+                return StatusCode(500, response);
+            }
+        }
+
         [HttpPost("createAllmarks")]
         public async Task<IActionResult> createAllmarks()
         {
