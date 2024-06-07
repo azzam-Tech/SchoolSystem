@@ -74,6 +74,29 @@ namespace SchoolSystem.Api.Controllers
                     return NotFound(reaponse);
                 }
                 var classTimeTableDto = _mapper.Map<IEnumerable<GetClassTimeTableDto>>(classTimeTable);
+                foreach (var classtimetable in classTimeTable)
+                {
+
+                    foreach (var classTimeTabledto in classTimeTableDto)
+                    {
+                        if (classtimetable.ClassTimeTableId == classTimeTabledto.ClassTimeTableId)
+                        {
+
+                            var periods = new List<string>();
+                            periods.Add(classtimetable.PeriodOne!);
+                            periods.Add(classtimetable.PeriodTow!);
+                            periods.Add(classtimetable.PeriodThree!);
+                            periods.Add(classtimetable.PeriodFour!);
+                            periods.Add(classtimetable.PeriodFive!);
+                            periods.Add(classtimetable.PeriodSix!);
+                            periods.Add(classtimetable.PeriodSeven!);
+                            periods.Add(classtimetable.PeriodEight!);
+
+                            classTimeTabledto.Periods = periods;
+                        }
+                    }
+                }
+
                 ApiResponse6<IEnumerable<GetClassTimeTableDto>> response = new(classTimeTableDto);
                 return Ok(response);
             }

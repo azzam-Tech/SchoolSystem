@@ -99,6 +99,7 @@ namespace SchoolSystem.Api.Controllers
 
                 var reinforcementlesson = _mapper.Map<Reinforcementlesson>(ReinforcementlessonDto);
                 reinforcementlesson.ReinforcementlessonFile = filepath;
+                reinforcementlesson.ReinforcementlessonDate = DateTime.Now;
                 await _unitOfWork.Reinforcementlessons.AddAsync(reinforcementlesson);
                 await _unitOfWork.SaveAsync();
                 ApiResponse5<PostReinforcementlessonDto> response = new(ReinforcementlessonDto);

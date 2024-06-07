@@ -14,7 +14,7 @@ namespace SchoolSystem.DAL.Interfaces.Implementations
 
         public async Task<IEnumerable<StudentSuggestion>> GetByClassIdAsync(int id)
         {
-            return await _context.StudentSuggestions.Where( c => c.ClassId == id).ToListAsync();
+            return await _context.StudentSuggestions.Include(s => s.Student).ThenInclude( u => u.User).Where( c => c.ClassId == id).ToListAsync();
         }
     }
 }

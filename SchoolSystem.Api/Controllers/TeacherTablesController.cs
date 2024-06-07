@@ -53,6 +53,29 @@ namespace SchoolSystem.Api.Controllers
                     return NotFound(reaponse);
                 }
                 var teacherTableDto = _mapper.Map<GetTeacherTableDto>(teacherTablesFDB);
+
+                //foreach (var teachertimetable in teacherTableFDB)
+                //{
+
+                //    foreach (var teacherTimeTabledto in teacherTableDto)
+                //    {
+                //        if (teachertimetable.TeacherTableId == teacherTimeTabledto.TeacherTableId)
+                //        {
+
+                //            var periods = new List<string>();
+                //            periods.Add(teachertimetable.PeriodOne!);
+                //            periods.Add(teachertimetable.PeriodTow!);
+                //            periods.Add(teachertimetable.PeriodThree!);
+                //            periods.Add(teachertimetable.PeriodFour!);
+                //            periods.Add(teachertimetable.PeriodFive!);
+                //            periods.Add(teachertimetable.PeriodSix!);
+                //            periods.Add(teachertimetable.PeriodSeven!);
+                //            periods.Add(teachertimetable.PeriodEight!);
+
+                //            teacherTimeTabledto.Periods = periods;
+                //        }
+                //    }
+                //}
                 ApiResponse6<GetTeacherTableDto> response = new(teacherTableDto);
                 return Ok(response);
             }

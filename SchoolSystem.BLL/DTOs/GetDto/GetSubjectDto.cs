@@ -9,13 +9,14 @@ namespace SchoolSystem.BLL.DTOs.GetDto
         [StringLength(50)]
         public string SubjectName { get; set; } = null!;
 
-        public string? SubjectBook1 { get; set; }
+        //public string? SubjectBook1 { get; set; }
 
-        public string? SubjectBook2 { get; set; }
+        //public string? SubjectBook2 { get; set; }
 
-        public string? SubjectBook3 { get; set; }
+        //public string? SubjectBook3 { get; set; }
 
-        public string? SubjectImage { get; set; }
+        //public string? SubjectImage { get; set; }
+        public List<string>? SubjecBooks { get; set; }
     }
 
     //public class StudentDegreeDto

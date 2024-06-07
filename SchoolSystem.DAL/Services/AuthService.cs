@@ -35,6 +35,8 @@ namespace SchoolSystem.DAL.Services
 
             var authModel = new AuthModel();
 
+
+
             User? user = await  _context.Users.Include(r => r.Role).SingleOrDefaultAsync(u => u.Userpassword ==  model.Password && u.UserName == model.UserName);
             //if (user is null || user.Userpassword != "a" )
             //{
@@ -61,6 +63,10 @@ namespace SchoolSystem.DAL.Services
 
             if (user.Role.RoleName == "Teacher" && user.IsSupervisor == true)
             {
+                Class? classs = await _unitOfWork.Classes.GetBYSupervisorIdAsync( user.UserId);
+                if (classs != null)
+                authModel.ClassId = classs.ClassId;
+                authModel.LevelId = classs.LevelId;
 
             }
 

@@ -79,17 +79,32 @@ namespace SchoolSystem.Api.Controllers
                 var studentQeustionDto = _mapper.Map<IEnumerable<GetStudentQeustionDto>>(studentQeustion);
 
             
-                foreach (var T in teacherAnswerFDB)
+                foreach (var T in teacherAnswerFDB )
                 {
                     foreach (var S in studentQeustionDto)
                     {
                         if (T.StudentQeustionId == S.StudentQeustionId)
                         {
                             S.TeacherAnswerText = T.TeacherAnswerText;
+                           
                         }
                         
                     }
                         
+                }
+
+                foreach (var studentQeustionl in studentQeustion)
+                {
+                    foreach (var S in studentQeustionDto)
+                    {
+                        if (studentQeustionl.StudentQeustionId == S.StudentQeustionId)
+                        {
+                            S.StudentName = studentQeustionl.Student.User.UserName;
+
+                        }
+
+                    }
+
                 }
                 ApiResponse6<IEnumerable<GetStudentQeustionDto>> response = new(studentQeustionDto);
                 return Ok(response);

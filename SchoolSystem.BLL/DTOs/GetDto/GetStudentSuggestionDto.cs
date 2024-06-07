@@ -8,9 +8,10 @@
 
         //public int ClassId { get; set; }
 
+        public string? StudentName { get; set; }
+
         public string? StudentSuggestionText { get; set; }
 
-        //public string? StudentSuggestionImage { get; set; }
 
         public DateTime? StudentSuggestionDate { get; set; }
 

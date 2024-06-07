@@ -111,6 +111,15 @@ namespace SchoolSystem.DAL.Helpers
             CreateMap<PostStudentSuggestionDto, StudentSuggestion>().ReverseMap();
             CreateMap<EditStudentSuggestionDto, StudentSuggestion>().ReverseMap();
 
+
+
+
+            //StudentAttendance
+            CreateMap<StudentAttendance, GetStudentAttendanceDto>().ReverseMap();
+            CreateMap<PostStudentAttendanceDto, StudentAttendance>().ReverseMap();
+            //CreateMap<EditStudentSuggestionDto, StudentAttendance>().ReverseMap();
+
+
             ////Student
             //CreateMap<Student , GetStudentDto>().ReverseMap();
             //CreateMap<PostStudentDto, Student>().ReverseMap();

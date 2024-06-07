@@ -126,6 +126,7 @@ namespace SchoolSystem.Api.Controllers
                 var homeWork = _mapper.Map<HomeWork>(homeWorkDto);
 
                 homeWork.HomeWorkImagePath = imagePath;
+                homeWork.HomeWorkDate = DateTime.Now;   
 
                 await _unitOfWork.HomeWorks.AddAsync(homeWork);
                 await _unitOfWork.SaveAsync();

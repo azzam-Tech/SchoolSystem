@@ -14,6 +14,7 @@ namespace SchoolSystem.BLL.DTOs.GetDto
         public int SubjectTeacher { get; set; }
 
         public string SubjectClassName { get; set; } = null!;
+        public string? SubjectClassImage{ get; set; }
     }
 
 

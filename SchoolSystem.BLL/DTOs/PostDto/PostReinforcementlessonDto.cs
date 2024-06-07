@@ -16,7 +16,7 @@ namespace SchoolSystem.BLL.DTOs.PostDto
 
         public string? Reinforcementlessonlink { get; set; }
 
-        public DateTime? ReinforcementlessonDate { get; set; }
+        //public DateTime? ReinforcementlessonDate { get; set; }
     }
 
 }

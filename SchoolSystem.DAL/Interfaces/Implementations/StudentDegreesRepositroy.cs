@@ -85,5 +85,10 @@ namespace SchoolSystem.DAL.Interfaces.Implementations
         {
             return await _context.StudentDegrees.Include(s => s.SubjectClass).ThenInclude( ss => ss.Subject).Where(s => s.StudentId == studentId && s.DegreeTypeId == degreeTypeId).ToListAsync();
         }
+
+        public async Task<IEnumerable<StudentDegree>> GetBySbjectClassId(int sbjectClassId)
+        {
+            return await _context.StudentDegrees.Include(u => u.Student).ThenInclude(uu => uu.User).Where(x => x.SubjectClassId == sbjectClassId ).ToListAsync();
+        }
     }
 }

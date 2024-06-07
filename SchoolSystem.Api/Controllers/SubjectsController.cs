@@ -54,6 +54,21 @@ namespace SchoolSystem.Api.Controllers
                     return NotFound(reaponse);
                 }
                 var Dtodata = _mapper.Map<GetSubjectDto>(subject);
+
+                var subjectBooks = new List<string>();
+                if (subject.SubjectBook1 != null)
+                subjectBooks.Add(subject.SubjectBook1);
+
+                if (subject.SubjectBook2 != null)
+                    subjectBooks.Add(subject.SubjectBook2);
+
+                if (subject.SubjectBook3 != null)
+                    subjectBooks.Add(subject.SubjectBook3);
+
+                Dtodata.SubjecBooks = subjectBooks;
+
+
+
                 ApiResponse6<GetSubjectDto> response = new (Dtodata);
                 return Ok(response);
             }

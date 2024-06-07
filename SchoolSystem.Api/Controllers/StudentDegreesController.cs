@@ -77,6 +77,42 @@ namespace SchoolSystem.Api.Controllers
             }
         }
 
+        [HttpGet("GetBySbjectClassIdandDegreeTypeId/{sbjectClassId}")]
+        public async Task<IActionResult> GetBySbjectClassId(int sbjectClassId)
+        {
+            try
+            {
+                var studentDegree = await _unitOfWork.StudentDegrees.GetBySbjectClassId(sbjectClassId);
+                if (studentDegree == null)
+                {
+                    ApiResponse3 reaponse = new();
+                    return NotFound(reaponse);
+                }
+                //var studentDegreeDto = _mapper.Map<GetStudentDegreeDto>(studentDegree);
+
+                List<GetStudentDegreeforSuperDto> studentDegreeDto = new List<GetStudentDegreeforSuperDto>();
+                foreach (var item in studentDegree)
+                {
+                    studentDegreeDto.Add(new GetStudentDegreeforSuperDto
+                    {
+                        StudentDegreeId = item.StudentDegreeId,
+                        DegreeTypeId = item.DegreeTypeId,
+                        StudentName = item.Student.User.UserName,
+                        StudentDegreeValue = item.StudentDegreeValue,
+
+                    });
+                }
+
+                ApiResponse6<IEnumerable<GetStudentDegreeforSuperDto>> response = new(studentDegreeDto);
+                return Ok(response);
+            }
+            catch (System.Exception ex)
+            {
+                ApiResponse4 response = new ApiResponse4(message: ex.Message);
+                return StatusCode(500, response);
+            }
+        }
+
         [HttpGet("GetByStudentIdandDegreeTypeId/{studentId}/{degreeTypeId}")]
         public async Task<IActionResult> GetByStudentIdandDegreeTypeId(int studentId, int degreeTypeId)
         {

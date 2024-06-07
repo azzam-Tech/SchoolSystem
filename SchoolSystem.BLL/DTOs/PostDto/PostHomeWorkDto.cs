@@ -18,9 +18,9 @@ namespace SchoolSystem.BLL.DTOs.PostDto
 
         public IFormFile? HomeWorkImagePath { get; set; }
 
-        public string? HomeWorkDeadline { get; set; }
+        public DateOnly? HomeWorkDeadline { get; set; }
 
-        public DateTime? HomeWorkDate { get; set; }
+        //public DateTime? HomeWorkDate { get; set; }
     }
 
 }

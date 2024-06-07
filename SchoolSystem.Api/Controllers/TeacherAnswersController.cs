@@ -40,7 +40,7 @@ namespace SchoolSystem.Api.Controllers
         //    }
         //}
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<IActionResult> Post([FromBody] PostTeacherAnswerDto postTeacherAnswerDto)
         {
             try

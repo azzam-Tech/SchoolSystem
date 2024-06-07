@@ -36,6 +36,21 @@ namespace SchoolSystem.Api.Controllers
                     return NotFound(reaponse);
                 }
                 var studentSuggestionsDto = _mapper.Map<IEnumerable<GetStudentSuggestionDto>>(studentSuggestionsFDB);
+
+                foreach (var studentSuggestionsfdb in studentSuggestionsFDB)
+                {
+                    foreach (var studentSuggestionsdto in studentSuggestionsDto)
+                    {
+                        if (studentSuggestionsfdb.StudentSuggestionId == studentSuggestionsdto.StudentSuggestionId)
+                        {
+                            studentSuggestionsdto.StudentName = studentSuggestionsfdb.Student.User.UserName;
+
+                        }
+
+                    }
+
+                }
+
                 ApiResponse6<IEnumerable<GetStudentSuggestionDto>> response = new(studentSuggestionsDto);
                 return Ok(response);
             }

@@ -12,8 +12,8 @@ using SchoolSystem.DAL.Data;
 namespace SchoolSystem.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240604140651_changeStudentAttendanceDateOnly")]
-    partial class changeStudentAttendanceDateOnly
+    [Migration("20240604162002_changeteacherAttendanceDateOnly")]
+    partial class changeteacherAttendanceDateOnly
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -631,7 +631,7 @@ namespace SchoolSystem.DAL.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentAttendanceId"));
 
                     b.Property<DateOnly>("StudentAttendanceDate")
-                        .HasColumnType("dateonly");
+                        .HasColumnType("date");
 
                     b.Property<bool>("StudentAttendanceValue")
                         .ValueGeneratedOnAdd()
@@ -918,8 +918,8 @@ namespace SchoolSystem.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TeacherAttendanceId"));
 
-                    b.Property<DateTime>("TeacherAttendanceDate")
-                        .HasColumnType("datetime");
+                    b.Property<DateOnly>("TeacherAttendanceDate")
+                        .HasColumnType("date");
 
                     b.Property<bool>("TeacherAttendanceValue")
                         .ValueGeneratedOnAdd()

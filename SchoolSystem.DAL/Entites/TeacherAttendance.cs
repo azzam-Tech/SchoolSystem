@@ -11,7 +11,7 @@ public partial class TeacherAttendance
 
     public bool TeacherAttendanceValue { get; set; }
 
-    public DateTime TeacherAttendanceDate { get; set; }
+    public DateOnly TeacherAttendanceDate { get; set; }
 
     public virtual User User { get; set; } = null!;
 }

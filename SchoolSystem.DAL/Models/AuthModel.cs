@@ -16,6 +16,8 @@ namespace SchoolSystem.DAL.Models
         public string Password { get; set; }
         public string Role { get; set; }
         public bool IsSuperVaisor { get; set; }
+        public int ClassId { get; set; }
+        public int LevelId { get; set; }
         public string Token { get; set; }
         public DateTime ExpiresOn { get; set; } /*= DateTime.UtcNow;*/
         //public GetStudentLoginDto? StudentInfo { get; set; }   

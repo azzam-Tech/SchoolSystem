@@ -80,7 +80,8 @@ namespace SchoolSystem.Api.Controllers
                         SubjectId = subjectClass1.SubjectId,
                         ClassId = subjectClass1.ClassId,
                         SubjectClassName = subjectClass1.SubjectClassName,
-                        LevelId = subjectClass1.Class.LevelId
+                        LevelId = subjectClass1.Class.LevelId,
+                        SubjectClassImage = subjectClass1.Subject.SubjectImage
                     };
                     subjectClassDto.Add(subjectClassDto1);
                 }

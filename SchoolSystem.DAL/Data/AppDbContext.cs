@@ -370,7 +370,7 @@ public partial class AppDbContext : DbContext
         {
             entity.HasKey(e => e.StudentAttendanceId).HasName("PK__StudentA__6342645BD3ECC6F3");
 
-            entity.Property(e => e.StudentAttendanceDate).HasColumnType("datetime");
+            entity.Property(e => e.StudentAttendanceDate).HasColumnType("date");
             entity.Property(e => e.StudentAttendanceValue).HasDefaultValue(true);
 
             entity.HasOne(d => d.Student).WithMany(p => p.StudentAttendances)
@@ -510,7 +510,7 @@ public partial class AppDbContext : DbContext
         {
             entity.HasKey(e => e.TeacherAttendanceId).HasName("PK__TeacherA__678A4810386EC33B");
 
-            entity.Property(e => e.TeacherAttendanceDate).HasColumnType("datetime");
+            entity.Property(e => e.TeacherAttendanceDate).HasColumnType("date");
             entity.Property(e => e.TeacherAttendanceValue).HasDefaultValue(true);
 
             entity.HasOne(d => d.User).WithMany(p => p.TeacherAttendances)

@@ -16,5 +16,6 @@ namespace SchoolSystem.DAL.Interfaces.Abstracts
         Task<IEnumerable<StudentDegree>> GetBySbjectClassIdandDegreeTypeId(int sbjectClassId, int degreeTypeId);
         Task<IEnumerable<StudentDegree>> GetStudentDegreesByStudentId(int studentId);
         Task<IEnumerable<StudentDegree>> GetByStudentIdandDegreeTypeId(int studentId, int degreeTypeId);
+        Task<IEnumerable<StudentDegree>> GetBySbjectClassId(int sbjectClassId);
     }
 }

@@ -5,6 +5,7 @@ namespace SchoolSystem.DAL.Interfaces.Abstracts
 {
     public interface IStudentAttendancesRepository : IBaseRepository<StudentAttendance>
     {
+        Task<IEnumerable<StudentAttendance>> GetAllBySoneIdAsync(int soneid);
     }
 
 

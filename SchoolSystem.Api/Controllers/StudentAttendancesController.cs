@@ -76,6 +76,23 @@ namespace SchoolSystem.Api.Controllers
             }
         }
 
+        [HttpGet("GetAllBySoneIdAsync/{soneid}")]
+        public async Task<IActionResult> GetAllByTeacherIdAsync(int soneid)
+        {
+            try
+            {
+                var studentAttendancesFDB = await _unitOfWork.StudentAttendances.GetAllBySoneIdAsync(soneid);
+                var studentAttendancesDTO = _mapper.Map<IEnumerable<GetStudentAttendanceDto>>(studentAttendancesFDB);
+                ApiResponse6<IEnumerable<GetStudentAttendanceDto>> response = new(studentAttendancesDTO);
+                return Ok(response);
+            }
+            catch (System.Exception ex)
+            {
+                ApiResponse4 reaponse = new(message: ex.Message);
+                return Ok(reaponse);
+            }
+        }
+
 
     }
 }

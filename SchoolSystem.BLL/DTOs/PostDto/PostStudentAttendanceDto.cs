@@ -10,7 +10,7 @@
 
         public bool StudentAttendanceValue { get; set; }
 
-        public DateTime StudentAttendanceDate { get; set; }
+        public DateOnly StudentAttendanceDate { get; set; }
 
     }
 }

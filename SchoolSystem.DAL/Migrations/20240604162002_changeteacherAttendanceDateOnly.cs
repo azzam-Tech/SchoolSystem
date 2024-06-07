@@ -6,15 +6,15 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SchoolSystem.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class changeStudentAttendanceDateOnly : Migration
+    public partial class changeteacherAttendanceDateOnly : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<DateOnly>(
-                name: "StudentAttendanceDate",
-                table: "StudentAttendances",
-                type: "dateonly",
+                name: "TeacherAttendanceDate",
+                table: "TeacherAttendances",
+                type: "date",
                 nullable: false,
                 oldClrType: typeof(DateTime),
                 oldType: "datetime");
@@ -24,12 +24,12 @@ namespace SchoolSystem.DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<DateTime>(
-                name: "StudentAttendanceDate",
-                table: "StudentAttendances",
+                name: "TeacherAttendanceDate",
+                table: "TeacherAttendances",
                 type: "datetime",
                 nullable: false,
                 oldClrType: typeof(DateOnly),
-                oldType: "dateonly");
+                oldType: "date");
         }
     }
 }
