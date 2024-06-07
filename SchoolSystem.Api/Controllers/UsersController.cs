@@ -9,6 +9,15 @@ using SchoolSystem.BLL.DTOs.Students;
 using SchoolSystem.BLL.DTOs.PostDto;
 using SchoolSystem.BLL.DTOs.GetDto;
 using SchoolSystem.BLL.DTOs.EditDto;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
+
+
+
 
 namespace SchoolSystem.Api.Controllers
 {
@@ -50,6 +59,10 @@ namespace SchoolSystem.Api.Controllers
         {
             try
             {
+
+
+
+
                 if (!ModelState.IsValid)
                 {
                     ApiResponse2 response2 = new();
@@ -242,6 +255,156 @@ namespace SchoolSystem.Api.Controllers
                 return StatusCode(500, response);
             }
         }
+
+
+
+        ////write a method that get data from XL file
+        //[HttpPost("UploadFile")]
+        //public async Task<IActionResult> UploadFile(IFormFile file)
+        //{
+        //    try
+        //    {
+        //        if (file == null)
+        //        {
+        //            ApiResponse2 response1 = new();
+        //            return BadRequest(response1);
+        //        }
+        //        if (file.Length == 0)
+        //        {
+        //            ApiResponse2 response2 = new();
+        //            return BadRequest(response2);
+        //        }
+        //        var users = new List<User>();
+
+
+
+        //        using (var stream = new MemoryStream())
+        //        {
+        //            await file.CopyToAsync(stream);
+
+        //            using (var reader = ExcelReaderFactory.CreateReader(stream))
+        //            {
+        //                while (reader.Read())
+        //                {
+        //                    var roleId = reader.GetInt32(0);
+        //                    var userName = reader.GetString(1);
+        //                    var Usernumber = reader.GetString(2);
+        //                    var userPassword = reader.GetString(3);
+        //                    var isSupervisor = reader.GetInt32(4);
+
+
+        //                    var user = new User
+        //                    {
+        //                        RoleId = roleId,
+        //                        UserName = userName,
+        //                        Usernumber = Usernumber,
+        //                        Userpassword = userPassword,
+        //                        IsSupervisor = false
+
+
+        //                    };
+
+        //                    users.Add(user);
+        //                }
+        //            }
+        //        }
+
+
+        //        await _unitOfWork.Users.AddRangeAsync(users);
+        //        await _unitOfWork.SaveAsync();
+        //        ApiResponse5<IEnumerable<User>> response = new(users);
+        //        return Ok(response);
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        ApiResponse4 response = new(message: ex.Message);
+        //        return StatusCode(500, response);
+        //    }
+        //}
+
+        //
+
+
+
+
+        [HttpPost("UploadFile")]
+        public async Task<IActionResult> UploadFile(IFormFile file)
+        {
+            try
+            {
+                //if (file == null || file.Length == 0)
+                //    return BadRequest("Please upload a valid Excel file.");
+
+                //var userList = new List<User>();
+
+                //using (var stream = new MemoryStream())
+                //{
+                //    await file.CopyToAsync(stream);
+                //    stream.Position = 0;
+                //    IWorkbook workbook = new XSSFWorkbook(stream);
+                //    ISheet sheet = workbook.GetSheetAt(0);
+                //    for (int row = 1; row <= sheet.LastRowNum; row++)
+                //    {
+                //        IRow excelRow = sheet.GetRow(row);
+                //        if (excelRow == null) continue;
+
+                //        var user = new User
+                //        {
+                //            RoleId = (int)(excelRow.GetCell(0)?.NumericCellValue ?? 0),
+                //            UserName = excelRow.GetCell(1)?.StringCellValue,
+                //            Usernumber = excelRow.GetCell(2)?.StringCellValue,
+                //            Userpassword = excelRow.GetCell(3)?.StringCellValue,
+                //            IsSupervisor = false
+                //        };
+                //        userList.Add(user);
+                //    }
+                //}
+
+
+                if (file == null || file.Length == 0)
+                    return BadRequest("Please upload a valid Excel file.");
+
+                var userList = new List<User>();
+
+                using (var stream = new MemoryStream())
+                {
+                    await file.CopyToAsync(stream);
+                    stream.Position = 0;
+                    IWorkbook workbook = new XSSFWorkbook(stream);
+                    ISheet sheet = workbook.GetSheetAt(0);
+
+                    for (int row = 1; row <= sheet.LastRowNum; row++)
+                    {
+                        IRow excelRow = sheet.GetRow(row);
+                        if (excelRow == null || excelRow.Cells.All(d => d.CellType == CellType.Blank)) continue;
+
+                        var user = new User
+                        {
+                            RoleId = (int)(excelRow.GetCell(0)?.NumericCellValue ?? 0),
+                            UserName = excelRow.GetCell(1)?.StringCellValue,
+                            Usernumber = excelRow.GetCell(2)?.StringCellValue,
+                            Userpassword = excelRow.GetCell(3)?.StringCellValue,
+                            IsSupervisor = false
+
+                        };
+                        userList.Add(user);
+                    }
+                }
+
+
+                await _unitOfWork.Users.AddRangeAsync(userList);
+                await _unitOfWork.SaveAsync();
+                ApiResponse5<IEnumerable<User>> response = new(userList);
+                return Ok(response);
+            }
+            catch (System.Exception ex)
+            {
+                ApiResponse4 response = new(message: ex.Message);
+                return StatusCode(500, response);
+            }
+        }
+
+
 
 
 

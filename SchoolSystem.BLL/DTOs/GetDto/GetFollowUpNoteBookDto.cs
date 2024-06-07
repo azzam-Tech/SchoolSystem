@@ -4,7 +4,9 @@
     {
         public int FollowUpNoteBookId { get; set; }
 
-        public string FollowUpNoteBookText { get; set; } = null!;
+        public string? FollowUpNoteBookText { get; set; }
+
+        public string? SubjectName { get; set; }
 
         public DateOnly FollowUpNoteBookDate { get; set; }
     }

@@ -48,12 +48,24 @@ namespace SchoolSystem.Api.Controllers
             try
             {
                 var followUpNoteBooks = await _unitOfWork.FollowUpNoteBooks.GetByDateClassAsync(id, date);
-                if (followUpNoteBooks == null || followUpNoteBooks.Count() == 0)
+                if (followUpNoteBooks == null )
                 {
                     ApiResponse3 reaponse = new();
                     return NotFound(reaponse);
                 }
                 var getfollowUpNoteBooksDTO = _mapper.Map<IEnumerable< GetFollowUpNoteBookDto>>(followUpNoteBooks);
+
+                foreach(var followUpNoteBook in followUpNoteBooks)
+                {
+                    foreach(var getfollowUpNoteBooksdto in getfollowUpNoteBooksDTO)
+                    {
+                        if(followUpNoteBook.FollowUpNoteBookId == getfollowUpNoteBooksdto.FollowUpNoteBookId)
+                        {
+                            getfollowUpNoteBooksdto.SubjectName = followUpNoteBook.SubjectClass.Subject.SubjectName;    
+                        }
+                    }
+                }
+
                 ApiResponse6<IEnumerable<GetFollowUpNoteBookDto>> response = new(getfollowUpNoteBooksDTO);
                 return Ok(response);
             }
@@ -108,6 +120,14 @@ namespace SchoolSystem.Api.Controllers
                     ApiResponse2 response3 = new();
                     return BadRequest(response3);
                 }
+
+                var fu = await _unitOfWork.FollowUpNoteBooks.FindAsync(f => f.FollowUpNoteBookDate == postFollowUpNoteBookDto.FollowUpNoteBookDate);
+                if (fu != null)
+                {
+                    ApiResponse2 response3 = new();
+                    return BadRequest(response3);
+                }
+
                 var followUpNoteBook = _mapper.Map<FollowUpNoteBook>(postFollowUpNoteBookDto);
                 await _unitOfWork.FollowUpNoteBooks.AddAsync(followUpNoteBook);
                 await _unitOfWork.SaveAsync();

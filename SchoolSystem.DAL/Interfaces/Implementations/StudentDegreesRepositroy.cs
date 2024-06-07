@@ -81,9 +81,9 @@ namespace SchoolSystem.DAL.Interfaces.Implementations
 
         }
 
-        public async Task<IEnumerable<StudentDegree>> GetByStudentIdandDegreeTypeId(int studentId, int degreeTypeId)
+        public async Task<IEnumerable<StudentDegree>> GetByStudentIdandDegreeTypeId(int studentId)
         {
-            return await _context.StudentDegrees.Include(s => s.SubjectClass).ThenInclude( ss => ss.Subject).Where(s => s.StudentId == studentId && s.DegreeTypeId == degreeTypeId).ToListAsync();
+            return await _context.StudentDegrees.Include(s => s.SubjectClass).ThenInclude( ss => ss.Subject).Where(s => s.StudentId == studentId ).ToListAsync();
         }
 
         public async Task<IEnumerable<StudentDegree>> GetBySbjectClassId(int sbjectClassId)

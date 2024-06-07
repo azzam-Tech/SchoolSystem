@@ -11,5 +11,5 @@ namespace SchoolSystem.DAL.Interfaces.Abstracts
     public interface IReinforcementlessonsRepository : IBaseRepository<Reinforcementlesson>
     {
         Task<IEnumerable<Reinforcementlesson>> GetBySubjectClassId(int id);
-    }
+    } 
 }

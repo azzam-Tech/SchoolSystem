@@ -37,6 +37,8 @@ namespace SchoolSystem.DAL.UnitOfWork
         public ITeacherAnswersRepository TeacherAnswers { get; private set;}
         public IStudentSuggestionsRepository StudentSuggestions { get; private set;}
         public IStudentAttendancesRepository StudentAttendances { get; private set;}
+        public ISectionsRepository Sections { get; private set;}
+        public ILaibaryBookRepository LaibaryBooks { get; private set;}
 
 
 
@@ -66,6 +68,8 @@ namespace SchoolSystem.DAL.UnitOfWork
             TeacherAnswers = new TeacherAnswersRepository(_context); 
             StudentSuggestions = new StudentSuggestionsRepository(_context);
             StudentAttendances = new StudentAttendancesRepository(_context);
+            Sections = new SectionsRepository(_context);
+            LaibaryBooks = new LaibaryBookRepository(_context);
 
 
         }

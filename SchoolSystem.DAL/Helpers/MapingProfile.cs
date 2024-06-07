@@ -120,6 +120,14 @@ namespace SchoolSystem.DAL.Helpers
             //CreateMap<EditStudentSuggestionDto, StudentAttendance>().ReverseMap();
 
 
+            //Sections
+            CreateMap<Section, GetSectionDto>().ReverseMap();
+
+            //LaibaryBook
+            CreateMap<LaibaryBook, GetLaibaryBookDto>().ReverseMap();
+            
+
+
             ////Student
             //CreateMap<Student , GetStudentDto>().ReverseMap();
             //CreateMap<PostStudentDto, Student>().ReverseMap();

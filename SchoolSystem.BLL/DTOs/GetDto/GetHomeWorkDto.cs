@@ -19,5 +19,4 @@
         public DateTime? HomeWorkDate { get; set; }
     }
 
-
 }

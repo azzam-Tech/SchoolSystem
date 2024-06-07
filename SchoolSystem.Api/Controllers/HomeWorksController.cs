@@ -91,7 +91,32 @@ namespace SchoolSystem.Api.Controllers
             }
         }
 
-         [HttpPost("Create")]
+
+
+        //[HttpGet("GetBySubjectClassIdStudentId/{id}/{studentId}")]
+
+        //public async Task<IActionResult> GetBySubjectClassIdStudentId(int id ,int studentId)
+        //{
+        //    try
+        //    {
+        //        var homeWorks = await _unitOfWork.HomeWorks.GetBySubjectClassIdStudentId(id , studentId);
+        //        if (homeWorks == null || homeWorks.Count() == 0)
+        //        {
+        //            ApiResponse3 reaponse = new();
+        //            return NotFound(reaponse);
+        //        }
+        //        var homeWorksDTO = _mapper.Map<IEnumerable<GetHomeWorkDto>>(homeWorks);
+        //        ApiResponse6<IEnumerable<GetHomeWorkDto>> response = new(homeWorksDTO);
+        //        return Ok(response);
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        ApiResponse4 response = new ApiResponse4(message: ex.Message);
+        //        return StatusCode(500, response);
+        //    }
+        //}
+
+        [HttpPost("Create")]
         public async Task<IActionResult> Post( [FromForm] PostHomeWorkDto homeWorkDto)
         {
             try

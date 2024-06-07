@@ -33,6 +33,8 @@ namespace SchoolSystem.DAL.UnitOfWork
         ITeacherAnswersRepository TeacherAnswers { get; }         
         IStudentSuggestionsRepository StudentSuggestions { get; } 
         IStudentAttendancesRepository StudentAttendances { get; } // x
+        ISectionsRepository Sections { get; }
+        ILaibaryBookRepository LaibaryBooks { get; }
 
 
 

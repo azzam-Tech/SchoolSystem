@@ -113,12 +113,12 @@ namespace SchoolSystem.Api.Controllers
             }
         }
 
-        [HttpGet("GetByStudentIdandDegreeTypeId/{studentId}/{degreeTypeId}")]
-        public async Task<IActionResult> GetByStudentIdandDegreeTypeId(int studentId, int degreeTypeId)
+        [HttpGet("GetByStudentIdandDegreeTypeId/{studentId}")]
+        public async Task<IActionResult> GetByStudentIdandDegreeTypeId(int studentId)
         {
             try
             {
-                var studentDegree = await _unitOfWork.StudentDegrees.GetByStudentIdandDegreeTypeId(studentId, degreeTypeId);
+                var studentDegree = await _unitOfWork.StudentDegrees.GetByStudentIdandDegreeTypeId(studentId);
                 if (studentDegree == null)
                 {
                     ApiResponse3 reaponse = new();
@@ -131,6 +131,7 @@ namespace SchoolSystem.Api.Controllers
                 {
                     studentDegreeDto.Add(new GetforStudetDegreeDto
                     {
+                        DegreeTypeId = item.DegreeTypeId,
                         SubjectName = item.SubjectClass.Subject.SubjectName,
                         StudentDegreeValue = item.StudentDegreeValue,
 

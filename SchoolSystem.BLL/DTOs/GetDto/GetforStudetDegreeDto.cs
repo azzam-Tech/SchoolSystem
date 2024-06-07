@@ -2,6 +2,7 @@
 {
     public class GetforStudetDegreeDto
     {
+        public int DegreeTypeId { get; set; }
 
         public decimal? StudentDegreeValue { get; set; }
 

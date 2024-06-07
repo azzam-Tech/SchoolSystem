@@ -226,7 +226,7 @@ namespace SchoolSystem.Api.Controllers
                     ApiResponse2 response1 = new();
                     return BadRequest(response1);
                 }
-                var teacherEvaluationFDB = await _unitOfWork.TeacherEvaluations.GetByIdAsync(id);
+                var teacherEvaluationFDB = await _unitOfWork.TeacherEvaluations.GetByTeacherIdAsync(id);
 
                 teacherEvaluationFDB.TeacherEvaluationCounter = teacherEvaluationFDB.TeacherEvaluationCounter + 1; 
                 //int avarig = teacherEvaluationFDB.TeacherEvaluationCounter;
