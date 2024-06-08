@@ -87,6 +87,41 @@ namespace SchoolSystem.Api.Controllers
             }
         }
 
+
+        [HttpGet("GetStudentByParentId/{id}")]
+        public async Task<IActionResult> GetStudentByParentId(int id)
+        {
+            try
+            {
+                var StudentFDB = await _unitOfWork.Students.GetStudentByParentId(id);
+                if (StudentFDB == null || StudentFDB.Count() == 0)
+                {
+                    ApiResponse3 reaponse = new();
+                    return NotFound(reaponse);
+                }
+                var studebtsDTO = new List<GeStudentForDgDto>();
+                foreach (var student in StudentFDB)
+                {
+                    var studebtsdto = new GeStudentForDgDto
+                    {
+                        StudentId = student.StudentId,
+                        StudentName = student.User.UserName
+                    };
+                    studebtsDTO.Add(studebtsdto);
+                }
+                ApiResponse6<IEnumerable<GeStudentForDgDto>> response = new(studebtsDTO);
+                return Ok(response);
+            }
+
+            catch (System.Exception ex)
+            {
+                ApiResponse4 response = new ApiResponse4(message: ex.Message);
+                return StatusCode(500, response);
+            }
+        }
+
+
+
         [HttpPost("addRange")]
         public IActionResult Post([FromBody] IEnumerable<StudentDto> studentsDto )
         {

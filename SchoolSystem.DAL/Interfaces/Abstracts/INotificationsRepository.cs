@@ -3,9 +3,9 @@ using SchoolSystem.DAL.Interfaces.BaseRepository;
 
 namespace SchoolSystem.DAL.Interfaces.Abstracts
 {
-    public interface ILaibaryBookRepository : IBaseRepository<LaibaryBook>
+    public interface INotificationsRepository : IBaseRepository<Notification>
     {
-        Task<IEnumerable <LaibaryBook>> GetBySectionId(int id);
+        Task<IEnumerable<Notification>> GetAllNotificationAsync();
     }
 
 

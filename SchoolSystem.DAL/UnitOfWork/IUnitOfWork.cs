@@ -35,6 +35,10 @@ namespace SchoolSystem.DAL.UnitOfWork
         IStudentAttendancesRepository StudentAttendances { get; } // x
         ISectionsRepository Sections { get; }
         ILaibaryBookRepository LaibaryBooks { get; }
+        INotificationsRepository Notifications { get; }
+        INotificationRolesRepository NotificationRoles { get; }
+        ISubervisorNotificationsRepository SubervisorNotifications { get; }
+        ITeacherNotificationsRepository TeacherNotifications { get; }
 
 
 

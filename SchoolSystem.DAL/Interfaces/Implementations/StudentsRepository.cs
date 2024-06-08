@@ -27,5 +27,10 @@ namespace SchoolSystem.DAL.Interfaces.Implementations
         {
             return await _context.Students.Include(u => u.User).Where(c => c.ClassId == id).ToListAsync();    
         }
+
+        public async Task<IEnumerable<Student>> GetStudentByParentId(int id)
+        {
+            return await _context.Students.Include(u => u.User).Where(c => c.StedentParent == id).ToListAsync(); 
+        }
     }
 }

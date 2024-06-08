@@ -3,9 +3,9 @@ using SchoolSystem.DAL.Interfaces.BaseRepository;
 
 namespace SchoolSystem.DAL.Interfaces.Abstracts
 {
-    public interface ILaibaryBookRepository : IBaseRepository<LaibaryBook>
+    public interface ITeacherNotificationsRepository : IBaseRepository<TeacherNotification>
     {
-        Task<IEnumerable <LaibaryBook>> GetBySectionId(int id);
+
     }
 
 

@@ -5,9 +5,9 @@ using SchoolSystem.DAL.Interfaces.BaseRepository;
 
 namespace SchoolSystem.DAL.Interfaces.Implementations
 {
-    public class SectionsRepository : BaseRepository<Section>, ISectionsRepository
+    public class SubervisorNotificationsRepository : BaseRepository<SubervisorNotification>, ISubervisorNotificationsRepository
     {
-        public SectionsRepository(AppDbContext context) : base(context)
+        public SubervisorNotificationsRepository(AppDbContext context) : base(context)
         {
         }
     }

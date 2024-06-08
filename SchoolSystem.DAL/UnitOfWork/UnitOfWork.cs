@@ -39,6 +39,10 @@ namespace SchoolSystem.DAL.UnitOfWork
         public IStudentAttendancesRepository StudentAttendances { get; private set;}
         public ISectionsRepository Sections { get; private set;}
         public ILaibaryBookRepository LaibaryBooks { get; private set;}
+        public INotificationsRepository Notifications { get; private set; }
+        public INotificationRolesRepository NotificationRoles { get; private set; }
+        public ISubervisorNotificationsRepository SubervisorNotifications { get; private set; }
+        public ITeacherNotificationsRepository TeacherNotifications { get; private set; }
 
 
 
@@ -70,6 +74,10 @@ namespace SchoolSystem.DAL.UnitOfWork
             StudentAttendances = new StudentAttendancesRepository(_context);
             Sections = new SectionsRepository(_context);
             LaibaryBooks = new LaibaryBookRepository(_context);
+            Notifications = new NotificationsRepository(_context);
+            NotificationRoles = new NotificationRolesRepository(_context);
+            SubervisorNotifications = new SubervisorNotificationsRepository(_context);
+            TeacherNotifications = new TeacherNotificationsRepository(_context);
 
 
         }

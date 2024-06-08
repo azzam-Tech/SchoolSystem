@@ -12,5 +12,6 @@ namespace SchoolSystem.DAL.Interfaces.Abstracts
     {
         Task<Student?> GetByUserId(int userId);
         Task<IEnumerable< Student>> GetStudentByClassId(int id);
+        Task<IEnumerable<Student>> GetStudentByParentId(int id);
     }
 }

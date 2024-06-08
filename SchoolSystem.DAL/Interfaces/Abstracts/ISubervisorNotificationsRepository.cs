@@ -3,10 +3,10 @@ using SchoolSystem.DAL.Interfaces.BaseRepository;
 
 namespace SchoolSystem.DAL.Interfaces.Abstracts
 {
-    public interface ILaibaryBookRepository : IBaseRepository<LaibaryBook>
+    public interface ISubervisorNotificationsRepository : IBaseRepository<SubervisorNotification>
     {
-        Task<IEnumerable <LaibaryBook>> GetBySectionId(int id);
-    }
+
+    }    
 
 
 }
