@@ -23,4 +23,14 @@
         public string? StudentName { get; set; }
 
     }
+
+
+    public class GetStudentDegreeformanagerDto
+    {
+
+        public decimal? StudentDegreeValue { get; set; }
+
+        public string? StudentName { get; set; }
+
+    }
 }

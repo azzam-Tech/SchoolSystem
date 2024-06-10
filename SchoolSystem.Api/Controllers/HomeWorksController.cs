@@ -214,8 +214,8 @@ namespace SchoolSystem.Api.Controllers
                 }
                 _unitOfWork.HomeWorks.Delete(homeWork);
                 await _unitOfWork.SaveAsync();
-                var homeWorkDto = _mapper.Map<HomeWorkDto>(homeWork);
-                ApiResponse6<HomeWorkDto> response = new(homeWorkDto);
+                //var homeWorkDto = _mapper.Map<HomeWorkDto>(homeWork);
+                ApiResponse9 response = new();
                 return Ok(response);
             }
             catch (System.Exception ex)

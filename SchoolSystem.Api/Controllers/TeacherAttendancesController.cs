@@ -70,7 +70,7 @@ namespace SchoolSystem.Api.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] PostTeacherAttendanceDto postTeacherAttendanceDto)
+        public async Task<IActionResult> Post([FromBody] List<PostTeacherAttendanceDto> postTeacherAttendanceDto)
         {
             try
             {
@@ -84,16 +84,16 @@ namespace SchoolSystem.Api.Controllers
                     ApiResponse2 response1 = new();
                     return BadRequest(response1);
                 }
-                var user = await _unitOfWork.Users.GetByIdAsync(postTeacherAttendanceDto.UserId);
-                if (user == null)
-                {
-                    ApiResponse2 response3 = new();
-                    return BadRequest(response3);
-                }
-                var teacherAttendanceTDB = _mapper.Map<TeacherAttendance>(postTeacherAttendanceDto);
-                await _unitOfWork.TeacherAttendances.AddAsync(teacherAttendanceTDB);
+                //var user = await _unitOfWork.Users.GetByIdAsync(postTeacherAttendanceDto.UserId);
+                //if (user == null)
+                //{
+                //    ApiResponse2 response3 = new();
+                //    return BadRequest(response3);
+                //}
+                var teacherAttendanceTDB = _mapper.Map<List<TeacherAttendance>>(postTeacherAttendanceDto);
+                await _unitOfWork.TeacherAttendances.AddRangeAsync(teacherAttendanceTDB);
                 await _unitOfWork.SaveAsync();
-                ApiResponse5<PostTeacherAttendanceDto> response = new(postTeacherAttendanceDto);
+                ApiResponse5<List<PostTeacherAttendanceDto>> response = new(postTeacherAttendanceDto);
                 return Ok(response);
                 //return CreatedAtRoute("GetHomeWork", new { id = followUpNoteBook.Id }, followUpNoteBook);
             }

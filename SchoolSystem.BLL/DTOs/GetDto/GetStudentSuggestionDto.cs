@@ -4,7 +4,7 @@
     {
         public int StudentSuggestionId { get; set; }
 
-        //public int StudentId { get; set; }
+        public int StudentId { get; set; }
 
         //public int ClassId { get; set; }
 

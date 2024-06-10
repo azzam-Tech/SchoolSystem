@@ -64,7 +64,7 @@ namespace SchoolSystem.Api.Controllers
                     await _unitOfWork.SaveAsync();
                 }
 
-                if (postNotificationDto.ClassId != 0 )
+                if (postNotificationDto.ClassId != 0)
                 {
                     var subervisorNotification = new SubervisorNotification
                     {
@@ -116,7 +116,255 @@ namespace SchoolSystem.Api.Controllers
                     SubjectClassId = n.TeacherNotifications.Select(tn => tn.SubjectClassId).FirstOrDefault()
                 });
 
+
+
                 ApiResponse6<IEnumerable<GetNotificationDto>> response = new(notificationDto);
+                return Ok(response);
+            }
+            catch (System.Exception ex)
+            {
+                ApiResponse4 response = new ApiResponse4(message: ex.Message);
+                return StatusCode(500, response);
+            }
+        }
+
+
+        [HttpGet("GetNotificationByClassId/{id}")]
+        public async Task<IActionResult> GetNotificationByClassId(int id)
+        {
+            try
+            {
+                var notifications = await _unitOfWork.Notifications.GetAllNotificationAsync();
+                var notificationDto = notifications.Select(n => new GetNotificationDto
+                {
+                    NotificationId = n.NotificationId,
+                    UserId = n.UserId,
+                    NotificationTitle = n.NotificationTitle,
+                    NotificationText = n.NotificationText,
+                    NotificationImagePath = n.NotificationImagePath,
+                    NotificationDate = n.NotificationDate,
+                    Roles = n.NotificationRoles.Select(nr => nr.RoleId).ToList(),
+                    ClassId = n.SubervisorNotifications.Select(sn => sn.ClassId).FirstOrDefault(),
+                    SubjectClassId = n.TeacherNotifications.Select(tn => tn.SubjectClassId).FirstOrDefault()
+                });
+
+                var classnotis = new List<GetClassNotificationDto>();
+                foreach (var noti in notificationDto)
+                {
+                    if (noti.ClassId == id)
+                    {
+                        var classnoti = new GetClassNotificationDto
+                        {
+                            NotificationId = noti.NotificationId,
+                            NotificationTitle = noti.NotificationTitle,
+                            NotificationText = noti.NotificationText,
+                            NotificationDate = noti.NotificationDate,
+                            NotificationImagePath = noti.NotificationImagePath,
+                        };
+                        classnotis.Add(classnoti);
+                    }
+                }
+
+                ApiResponse6<IEnumerable<GetClassNotificationDto>> response = new(classnotis);
+                return Ok(response);
+            }
+            catch (System.Exception ex)
+            {
+                ApiResponse4 response = new ApiResponse4(message: ex.Message);
+                return StatusCode(500, response);
+            }
+        }
+
+
+        [HttpGet("GetNotificationBySubjectClassId/{id}")]
+        public async Task<IActionResult> GetNotificationBySubjectClassId(int id)
+        {
+            try
+            {
+                var notifications = await _unitOfWork.Notifications.GetAllNotificationAsync();
+                var notificationDto = notifications.Select(n => new GetNotificationDto
+                {
+                    NotificationId = n.NotificationId,
+                    UserId = n.UserId,
+                    NotificationTitle = n.NotificationTitle,
+                    NotificationText = n.NotificationText,
+                    NotificationImagePath = n.NotificationImagePath,
+                    NotificationDate = n.NotificationDate,
+                    Roles = n.NotificationRoles.Select(nr => nr.RoleId).ToList(),
+                    ClassId = n.SubervisorNotifications.Select(sn => sn.ClassId).FirstOrDefault(),
+                    SubjectClassId = n.TeacherNotifications.Select(tn => tn.SubjectClassId).FirstOrDefault()
+                });
+
+                var classnotis = new List<GetClassNotificationDto>();
+                foreach (var noti in notificationDto)
+                {
+                    if (noti.SubjectClassId == id)
+                    {
+                        var classnoti = new GetClassNotificationDto
+                        {
+                            NotificationId = noti.NotificationId,
+                            NotificationTitle = noti.NotificationTitle,
+                            NotificationText = noti.NotificationText,
+                            NotificationDate = noti.NotificationDate,
+                            NotificationImagePath = noti.NotificationImagePath,
+                        };
+                        classnotis.Add(classnoti);
+                    }
+                }
+
+
+
+
+
+                ApiResponse6<IEnumerable<GetClassNotificationDto>> response = new(classnotis);
+                return Ok(response);
+            }
+            catch (System.Exception ex)
+            {
+                ApiResponse4 response = new ApiResponse4(message: ex.Message);
+                return StatusCode(500, response);
+            }
+        }
+
+
+
+        [HttpGet("GetNotificationForAll/{id}")]
+        public async Task<IActionResult> GetNotificationForAll()
+        {
+            try
+            {
+                var notifications = await _unitOfWork.Notifications.GetAllNotificationAsync();
+                var notificationDto = notifications.Select(n => new GetNotificationDto
+                {
+                    NotificationId = n.NotificationId,
+                    UserId = n.UserId,
+                    NotificationTitle = n.NotificationTitle,
+                    NotificationText = n.NotificationText,
+                    NotificationImagePath = n.NotificationImagePath,
+                    NotificationDate = n.NotificationDate,
+                    Roles = n.NotificationRoles.Select(nr => nr.RoleId).ToList(),
+                    ClassId = n.SubervisorNotifications.Select(sn => sn.ClassId).FirstOrDefault(),
+                    SubjectClassId = n.TeacherNotifications.Select(tn => tn.SubjectClassId).FirstOrDefault()
+                });
+
+                var classnotis = new List<GetClassNotificationDto>();
+                foreach (var noti in notificationDto)
+                {
+                    if (noti.SubjectClassId == 0 && noti.ClassId == 0 )
+                    {
+                        var classnoti = new GetClassNotificationDto
+                        {
+                            NotificationId = noti.NotificationId,
+                            NotificationTitle = noti.NotificationTitle,
+                            NotificationText = noti.NotificationText,
+                            NotificationDate = noti.NotificationDate,
+                            NotificationImagePath = noti.NotificationImagePath,
+                        };
+                        classnotis.Add(classnoti);
+                    }
+                }
+
+
+
+
+
+                ApiResponse6<IEnumerable<GetClassNotificationDto>> response = new(classnotis);
+                return Ok(response);
+            }
+            catch (System.Exception ex)
+            {
+                ApiResponse4 response = new ApiResponse4(message: ex.Message);
+                return StatusCode(500, response);
+            }
+        }
+
+
+        [HttpGet("GetNotificationForTeacher")]
+        public async Task<IActionResult> GetNotificationForTeacher()
+        {
+            try
+            {
+                var notifications = await _unitOfWork.Notifications.GetAllNotificationAsync();
+                var notificationDto = notifications.Select(n => new GetNotificationDto
+                {
+                    NotificationId = n.NotificationId,
+                    UserId = n.UserId,
+                    NotificationTitle = n.NotificationTitle,
+                    NotificationText = n.NotificationText,
+                    NotificationImagePath = n.NotificationImagePath,
+                    NotificationDate = n.NotificationDate,
+                    Roles = n.NotificationRoles.Select(nr => nr.RoleId).ToList(),
+                    ClassId = n.SubervisorNotifications.Select(sn => sn.ClassId).FirstOrDefault(),
+                    SubjectClassId = n.TeacherNotifications.Select(tn => tn.SubjectClassId).FirstOrDefault()
+                });
+
+                var classnotis = new List<GetClassNotificationDto>();
+                foreach (var noti in notificationDto)
+                {
+                    if (noti.SubjectClassId == 0 && noti.ClassId == 0 && noti.Roles!.Contains(4) && noti.Roles.Contains(5) == false && noti.Roles.Contains(6) == false)
+                    {
+                        var classnoti = new GetClassNotificationDto
+                        {
+                            NotificationId = noti.NotificationId,
+                            NotificationTitle = noti.NotificationTitle,
+                            NotificationText = noti.NotificationText,
+                            NotificationDate = noti.NotificationDate,
+                            NotificationImagePath = noti.NotificationImagePath,
+                        };
+                        classnotis.Add(classnoti);
+                    }
+                }
+
+
+                ApiResponse6<IEnumerable<GetClassNotificationDto>> response = new(classnotis);
+                return Ok(response);
+            }
+            catch (System.Exception ex)
+            {
+                ApiResponse4 response = new ApiResponse4(message: ex.Message);
+                return StatusCode(500, response);
+            }
+        }
+
+
+        [HttpGet("GetNotificationForForParent")]
+        public async Task<IActionResult> GetNotificationForForParent()
+        {
+            try
+            {
+                var notifications = await _unitOfWork.Notifications.GetAllNotificationAsync();
+                var notificationDto = notifications.Select(n => new GetNotificationDto
+                {
+                    NotificationId = n.NotificationId,
+                    UserId = n.UserId,
+                    NotificationTitle = n.NotificationTitle,
+                    NotificationText = n.NotificationText,
+                    NotificationImagePath = n.NotificationImagePath,
+                    NotificationDate = n.NotificationDate,
+                    Roles = n.NotificationRoles.Select(nr => nr.RoleId).ToList(),
+                    ClassId = n.SubervisorNotifications.Select(sn => sn.ClassId).FirstOrDefault(),
+                    SubjectClassId = n.TeacherNotifications.Select(tn => tn.SubjectClassId).FirstOrDefault()
+                });
+
+                var classnotis = new List<GetClassNotificationDto>();
+                foreach (var noti in notificationDto)
+                {
+                    if (noti.SubjectClassId == 0 && noti.ClassId == 0 && noti.Roles!.Contains(6) && noti.Roles.Contains(5) == false && noti.Roles.Contains(4) == false)
+                    {
+                        var classnoti = new GetClassNotificationDto
+                        {
+                            NotificationId = noti.NotificationId,
+                            NotificationTitle = noti.NotificationTitle,
+                            NotificationText = noti.NotificationText,
+                            NotificationDate = noti.NotificationDate,
+                            NotificationImagePath = noti.NotificationImagePath,
+                        };
+                        classnotis.Add(classnoti);
+                    }
+                }
+
+
+                ApiResponse6<IEnumerable<GetClassNotificationDto>> response = new(classnotis);
                 return Ok(response);
             }
             catch (System.Exception ex)

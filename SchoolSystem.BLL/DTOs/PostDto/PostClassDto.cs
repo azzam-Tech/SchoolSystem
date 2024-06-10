@@ -74,4 +74,21 @@ namespace SchoolSystem.BLL.DTOs.PostDto
 
     }
 
+
+    public class GetClassNotificationDto
+    {
+
+        public int NotificationId { get; set; }
+
+        public string NotificationTitle { get; set; } = null!;
+
+        public string? NotificationText { get; set; }
+
+        public string? NotificationImagePath { get; set; }
+
+        public DateTime? NotificationDate { get; set; }
+
+
+    }
+
 }

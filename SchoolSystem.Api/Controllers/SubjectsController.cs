@@ -80,6 +80,45 @@ namespace SchoolSystem.Api.Controllers
         }
 
 
+
+        [HttpGet("GetSubjectBySubjectId/{SubjectId}")]
+        public async Task<IActionResult> GetSubjectBySubjectId(int SubjectId)
+        {
+            try
+            {
+                var subject = await _unitOfWork.Subjects.GetSubjectBySubjectId(SubjectId);
+                if (subject == null)
+                {
+                    ApiResponse3 reaponse = new();
+                    return NotFound(reaponse);
+                }
+                var Dtodata = _mapper.Map<GetSubjectDto>(subject);
+
+                var subjectBooks = new List<string>();
+                if (subject.SubjectBook1 != null)
+                    subjectBooks.Add(subject.SubjectBook1);
+
+                if (subject.SubjectBook2 != null)
+                    subjectBooks.Add(subject.SubjectBook2);
+
+                if (subject.SubjectBook3 != null)
+                    subjectBooks.Add(subject.SubjectBook3);
+
+                Dtodata.SubjecBooks = subjectBooks;
+
+
+
+                ApiResponse6<GetSubjectDto> response = new(Dtodata);
+                return Ok(response);
+            }
+            catch (System.Exception ex)
+            {
+                ApiResponse4 reaponse = new(message: ex.Message);
+                return Ok(reaponse);
+            }
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> AddSubject([FromBody] PostSubjectDto subjectDto)
         {

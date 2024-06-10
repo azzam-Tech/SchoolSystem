@@ -6,7 +6,7 @@
 
         //public int SubjectClassId { get; set; }
 
-        //public int StudentId { get; set; }
+        public int StudentId { get; set; }
 
         //public int TermId { get; set; }
         public string? StudentName { get; set; }

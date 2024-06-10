@@ -21,5 +21,10 @@ namespace SchoolSystem.DAL.Interfaces.Implementations
         {
             return await _context.Subjects.FirstOrDefaultAsync(l => l.LevelId == levelId);
         }
+
+        public async Task<Subject> GetSubjectBySubjectId(int subjectId)
+        {
+            return await _context.Subjects.FirstOrDefaultAsync(l => l.SubjectId == subjectId);
+        }
     }
 }

@@ -14,7 +14,7 @@ namespace SchoolSystem.DAL.Models
         public T? data { get; set; } = data;
     }
 
-    public class ApiResponse<T>(T? data, string? errors = null, string message = "opreation done",  bool sucesse = true, string codestate = "200")
+    public class ApiResponse<T>(T? data, string? errors = null, string message = "opreation done", bool sucesse = true, string codestate = "200")
     {
         public bool Success { get; set; } = sucesse;
         public string Codestate { get; set; } = codestate;
@@ -80,6 +80,16 @@ namespace SchoolSystem.DAL.Models
     }
 
     public class ApiResponse8(string? data = null, string? errors = null, string message = "UnAuthoraiz", bool sucesse = false, string codestate = "401")
+    {
+        public bool Success { get; set; } = sucesse;
+        public string Codestate { get; set; } = codestate;
+        public string message { get; set; } = message;
+        public string? errors { get; set; } = errors;
+        public string? data { get; set; } = data;
+    }
+
+
+    public class ApiResponse9(string? data = null, string? errors = null, string message = "deleted successful", bool sucesse = false, string codestate = "200")
     {
         public bool Success { get; set; } = sucesse;
         public string Codestate { get; set; } = codestate;

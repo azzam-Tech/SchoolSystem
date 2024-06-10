@@ -1,12 +1,10 @@
-﻿
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using SchoolSystem.DAL.UnitOfWork;
-using SchoolSystem.DAL.Entites;
-using SchoolSystem.DAL.Models;
-using AutoMapper;
 using SchoolSystem.BLL.DTOs.GetDto;
 using SchoolSystem.BLL.DTOs.PostDto;
+using SchoolSystem.DAL.Entites;
+using SchoolSystem.DAL.Models;
+using SchoolSystem.DAL.UnitOfWork;
 
 namespace SchoolSystem.Api.Controllers
 {
@@ -31,6 +29,10 @@ namespace SchoolSystem.Api.Controllers
             {
                 var teacherTablesFDB = await _unitOfWork.TeacherTables.GetAllAsync();
                 var teacherTablesDTO = _mapper.Map<IEnumerable<GetTeacherTableDto>>(teacherTablesFDB);
+
+               
+
+
                 ApiResponse6<IEnumerable<GetTeacherTableDto>> response = new(teacherTablesDTO);
                 return Ok(response);
             }
@@ -97,7 +99,31 @@ namespace SchoolSystem.Api.Controllers
                     ApiResponse3 reaponse = new();
                     return NotFound(reaponse);
                 }
-                var teacherTableDto = _mapper.Map<IEnumerable< GetTeacherTableDto>>(teacherTableFDB);
+                var teacherTableDto   = _mapper.Map<IEnumerable< GetTeacherTableDto>>(teacherTableFDB);
+
+                foreach (var classtimetable in teacherTableFDB)
+                {
+
+                    foreach (var teacheTabledto in teacherTableDto)
+                    {
+                        if (classtimetable.TeacherTableId == teacheTabledto.TeacherTableId)
+                        {
+
+                            var periods = new List<string>();
+                            periods.Add(classtimetable.PeriodOne!);
+                            periods.Add(classtimetable.PeriodTow!);
+                            periods.Add(classtimetable.PeriodThree!);
+                            periods.Add(classtimetable.PeriodFour!);
+                            periods.Add(classtimetable.PeriodFive!);
+                            periods.Add(classtimetable.PeriodSix!);
+                            periods.Add(classtimetable.PeriodSeven!);
+                            periods.Add(classtimetable.PeriodEight!);
+
+                            teacheTabledto.Periods = periods;
+                        }
+                    }
+                }
+
                 ApiResponse6<IEnumerable<GetTeacherTableDto>> response = new(teacherTableDto);
                 return Ok(response);
             }

@@ -12,5 +12,6 @@ namespace SchoolSystem.DAL.Interfaces.Abstracts
     {
 
         Task<Subject> GetSubjectBylevelId(int levelId);
+        Task<Subject> GetSubjectBySubjectId(int subjectId);
     }
 }
